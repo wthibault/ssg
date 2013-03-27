@@ -2,6 +2,7 @@ OPTS = -g
 #OPTS = -O3
 
 INC_DIR = ../include
+GLEW_SRC = ../win32/ssg-lib/glew-1.9.0/src/glew.c
 
 HOST_PLATFORM := $(shell $(CPP) -dumpmachine)
 $(info $(HOST_PLATFORM))
@@ -25,7 +26,14 @@ INCLUDES = -I../include -framework OpenGL -framework GLUT -DUSE_APPLE_VERTEXARRA
 LIBS =
 endif
 
-OBJS = InitShader.o \
+# for MINGW32 on Windows
+ifeq   "$(HOST_PLATFORM)" "mingw32"
+INCLUDES = -I../include -I../win32/ssg-lib/glew-1.9.0/include -I../win32/ssg-lib/glut-3.7.6-bin -DGLEW_STATIC
+OBJS = glew.o
+LIBS =
+endif
+
+OBJS += InitShader.o \
 	ObjLoader.o \
 	Texture.o \
 	TextureLoader.o \
@@ -70,6 +78,9 @@ ParticleSystem.o : ParticleSystem.cpp $(SSG_INCS)
 
 ssg.a : $(OBJS)
 	ar rvs ssg.a $(OBJS)
+
+glew.o : $(GLEW_SRC)
+	g++ $(OPTS) -DGLEW_STATIC -c $(GLEW_SRC) $(INCLUDES)
 
 clean :
 	rm -f *.o

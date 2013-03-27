@@ -11,6 +11,10 @@
 
 #include <stdlib.h>
 
+#ifdef __WIN32__
+#include <windows.h>
+#endif
+
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #include <GLUT/glut.h>

@@ -26,6 +26,17 @@ INCLUDES = -I$(INC_DIR) -framework OpenGL -framework GLUT -DUSE_APPLE_VERTEXARRA
 LIBS =
 endif
 
+
+# for MINGW32 on Windows
+ifeq   "$(HOST_PLATFORM)" "mingw32"
+#INCLUDES = -I../include -I../win32/ssg-lib/glew-1.9.0/include -I../win32/ssg-lib/glut-3.7.6-bin -D__WIN32__ -DGLEW_STATIC ../win32/ssg-lib/glew-1.9.0/src/glew.c
+INCLUDES = -I../include -I../win32/ssg-lib/glew-1.9.0/include -I../win32/ssg-lib/glut-3.7.6-bin -D__WIN32__ -DGLEW_STATIC 
+#LIBS = -L../win32/ssg-lib/glut-3.7.6-bin -lglut32 -lopengl32 ../src/ssg.a ../win32/ssg-lib/glew-1.9.0/lib/glew32sd.lib
+LIBS = -L../win32/ssg-lib/glut-3.7.6-bin -lglut32 -lopengl32 ../src/ssg.a
+
+endif
+
+
 SSG_INCS = $(INC_DIR)/ssg.h \
 	$(INC_DIR)/CheckError.h \
 	$(INC_DIR)/InitShader.h \
@@ -104,3 +115,4 @@ clean :
 	rm -f depthrender
 	rm -f gimbal-lock
 	rm -rf *.dSYM
+	rm -rf *.exe
