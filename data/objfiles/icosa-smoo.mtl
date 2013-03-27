@@ -1,0 +1,14 @@
+# Blender MTL File: ''
+# Material Count: 1
+newmtl Material.001
+Ns 200.0
+Ka 0.100000 0.100000 0.100000
+Kd 0.640000 0.640000 0.840000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+#map_Kd textures/zebra.bmp
+#map_bump textures/zebra.bmp
+
+
