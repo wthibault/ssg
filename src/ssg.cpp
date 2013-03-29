@@ -408,11 +408,15 @@ ssgPrependDataPath ( const char* basename )
   // else prepend the SSG_DATA environment variable
 
   std::string path;
-  std::string dataPath = getenv("SSG_DATA");
+  char *ssgDataEnv = getenv("SSG_DATA");
+  std::string dataPath;
+  if ( ssgDataEnv )
+    dataPath = ssgDataEnv;
+
   if ( dataPath.length() > 0 ) {
     path = dataPath; 
-	path += "//";
-	path += basename;
+    path += "//";
+    path += basename;
   } else
     path = basename;
   return path;
