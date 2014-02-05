@@ -49,12 +49,13 @@
 using namespace std;
 using namespace glm;
 
-GLuint Texture::drawTextureShader = 0;
-GLuint Texture::drawTextureVertexArrayObject = 0;
-GLuint Texture::drawTextureUniform = 0;
-
 Texture::Texture(GLuint width, GLuint height, bool floatingPoint, bool mipmaps, unsigned int t )
-  : width(width), height(height), floatingPoint(floatingPoint)
+  : width(width), 
+    height(height), 
+    floatingPoint(floatingPoint), 
+    drawTextureShader(0),
+    drawTextureVertexArrayObject(0),
+    drawTextureUniform(0)
 {
   glActiveTexture(GL_TEXTURE0 + t);
   setupTexParams( floatingPoint, mipmaps );
@@ -131,8 +132,12 @@ Texture::setupTexParams( bool floatingpoint, bool mipmaps )
 		  GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, 
 		  mipmaps?GL_LINEAR_MIPMAP_LINEAR:GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  // XXXXX
+  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // use clamping for fx..., repeat for diffusemap
+  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP); // use clamping for fx..., repeat for diffusemap
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
   // allocate the memory for the texels
   glTexImage2D(GL_TEXTURE_2D, 0, 
 	       floatingPoint?GL_RGBA32F_ARB:GL_RGBA8, 
@@ -156,17 +161,18 @@ void Texture::renderFullscreenQuad(){
   glBindTexture(GL_TEXTURE_2D, textureId);
   glUniform1i(drawTextureUniform, 0);
   glDrawArrays(GL_TRIANGLES, 0, 3);
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glBindVertexArray(0);
   glUseProgram(0);
 }
 
-void Texture::setupRenderFullscreenQuad(){
-  //#ifdef __APPLE__
-  drawTextureShader = InitShader("shaders120/fullscreentexture.vert",  
-				 "shaders120/fullscreentexture.frag");
-  //#else
-  //  drawTextureShader = InitShader("shaders/fullscreentexture.vert",  
-  //				 "shaders/fullscreentexture.frag");
-  //#endif
+void Texture::setupRenderFullscreenQuad(const char* vprog, const char* fprog){
+  //  drawTextureShader = InitShader("shaders120/fullscreentexture.vert",  
+  //				 "shaders120/fullscreentexture.frag");
+
+  drawTextureShader = InitShader( vprog, fprog );
+
+
   GLuint positionAttributeLocation = glGetAttribLocation(drawTextureShader, 
 							 "position");
   drawTextureUniform = glGetUniformLocation(drawTextureShader, 
@@ -188,6 +194,10 @@ void Texture::setupRenderFullscreenQuad(){
 	
   glEnableVertexAttribArray(positionAttributeLocation);
   glVertexAttribPointer(positionAttributeLocation, 2, GL_FLOAT, GL_FALSE, sizeof(vec2), (const GLvoid *)(0));
+
+  //  std::cout << "setupRenderFullscreenQuad(" << vprog << "," << fprog << "):" 
+  //	    << "shader: " << drawTextureShader
+  //	    << std::endl;
 }
 
 void Texture::generateMipmaps(){
@@ -220,7 +230,7 @@ void Texture::loadChecks(unsigned int t)
   // fill with checks
   for ( int row=0;row<height;row++ ) {
     for ( int col=0; col<width; col++ ) {
-      unsigned char c = ((((row&0x80)==0)^((col&0x80))==0))*255;
+      unsigned char c = (((((row&0x80)==0)^((col&0x80)))==0))*255;
       *p++ = c;
       *p++ = c;
       *p++ = c;

@@ -1,12 +1,13 @@
 //
 // example3.cpp
-// particle system, trackball
+// demonstrates particle systems and the trackball
 //
 
 #include "ssg.h"
-#include "ParticleSystem.h"
-#include "Trackball.h"
+//#include "ParticleSystem.h"
+//#include "Trackball.h"
 using namespace glm;
+using namespace ssg;
 
 ModelNode *root;          
 Primitive *prim;          

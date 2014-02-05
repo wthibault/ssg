@@ -1,5 +1,5 @@
-OPTS = -g
-#OPTS = -O3
+#OPTS = -g
+OPTS = -O3
 
 INC_DIR=../include
 LIB_DIR=../src
@@ -21,19 +21,11 @@ endif
 
 # for macosx
 # NOTE for mac you have to use the GLSL 1.2 shaders....
-ifeq   "$(HOST_PLATFORM)" "i686-apple-darwin11"
-INCLUDES = -I$(INC_DIR) -framework OpenGL -framework GLUT -DUSE_APPLE_VERTEXARRAYS
+#ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin11.4.2"
+ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.0.0"
+# we are disabling warnings (-w)to not get the GLUT deprecations warnings in Mavericks..
+INCLUDES = -I$(INC_DIR) -framework OpenGL -framework GLUT -DUSE_APPLE_VERTEXARRAYS -w
 LIBS =
-endif
-
-
-# for MINGW32 on Windows
-ifeq   "$(HOST_PLATFORM)" "mingw32"
-#INCLUDES = -I../include -I../win32/ssg-lib/glew-1.9.0/include -I../win32/ssg-lib/glut-3.7.6-bin -D__WIN32__ -DGLEW_STATIC ../win32/ssg-lib/glew-1.9.0/src/glew.c
-INCLUDES = -I../include -I../win32/ssg-lib/glew-1.9.0/include -I../win32/ssg-lib/glut-3.7.6-bin -D__WIN32__ -DGLEW_STATIC 
-#LIBS = -L../win32/ssg-lib/glut-3.7.6-bin -lglut32 -lopengl32 ../src/ssg.a ../win32/ssg-lib/glew-1.9.0/lib/glew32sd.lib
-LIBS = -L../win32/ssg-lib/glut-3.7.6-bin -lglut32 -lopengl32 ../src/ssg.a
-
 endif
 
 
@@ -49,7 +41,8 @@ SSG_INCS = $(INC_DIR)/ssg.h \
 	$(INC_DIR)/Trackball.h 
 
 
-all : 	example1 \
+all : 	example0 \
+	example1 \
 	example2 \
 	example3 \
 	example4 \
@@ -60,7 +53,12 @@ all : 	example1 \
 	example9 \
 	example10 \
 	depthrender \
-	gimbal-lock
+	gimbal-lock \
+	postprocess \
+	discardfragments
+
+example0 : example0.cpp $(SSG_INCS) $(LIB_DIR)/ssg.a
+	g++ $(OPTS) -o example0 $(INCLUDES) example0.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
 example1 : example1.cpp $(SSG_INCS) $(LIB_DIR)/ssg.a
 	g++ $(OPTS) -o example1 $(INCLUDES) example1.cpp $(LIB_DIR)/ssg.a $(LIBS)
@@ -98,10 +96,17 @@ depthrender : depthrender.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Came
 gimbal-lock : gimbal-lock.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
 	g++ $(OPTS) -o gimbal-lock $(INCLUDES) gimbal-lock.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
+postprocess : postprocess.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
+	g++ $(OPTS) -o postprocess $(INCLUDES) postprocess.cpp $(LIB_DIR)/ssg.a $(LIBS)
+
+discardfragments : discardfragments.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
+	g++ $(OPTS) -o discardfragments $(INCLUDES) discardfragments.cpp $(LIB_DIR)/ssg.a $(LIBS)
+
 
 clean :
 	rm -f *.o
 	rm -f *~
+	rm -f example0
 	rm -f example1
 	rm -f example2
 	rm -f example3
@@ -114,5 +119,6 @@ clean :
 	rm -f example10
 	rm -f depthrender
 	rm -f gimbal-lock
+	rm -f postprocess
+	rm -f discardfragments
 	rm -rf *.dSYM
-	rm -rf *.exe

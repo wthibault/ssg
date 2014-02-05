@@ -1,8 +1,7 @@
-OPTS = -g
-#OPTS = -O3
+#OPTS = -g
+OPTS = -O3
 
 INC_DIR = ../include
-GLEW_SRC = ../win32/ssg-lib/glew-1.9.0/src/glew.c
 
 HOST_PLATFORM := $(shell $(CPP) -dumpmachine)
 $(info $(HOST_PLATFORM))
@@ -21,19 +20,13 @@ endif
 
 # for macosx
 # NOTE for mac you have to use the GLSL 1.2 shaders....
-ifeq   "$(HOST_PLATFORM)" "i686-apple-darwin11"
+#ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin11.4.2"
+ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.0.0"
 INCLUDES = -I../include -framework OpenGL -framework GLUT -DUSE_APPLE_VERTEXARRAYS
 LIBS =
 endif
 
-# for MINGW32 on Windows
-ifeq   "$(HOST_PLATFORM)" "mingw32"
-INCLUDES = -I../include -I../win32/ssg-lib/glew-1.9.0/include -I../win32/ssg-lib/glut-3.7.6-bin -DGLEW_STATIC
-OBJS = glew.o
-LIBS =
-endif
-
-OBJS += InitShader.o \
+OBJS = InitShader.o \
 	ObjLoader.o \
 	Texture.o \
 	TextureLoader.o \
@@ -78,9 +71,6 @@ ParticleSystem.o : ParticleSystem.cpp $(SSG_INCS)
 
 ssg.a : $(OBJS)
 	ar rvs ssg.a $(OBJS)
-
-glew.o : $(GLEW_SRC)
-	g++ $(OPTS) -DGLEW_STATIC -c $(GLEW_SRC) $(INCLUDES)
 
 clean :
 	rm -f *.o

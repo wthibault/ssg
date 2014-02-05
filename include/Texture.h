@@ -67,15 +67,16 @@ public:
     void bind(unsigned int texUnit);
     void unbind(unsigned int texUnit);
     //private:
-    void setupRenderFullscreenQuad();
+    void setupRenderFullscreenQuad(const char* vprog="shaders120/fullscreentexture.vert",
+				   const char* fprog="shaders120/fullscreentexture.frag");
     void setupTexParams(bool floatingPoint, bool mipmaps);
     GLuint textureId;
     bool floatingPoint;
     GLuint width;
     GLuint height;
-    static GLuint drawTextureShader;
-    static GLuint drawTextureVertexArrayObject;
-    static GLuint drawTextureUniform;
+    GLuint drawTextureShader;
+    GLuint drawTextureVertexArrayObject;
+    GLuint drawTextureUniform;
 };
 
 

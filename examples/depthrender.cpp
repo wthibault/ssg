@@ -6,6 +6,7 @@
 #include "ssg.h"
 #include "Trackball.h"
 using namespace glm;
+using namespace ssg;
 
 ModelNode *root;          
 Primitive *prim;          

@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <string>
 #include "ssg.h"
-
+using namespace ssg;
 
 // Create a NULL-terminated string by reading the provided file
 static char*

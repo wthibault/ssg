@@ -17,18 +17,22 @@ void main()
 
   // Compute terms in the illumination equation
   vec4 ambient = AmbientProduct;
+  vec4 diffuse = DiffuseProduct;
   
-  float Kd = max( dot(L, N), 0.0 );
-  vec4  diffuse = Kd * DiffuseProduct;
-  
-  float Ks = pow( max(dot(N, H), 0.0), Shininess );
-  vec4  specular = Ks * SpecularProduct;
-  
-//  if( dot(L, N) < 0.0 ) {
-//    specular = vec4(0.0, 0.0, 0.0, 1.0);
-//  } 
+  vec4 finalColor = clamp ( ambient+diffuse, 0.0, 1.0);
+  const float LOG2 = 1.442695;
+  float z = gl_FragCoord.z / gl_FragCoord.w;
+  //    float z = -View.z;
+  // exponential
+      float fogFactor = exp2( -gl_Fog.density * 
+    				   gl_Fog.density * 
+    				   z * 
+    				   z * 
+    				   LOG2 );
+    // linear
+      //  float fogFactor = (gl_Fog.end - z) / (gl_Fog.end - gl_Fog.start);
+  fogFactor = clamp(fogFactor, 0.0, 1.0);
 
-//  gl_FragColor = ambient + diffuse + specular;
-  gl_FragColor = AmbientProduct + DiffuseProduct;
+  gl_FragColor = mix(gl_Fog.color, finalColor, fogFactor );
 } 
 

@@ -5,6 +5,8 @@
 #include "Trackball.h"
 #include <cmath>
 
+namespace ssg {
+
 class Camera {
 public:
  Camera() : trackballEnabled(false),
@@ -34,12 +36,13 @@ public:
     trackball = Trackball ( halfw, halfh, std::min ( halfw, halfw ) );
   }
 
-  void draw ( ModelNode *scene ) {
+  void draw ( ssg::ModelNode *scene ) {
     if (trackballEnabled) { 
       M = glm::translate(glm::mat4(),glm::vec3(0,0,-distance)) * trackball.getMat4();
     } else {      
       M = glm::lookAt ( position, lookat, up );
     }
+
     // M = glm::lookAt ( position, lookat, up );
     // if (trackballEnabled) 
     //   M = M * trackball.getMat4();
@@ -55,4 +58,5 @@ protected:
   glm::mat4 P;
   glm::mat4 M;
   
+};
 };

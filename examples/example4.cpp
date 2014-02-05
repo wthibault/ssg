@@ -1,10 +1,9 @@
 //
 // example4.cpp
-// camera motion w/linear interpolation
+// animation: camera motion w/linear interpolation
 //
 
 #include "ssg.h"
-#include "Camera.h"
 using namespace glm;
 
 #include <iostream>
@@ -12,6 +11,7 @@ using namespace glm;
 #include <sstream>
 #include <string>
 using namespace std;
+using namespace ssg;
 
 ModelNode *root;
 Primitive *prim;

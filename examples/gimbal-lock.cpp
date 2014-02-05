@@ -7,6 +7,7 @@
 #include "ssg.h"
 
 using namespace glm;
+using namespace ssg;
 
 ModelNode *root;
 Primitive *prim;

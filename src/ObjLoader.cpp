@@ -40,6 +40,7 @@ using namespace glm;
 #include <map>
 
 using namespace std;
+using namespace ssg;
 
 const int DEBUG = 1;
 
@@ -212,6 +213,7 @@ bool loadMaterialLibrary ( string mtlfilename,
     else
       i->second->program = i->second->loadShaders ( "PhongShading" );
   }
+  return true;
 }
 
 bool loadObject(const char * filename, 
@@ -587,8 +589,11 @@ ObjFilePrimitive::draw ( glm::mat4 modelview,
   // loop over all groups as they have different materials.
   for (int i = 0; i < groupIndices_.size(); i++ ) {
 
-    // ignore given material, use our hard-won materials
-    setupShader ( modelview, projection, materials_[i] );
+    if (!material) {
+      setupShader ( modelview, projection, materials_[i] );
+    } else {
+      setupShader ( modelview, projection, material );
+    }
 
     //
     // draw

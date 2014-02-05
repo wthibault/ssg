@@ -12,6 +12,7 @@ using namespace glm;
 #include <sstream>
 #include <string>
 using namespace std;
+using namespace ssg;
 
 ModelNode *root;
 Primitive *prim;

@@ -36,7 +36,6 @@
 #include <glm/glm.hpp>
 #include "ssg.h"
 
-
 // The original version, modified for glm.
 // Load an OBJ model into the out parameters.
 // Note only simple OBJ files are supported.
@@ -56,7 +55,7 @@ bool loadObjectGroups ( const char * filename,
 			std::vector<glm::vec3> &outNormal, 
 			std::vector<glm::vec2> &outUv,
 			std::vector< 	std::vector<int> > &outIndices, // per group
-			std::vector<Material *> &outMaterials,  // per group (w/textures)
+			std::vector<ssg::Material *> &outMaterials,  // per group (w/textures)
 			float scale=1.0f);
 
 #endif

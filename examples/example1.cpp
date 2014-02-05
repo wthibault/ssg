@@ -1,10 +1,11 @@
 //
 // example1.cpp
-// simplest ssg program
+// a simple ssg program to display a .obj file
 //
 
 #include "ssg.h"
 using namespace glm;
+using namespace ssg;
 
 ModelNode *root;
 mat4 projectionMatrix;

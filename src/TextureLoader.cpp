@@ -34,8 +34,8 @@
 #include <memory.h>
 #include <string>
 #include "ssg.h"
-
 #include "stb_image.c"
+using namespace ssg;
 
 unsigned char *loadImage (const char *filename, unsigned int &width, unsigned int &height )
 {
@@ -93,7 +93,7 @@ unsigned char * loadBMPRaw(const char * imagepath, unsigned int& outWidth, unsig
 	data = new unsigned char [imageSize];
 
 	// Read the actual data from the file into the buffer
-	fread(data,1,imageSize,file);
+	size_t nread = fread(data,1,imageSize,file);
 
 	// Everything is in memory now, the file wan be closed
 	fclose (file);

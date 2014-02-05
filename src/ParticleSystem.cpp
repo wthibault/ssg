@@ -3,11 +3,12 @@
 //
 
 #include "ParticleSystem.h"
+using namespace ssg;
 
 glm::vec3 ParticleSystem::gravityCenter (0,0,0);
 
 void
-ParticleSystem::init (  ) 
+ssg::ParticleSystem::init (  ) 
 {
   // initialize and clear
   pos.clear();

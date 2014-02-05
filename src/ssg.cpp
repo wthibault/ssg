@@ -17,15 +17,42 @@ std::string shaderDir ("shaders120"); // #version 120 (mac)
 #ifdef USE_APPLE_VERTEXARRAYS
 #define   glGenVertexArrays glGenVertexArraysAPPLE
 #define   glBindVertexArray glBindVertexArrayAPPLE
+#define   glDeleteVertexArrays glDeleteVertexArraysAPPLE
 #endif
+
+
+/////////////////////////////////////////////////////////////////
+// ModelNode
+/////////////////////////////////////////////////////////////////
+
+void
+ssg::ModelNode::setMaterial ( Material *m ) { 
+  material_ = m; 
+};
 
 //////////////////////////////////////////////////////////////////
 // Primitive
 //////////////////////////////////////////////////////////////////
+ssg::Primitive::~Primitive()
+{
+  if ( material_ )
+    delete material_;
+  deleteGLBuffers_();
+}
 
 void
-Primitive::generateAndLoadArrayBuffer()
+ssg::Primitive::deleteGLBuffers_()
 {
+  if ( arrayBuffer_ ) glDeleteBuffers ( 1, &arrayBuffer_);
+  if ( elementBuffer_ ) glDeleteBuffers ( 1, &elementBuffer_);
+  if ( vao_ ) glDeleteVertexArrays ( 1, &vao_);
+}
+
+void
+ssg::Primitive::generateAndLoadArrayBuffer()
+{
+  deleteGLBuffers_();
+
   glGenVertexArrays( 1, &vao_ );
   glBindVertexArray( vao_ );
 
@@ -54,11 +81,13 @@ Primitive::generateAndLoadArrayBuffer()
   glBufferSubData( GL_ARRAY_BUFFER, 0, sizeofPoints, &points_[0] );
   glBufferSubData( GL_ARRAY_BUFFER, sizeofPoints, sizeofNormals, &normals_[0] );
   glBufferSubData( GL_ARRAY_BUFFER, sizeofPoints + sizeofNormals, sizeofTexCoords, &texCoords_[0] );
+  // unbind the the arraybuffer, but keep the vertex array bound
+  glBindBuffer ( GL_ARRAY_BUFFER, 0 );
 }
 
 
 void 
-Primitive::init () {
+ssg::Primitive::init () {
 
   // call this after setting up the points and colors vector in the derived class
   // Create a vertex array object
@@ -79,7 +108,7 @@ Primitive::init () {
 
 
 void
-Primitive::setupShader ( glm::mat4 modelview,
+ssg::Primitive::setupShader ( glm::mat4 modelview,
 			 glm::mat4 projection,
 			 Material *material )
 {
@@ -91,10 +120,12 @@ Primitive::setupShader ( glm::mat4 modelview,
       material_ = new Material;
       material_->ambient = glm::vec4 ( 0.2, 0.2, 0.2, 1.0 );
       material_->diffuse = glm::vec4 ( 0.7, 0.7, 0.7, 1.0 );
-      material_->ambient = glm::vec4 ( 0.1, 0.1, 0.1, 1.0 );
+      material_->specular = glm::vec4 ( 0.1, 0.1, 0.1, 1.0 );
       material_->shininess = 200.0;
-      material_->program = material_->loadShaders ( "BumpMappedTexturedPhongShading" );
+      //      material_->program = material_->loadShaders ( "BumpMappedTexturedPhongShading" );
+      material_->program = material_->loadShaders ( "PhongTwoSided" );
       // XXX default textures
+      material = material_;
     } else {
       material = material_;  // use the one we have (none given)
     }
@@ -180,11 +211,14 @@ Primitive::setupShader ( glm::mat4 modelview,
 		 glm::value_ptr(RenderingEnvironment::getInstance().lightPosition) );
   
 
+  // time
+  glUniform1f ( glGetUniformLocation ( material->program, "Time"),
+		glutGet(GLUT_ELAPSED_TIME) / 1000.0 );
 }
 
 
 void
-Primitive::endShader()
+ssg::Primitive::endShader()
 {
   // unbind
   glBindBuffer ( GL_ARRAY_BUFFER, 0 );
@@ -194,29 +228,27 @@ Primitive::endShader()
 }
 
 void 
-Primitive::draw ( glm::mat4 modelview, 
+ssg::Primitive::draw ( glm::mat4 modelview, 
 		  glm::mat4 projection,
 		  Material *material) {
 
-  setupShader ( modelview, projection, material );
+  if ( isVisible_ ) {
 
-  //
-  // draw
-  //
-  glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, elementBuffer_ );
-  glDrawElements( drawingPrimitive_, indices_.size(), GL_UNSIGNED_INT, 0  );
-  glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, 0 );
+    setupShader ( modelview, projection, material );
 
-  endShader();
+    //
+    // draw
+    //
+    glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, elementBuffer_ );
+    glDrawElements( drawingPrimitive_, indices_.size(), GL_UNSIGNED_INT, 0  );
+    glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, 0 );
+    
+    endShader();
+  }
 }
 
-void
-Primitive::setMaterial ( Material *m ) { 
-  material_ = m; 
-};
-
 glm::mat4 
-Primitive::getWorldToLocalMatrix() {
+ssg::Primitive::getWorldToLocalMatrix() {
   return dynamic_cast<Instance*>(parent_)->getWorldToLocalMatrix();
 }
 
@@ -225,7 +257,7 @@ Primitive::getWorldToLocalMatrix() {
 //////////////////////////////////////////////////////////////////
 
 void 
-Instance::update ( float dt )  {
+ssg::Instance::update ( float dt )  {
   std::vector<ModelNode*>::iterator node;
   if ( parent_ ) {
     localToWorld_ = dynamic_cast<Instance*>(parent_)->localToWorld_ * matrix_;
@@ -237,43 +269,42 @@ Instance::update ( float dt )  {
 }
 
 void 
-Instance::draw ( glm::mat4 modelview, 
+ssg::Instance::draw ( glm::mat4 modelview, 
 		 glm::mat4 projection,
 		 Material *material )   {
-  // draw every child node
-  std::vector<ModelNode*>::iterator node;
-  // append the instance transform to the ctm
-  glm::mat4 ctm = modelview * matrix_;
-  if ( material_ )
-    material = material_;
-  for ( node = children_.begin(); node != children_.end(); node++ ) {
-    (*node)->draw ( ctm, projection, material );
+  if ( isVisible_ ) {
+
+    // draw every child node
+    std::vector<ModelNode*>::iterator node;
+    // append the instance transform to the ctm
+    glm::mat4 ctm = modelview * matrix_;
+    if ( material_ && !material )
+      material = material_;
+    for ( node = children_.begin(); node != children_.end(); node++ ) {
+      (*node)->draw ( ctm, projection, material );
+    }
+
   }
 }
 
 void 
-Instance::setMatrix ( glm::mat4 mat ) {
+ssg::Instance::setMatrix ( glm::mat4 mat ) {
   matrix_ = mat;
 }
 
 glm::mat4 
-Instance::getMatrix () {
+ssg::Instance::getMatrix () {
   return matrix_;
 }
 
-void
-Instance::setMaterial ( Material *m ) { 
-  material_ = m; 
-};
-
 void 
-Instance::addChild ( ModelNode * child ) {
+ssg::Instance::addChild ( ModelNode * child ) {
   children_.push_back ( child );
   child->parent_ = this;
 }
 
-ModelNode* 
-Instance::getChild ( int i ) {
+ssg::ModelNode* 
+ssg::Instance::getChild ( int i ) {
   if ( i >= 0 && i < children_.size() )
     return children_[i];
   else 
@@ -281,7 +312,7 @@ Instance::getChild ( int i ) {
 }
 
 glm::mat4 
-Instance::getWorldToLocalMatrix() {
+ssg::Instance::getWorldToLocalMatrix() {
   // glm::mat4 m;
   // if (parent_)
   //   m = parent_->getWorldToLocalMatrix();
@@ -293,7 +324,7 @@ Instance::getWorldToLocalMatrix() {
 // a Triangle primitive class
 // 
 
-Triangle::Triangle () {
+ssg::Triangle::Triangle () {
   points_.push_back ( glm::vec3 ( 0,-1,0 ) );
   points_.push_back ( glm::vec3 ( 1,1,0 ) );
   points_.push_back ( glm::vec3 ( -1,1,0 ) );
@@ -312,14 +343,14 @@ Triangle::Triangle () {
 
   drawingPrimitive_ = GL_TRIANGLES;
 
-  Primitive::init();
+  ssg::Primitive::init();
 }
 
 //
 // a Marker primitive class
 // 
 
-Marker::Marker () {
+ssg::Marker::Marker () {
   float size = 0.05;
   points_.push_back ( glm::vec3 ( -size,0,0 ) );
   points_.push_back ( glm::vec3 (  size,0,0 ) );
@@ -352,7 +383,7 @@ Marker::Marker () {
 
   drawingPrimitive_ = GL_LINES;
 
-  Primitive::init();
+  ssg::Primitive::init();
 }
 
 
@@ -364,7 +395,7 @@ Marker::Marker () {
 ///////////////////////////////////////////////////////////////////////
 
 unsigned int
-Material::loadShaders ( const char *basename ) {
+ssg::Material::loadShaders ( const char *basename ) {
 	std::string sep("/");
 	std::string base(basename);
 	std::string vertfile (shaderDir);
@@ -390,13 +421,13 @@ Material::loadShaders ( const char *basename ) {
 
 
 float 
-urand() {
+ssg::urand() {
   return rand() / static_cast<float>(RAND_MAX);
 }
 
 
 std::string 
-ssgPrependDataPath ( const char* basename )
+ssg::ssgPrependDataPath ( const char* basename )
 {
 
   // first test if the pathname exists, if so return it
@@ -408,15 +439,11 @@ ssgPrependDataPath ( const char* basename )
   // else prepend the SSG_DATA environment variable
 
   std::string path;
-  char *ssgDataEnv = getenv("SSG_DATA");
-  std::string dataPath;
-  if ( ssgDataEnv )
-    dataPath = ssgDataEnv;
-
+  std::string dataPath = getenv("SSG_DATA");
   if ( dataPath.length() > 0 ) {
     path = dataPath; 
-    path += "//";
-    path += basename;
+	path += "//";
+	path += basename;
   } else
     path = basename;
   return path;

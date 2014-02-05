@@ -5,7 +5,9 @@
 
 #include "ssg.h"
 
-class ParticleSystem : public Primitive {
+namespace ssg {
+
+class ParticleSystem : public ssg::Primitive {
 public:
   std::vector<glm::vec3> pos, oldpos;
   std::vector<glm::vec3> vel;
@@ -33,7 +35,7 @@ public:
   virtual  void update(float dt);
   virtual  void draw (glm::mat4 mv,
 	     glm::mat4 proj,
-	     Material *mat);
+		      ssg::Material *mat);
 
   int findFreeSlot ( int slot );
   glm::vec3 initialVelocity();
@@ -42,3 +44,5 @@ public:
   static glm::vec3 gravityCenter;
 
 };
+
+}

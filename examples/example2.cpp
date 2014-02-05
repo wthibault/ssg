@@ -1,11 +1,12 @@
 //
 // example2.cpp
-// display with a tumbling view
+// display with a tumbling view using glm matrices
 //
 
 #include "ssg.h"
 
 using namespace glm;
+using namespace ssg;
 
 ModelNode *root;
 Primitive *prim;
@@ -57,16 +58,19 @@ void reshape (int w, int h)
 Instance *
 createRandomInstance ( Primitive *prim )
 {
-  // create a new instance to refer to the same primitive, transformed
+  // Create a new instance to refer to the same primitive, transformed
+  // An Instance is created, and the given Primitive is added as a child of the new Instance.
   Instance* anotherInstance = new Instance();
   anotherInstance->addChild ( prim );
+
+  // A matrix that translates and rotates the primitive is created, and set as the Instance's matrix.
   mat4 trans = translate ( mat4(),   2.0f * vec3(urand()-0.5, urand()-0.5, urand()-0.5) );
   vec3 axis = normalize ( vec3 ( urand(), urand(), urand() ) );
   float angle = urand() * 360.0f;
   mat4 rot = rotate ( mat4(), angle, axis );
   anotherInstance->setMatrix ( rot * trans );
 
-  // create a material to use
+  // Give the instance a new, random material
   Material *mat = new Material;
   mat->ambient = vec4 ( 0.1,0.1,0.1, 1.0 );
   vec3 color = normalize ( vec3(urand(),urand(), urand() ) );
@@ -128,7 +132,7 @@ void init (int argc, char **argv)
   mat->program = mat->loadShaders ( "PhongShading" );
 
   // attach the material to the primitive
-  instance->setMaterial ( mat );
+  prim->setMaterial ( mat );
 
   // set the instance as the scene root
   root = instance;

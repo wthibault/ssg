@@ -5,7 +5,6 @@
 //
 
 #include "ssg.h"
-#include "Camera.h"
 using namespace glm;
 
 #include <iostream>
@@ -13,13 +12,14 @@ using namespace glm;
 #include <sstream>
 #include <string>
 using namespace std;
+using namespace ssg;
 
 ModelNode *root;
 Primitive *prim;
 Camera camera;
 int width, height;
 vector<vec3> controlPoints;
-vector<vec3> eulerAngles;
+vector<vec3> angles;
 
 float getNow() {
   return static_cast<double>(glutGet(GLUT_ELAPSED_TIME)) / 1000.0 ;
@@ -59,11 +59,11 @@ mat4 makeRotationMatrix( float u )
   else if ( u > 1.0 )
     u = 1.0;
 
-  mat4 Rx = rotate ( mat4(), lerp(eulerAngles[0].x, eulerAngles[1].x,u), 
+  mat4 Rx = rotate ( mat4(), lerp(angles[0].x, angles[1].x,u), 
 				  vec3(1.0, 0.0, 0.0) );
-  mat4 Ry = rotate ( mat4(), lerp(eulerAngles[0].y, eulerAngles[1].y, u),
+  mat4 Ry = rotate ( mat4(), lerp(angles[0].y, angles[1].y, u),
 				  vec3(0.0, 1.0, 0.0) );
-  mat4 Rz = rotate ( mat4(), lerp(eulerAngles[0].z, eulerAngles[1].z, u),
+  mat4 Rz = rotate ( mat4(), lerp(angles[0].z, angles[1].z, u),
 				  vec3(0.0, 0.0, 1.0) );
   return Ry * Rx * Rz;
 }
@@ -152,8 +152,8 @@ void init (int argc, char **argv)
   controlPoints.push_back ( vec3(-2,1,-3) );
   controlPoints.push_back ( vec3(2,2,-6) );
 
-  eulerAngles.push_back( vec3 (0,     0, 0) );
-  eulerAngles.push_back( vec3( 180.0, 180.0, 180.0) );
+  angles.push_back( vec3 (0,     0, 0) );
+  angles.push_back( vec3( 180.0, 180.0, 180.0) );
 
   //  create a primitive.  if supplied on command line, read a .obj wavefront file
   ObjFilePrimitive *background, *movingObject;

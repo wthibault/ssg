@@ -23,11 +23,13 @@ void main()
   vec4 ambient = AmbientProduct;
   
   // two-sided lighting
-  float ldotn = dot ( L, N );
-  float Kd = max( ldotn, -ldotn );
+  //  float ldotn = dot ( L, N );
+  //  float Kd = max( ldotn, -ldotn );
+  float Kd = abs(dot (L,N) );
   vec4  diffuse = Kd * DiffuseProduct;
   
-  float Ks = pow( max(dot(N, H), -dot(N,H)), Shininess );
+  //  float Ks = pow( max(dot(N, H), -dot(N,H)), Shininess );
+  float Ks = pow( abs(dot(N, H)), Shininess );
   vec4  specular = Ks * SpecularProduct;
   
 //  gl_FragColor = texture(Texture, uv) * diffuse +  (ambient + specular);
