@@ -18,7 +18,7 @@ For example, if you installed ssg in the Software directory of your home directo
 
 # Graph Nodes
 
-![Booch diagram of major classes](images/ssg-Booch.png)
+![Booch diagram of major classes](images/ssg-Gooch.png)
 
 
 ## ModelNode
