@@ -7,6 +7,8 @@ ModelNodes are grouped into a DAG with a single root.
 There must be at least one Primitive if anything is to actually get drawn. They encapsulate the data and shaders used.
 Instances group and transform their children ModelNodes.
 
+
+
 # Environment
 The SSG_DATA environment variable must be set to the location of ssg's "data" directory.
 Filenames of obj files and shaders should be there. If not, the current directory is tried.
@@ -15,6 +17,10 @@ For example, if you installed ssg in the Software directory of your home directo
     export SSG_DATA=$HOME/Software/ssg/data
 
 # Graph Nodes
+
+![Booch diagram of major classes](images/ssg-Booch.png)
+
+
 ## ModelNode
 This is the base class for nodes (Instances and Primtives) in a scene graph. It has methods init(), draw() and update().
 ## Primitive 
@@ -54,6 +60,10 @@ and is given a Material.
 
 GLUT callbacks for mouse and motion events give the default Camera a trackball behavior.
 
+Here's the graph it creates:
+
+![example0 scene graph](images/ssg-example0.png)
+
 ## example1.cpp
 This example shows how a .obj file can be read in and used as a Primitive.
 The filename is given on the command line, for example (assuming your SSG_DATA environment variable is set correctly):
@@ -68,6 +78,11 @@ add a new instance as a child of the root node.
 The new instance shares its primitive with that of the root instance.
 The new instance's matrix is set to a randomly selected translation and rotation,
 and its material is set to a new, randomly initialized material.
+
+Here's what the scene graph looks like after adding two new instances.
+(M1 and M2 are the matrices stored at the Instance nodes.)
+
+![example2 scene graph](images/ssg-example2.png)
 
 ## example3.cpp
 This takes an obj file as a command line parameter.
