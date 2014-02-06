@@ -101,7 +101,7 @@ void init (int argc, char **argv)
   instance->setMatrix ( mat4() );
   instance->addChild ( prim );
 
-  // enable camera trackball
+  // disable camera trackball else our camera positioning won't work
   camera.enableTrackball (false);
 
   // the lights are global for all objects in the scene

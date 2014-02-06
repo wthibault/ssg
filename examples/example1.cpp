@@ -8,8 +8,7 @@ using namespace glm;
 using namespace ssg;
 
 ModelNode *root;
-mat4 projectionMatrix;
-mat4 modelviewMatrix;
+Camera     camera;
 
 int width, height;
 
@@ -17,7 +16,7 @@ int width, height;
 void display ()
 {
   glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-  root->draw(modelviewMatrix, projectionMatrix );
+  camera.draw(root);
   glutSwapBuffers();
 }
 
@@ -32,9 +31,7 @@ void reshape (int w, int h)
 {
   width = w;
   height = h;
-  glViewport (0, 0, (GLsizei) w, (GLsizei) h); 
-  projectionMatrix = perspective ( 65.0f, (GLfloat) w / (GLfloat) h, 1.0f, 100.0f );
-  modelviewMatrix = translate ( mat4(), vec3(0,0,-4) );
+  camera.setupPerspective(w,h);
 }
 
 void keyboard (unsigned char key, int x, int y)
@@ -48,6 +45,21 @@ void keyboard (unsigned char key, int x, int y)
     break;
   }
 }
+
+void 
+mouse ( int button, int state, int x, int y )
+{
+  if ( button == GLUT_LEFT_BUTTON && state == GLUT_DOWN ) {
+    camera.startMouse ( x, height-y );
+  }
+}
+
+void
+motion ( int x, int y ) 
+{
+  camera.dragMouse(x,height-y);
+}
+
 
 void init (int argc, char **argv)
 {
@@ -85,6 +97,10 @@ void init (int argc, char **argv)
   // set the scene graph root 
   root = instance;
 
+  // enable camera trackball
+  camera.enableTrackball(true);
+  camera.setDistance(3.0);
+
   // misc OpenGL state
   glClearColor (0.0, 0.0, 0.0, 1.0);
   glEnable(GL_DEPTH_TEST);
@@ -107,6 +123,8 @@ int main(int argc, char** argv)
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
   glutKeyboardFunc(keyboard);
+  glutMouseFunc ( mouse );
+  glutMotionFunc ( motion );
   glutTimerFunc(30,timer,30); 
   glutMainLoop();
   return 0;

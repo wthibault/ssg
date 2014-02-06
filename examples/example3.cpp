@@ -4,8 +4,6 @@
 //
 
 #include "ssg.h"
-//#include "ParticleSystem.h"
-//#include "Trackball.h"
 using namespace glm;
 using namespace ssg;
 
@@ -141,7 +139,8 @@ init (int argc, char **argv)
     mat->program = mat->loadShaders ( shader );
 
   // attach the material to the primitive
-  instance->setMaterial ( mat );
+  //instance->setMaterial ( mat );
+  prim->setMaterial ( mat );
 
   // set the instance as the scene root
   root = instance;

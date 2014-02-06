@@ -175,16 +175,13 @@ initPostprocess()
     delete fxChain;
 
   fxChain = new FxChain(width, height);
-  fxChain->addEffect ( "blur9x" );
-  fxChain->addEffect ( "blur9y" );
   fxChain->addEffect ( "edge" );
   fxChain->addEffect ( "threshold" );
+  fxChain->addEffect ( "blur9x" );
+  fxChain->addEffect ( "blur9y" );
   for ( int i = 0; i < 3; i++ ) {
-    //    fxChain->addEffect ( "blur9x" );
-    //    fxChain->addEffect ( "blur9y" );
-    //    fxChain->addEffect ( "blur2" );
-    //    fxChain->addEffect ( "edge" );
-    //    fxChain->addEffect ( "threshold" );
+    fxChain->addEffect ( "blur9x" );
+    fxChain->addEffect ( "blur9y" );
   }
 
 

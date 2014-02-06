@@ -73,6 +73,9 @@ void init (int argc, char **argv)
   // add the primitive as a child of the instance
   instance->addChild ( prim );
 
+  // the lights are global for all objects in the scene
+  RenderingEnvironment::getInstance().lightPosition = vec4 ( 0,0,10,1 );
+  RenderingEnvironment::getInstance().lightColor = vec4 ( 1,1,1,1 );
   // create a material
   Material *mat = new Material;
   mat->ambient = vec4 ( 0.1, 0.1, 0.1, 1.0 );
@@ -88,7 +91,7 @@ void init (int argc, char **argv)
   root = instance;
 
   // enable camera trackball
-  camera.enableTrackball (false);
+  camera.enableTrackball (true);
 
   // misc OpenGL state
   glClearColor (0.0, 0.0, 0.0, 1.0);
