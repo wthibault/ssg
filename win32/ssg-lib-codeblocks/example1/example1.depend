@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
-1392856254 source:c:\users\tebo\desktop\git\examples\example0.cpp
+1392851688 source:c:\users\tebo\desktop\git\src\framebufferobject.cpp
 	"ssg.h"
+	"FrameBufferObject.h"
 	<iostream>
 
-1392916037 c:\users\tebo\desktop\git\include\ssg.h
-	<windows.h>
+1392921566 c:\users\tebo\desktop\git\include\ssg.h
 	"_ssg.h"
 	"Camera.h"
 	"CheckError.h"
@@ -14,6 +14,24 @@
 	"TextureLoader.h"
 	"Trackball.h"
 	"ParticleSystem.h"
+
+1392921829 c:\users\tebo\desktop\git\include\_ssg.h
+	<windows.h>
+	<stdlib.h>
+	<OpenGL/gl.h>
+	<GLUT/glut.h>
+	<GL/glew.h>
+	<GL/glut.h>
+	<iostream>
+	<vector>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_access.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	<glm/gtc/type_ptr.hpp>
+	"CheckError.h"
+	"InitShader.h"
+	"Texture.h"
+	"FrameBufferObject.h"
 
 1301107562 c:\program files (x86)\codeblocks\mingw\include\windows.h
 	<winresrc.h>
@@ -219,24 +237,7 @@
 1301107556 c:\program files (x86)\codeblocks\mingw\include\oleidl.h
 	<objfwd.h>
 
-1392851687 c:\users\tebo\desktop\git\include\_ssg.h
-	<stdlib.h>
-	<OpenGL/gl.h>
-	<GLUT/glut.h>
-	<GL/glew.h>
-	<GL/glut.h>
-	<iostream>
-	<vector>
-	<glm/glm.hpp>
-	<glm/gtc/matrix_access.hpp>
-	<glm/gtc/matrix_transform.hpp>
-	<glm/gtc/type_ptr.hpp>
-	"CheckError.h"
-	"InitShader.h"
-	"Texture.h"
-	"FrameBufferObject.h"
-
-1392851688 c:\program files (x86)\codeblocks\mingw\include\gl\glew.h
+1392915299 c:\program files (x86)\codeblocks\mingw\include\gl\glew.h
 	<stddef.h>
 	<inttypes.h>
 	<stdint.h>
@@ -554,11 +555,6 @@
 1392851687 c:\users\tebo\desktop\git\include\particlesystem.h
 	"ssg.h"
 
-1392851688 source:c:\users\tebo\desktop\git\src\framebufferobject.cpp
-	"ssg.h"
-	"FrameBufferObject.h"
-	<iostream>
-
 1392851688 source:c:\users\tebo\desktop\git\src\initshader.cpp
 	<OpenGL/gl.h>
 	<GL/glew.h>
@@ -627,12 +623,4 @@
 
 1341006770 c:\program files (x86)\codeblocks\mingw\include\assert.h
 	<_mingw.h>
-
-1392915299 c:\users\tebo\desktop\git\win32\ssg-lib-codeblocks\glew-1.10.0\include\gl\glew.h
-	<stddef.h>
-	<inttypes.h>
-	<stdint.h>
-	<inttypes.h>
-	<OpenGL/glu.h>
-	<GL/glu.h>
 
