@@ -1,4 +1,4 @@
-// 
+//
 // _ssg.h
 //  simple scene graph
 // (c) William C. Thibault , 2012, 2013
@@ -8,6 +8,10 @@
 #pragma once
 
 #define GL_GLEXT_PROTOTYPES 1
+
+#ifdef __WIN32
+#include <windows.h>
+#endif // __WIN32
 
 #include <stdlib.h>
 
@@ -19,7 +23,7 @@
 #include <GL/glut.h>
 #endif
 
-#include <iostream> 
+#include <iostream>
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -41,7 +45,7 @@ namespace ssg {
 
 struct Material
 {
-Material() :  
+Material() :
     ambient (0.1, 0.1, 0.1, 1.0),
     diffuse (0.8, 0.8, 0.8, 1.0),
     specular(1.0, 1.0, 1.0, 1.0 ),
@@ -69,7 +73,7 @@ Material() :
 // ...the use of singleton is really just a global, but it at least
 // encapsulates the (lazy) initialization. the constructor is private
 // and the instance of the singleton held in the static getInstance() method
-// AND is not constructed until the first call. 
+// AND is not constructed until the first call.
 // (It all needs to be made thread-safe, though. )
 // Usage:  RenderingEnvironment::getInstance().lightPosition = vec4(1,1,1,1);
 //
@@ -104,7 +108,7 @@ public:
  ModelNode() : parent_(0), material_(0), isVisible_(true) {};
   virtual void init() {}
   virtual void update( float dt ) {}
-  virtual void draw ( glm::mat4 modelview, 
+  virtual void draw ( glm::mat4 modelview,
 		      glm::mat4 projection,
 		      Material *material = 0) =0;
   virtual void setMaterial ( Material *m );
@@ -126,12 +130,12 @@ class Primitive : public ModelNode {
 
   virtual void init ();
   virtual void update ( float dt ) = 0;
-  virtual void draw ( glm::mat4 modelview, 
+  virtual void draw ( glm::mat4 modelview,
 		      glm::mat4 projection,
 		      Material *material = 0);
 
   virtual glm::mat4 getWorldToLocalMatrix();
-  
+
   void setupShader ( glm::mat4 mv, glm::mat4 proj, Material *m );
   void endShader ();
   void generateAndLoadArrayBuffer();
@@ -151,16 +155,16 @@ protected:
 
 //////////////////////////////////////////////////////////////////
 // I n s t a n c e
-// has a matrix and a list of children 
+// has a matrix and a list of children
 //////////////////////////////////////////////////////////////////
 
 class Instance : public ModelNode {
 public:
-  Instance () : //material_(0), 
+  Instance () : //material_(0),
     matrix_(glm::mat4(1.0))
     {};
   virtual void update ( float dt );
-  virtual void draw ( glm::mat4 modelview, 
+  virtual void draw ( glm::mat4 modelview,
 		      glm::mat4 projection,
 		      Material *material = 0) ;
   virtual void setMatrix ( glm::mat4 mat );
@@ -180,7 +184,7 @@ protected:
 //////////////////////////////////////////////////////////////////
 // a Triangle primitive class
 //////////////////////////////////////////////////////////////////
-// 
+//
 
 class Triangle : public Primitive {
 public:
@@ -193,7 +197,7 @@ public:
 //////////////////////////////////////////////////////////////////
 // a Marker primitive class
 //////////////////////////////////////////////////////////////////
-// 
+//
 
 class Marker : public Primitive {
 public:
@@ -213,7 +217,7 @@ class ObjFilePrimitive : public Primitive {
  public:
   ObjFilePrimitive ( const char *filename );
   virtual void update(float dt) {}
-  virtual void draw ( glm::mat4 modelview, 
+  virtual void draw ( glm::mat4 modelview,
 		      glm::mat4 projection,
 		      Material *material = 0) ;
   std::vector<Material *>         materials_;
@@ -237,6 +241,6 @@ std::ostream &operator<< (std::ostream &out, const glm::vec4 &vec);
 std::ostream &operator<< (std::ostream &out, const glm::mat4 &mat);
 
 
- 
+
 
 

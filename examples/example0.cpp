@@ -60,7 +60,7 @@ void keyboard (unsigned char key, int x, int y)
 
 void init (int argc, char **argv)
 {
-  
+
   //  create a primitive.
   Primitive *prim = new Triangle;
 
@@ -100,7 +100,7 @@ void init (int argc, char **argv)
 }
 
 
-void 
+void
 mouse ( int button, int state, int x, int y )
 {
   if ( button == GLUT_LEFT_BUTTON && state == GLUT_DOWN ) {
@@ -109,7 +109,7 @@ mouse ( int button, int state, int x, int y )
 }
 
 void
-motion ( int x, int y ) 
+motion ( int x, int y )
 {
   camera.dragMouse(x,height-y);
 }
@@ -119,21 +119,21 @@ int main(int argc, char** argv)
 {
   glutInit(&argc, argv);
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
-  glutInitWindowSize (300, 300); 
+  glutInitWindowSize (300, 300);
   glutInitWindowPosition (100, 100);
   glutCreateWindow (argv[0]);
-  
+
 #ifndef __APPLE__
   glewInit();
 #endif
   init(argc,argv);
-  
+
   glutDisplayFunc ( display );
   glutReshapeFunc ( reshape );
   glutKeyboardFunc ( keyboard );
   glutMouseFunc ( mouse );
   glutMotionFunc ( motion );
-  glutTimerFunc( 33,timer,33 ); 
+  glutTimerFunc( 33,timer,33 );
   glutMainLoop();
   return 0;
 }
