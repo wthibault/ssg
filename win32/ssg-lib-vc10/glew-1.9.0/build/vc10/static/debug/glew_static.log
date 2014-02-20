@@ -1,0 +1,20 @@
+﻿Build started 1/14/2013 12:33:35 PM.
+     1>Project "C:\Users\Guest\Desktop\4848\ssg\win32-ssg\glew-1.9.0\build\vc10\glew_static.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "static/debug/glew_static.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+       ResourceCompile:
+         All outputs are up-to-date.
+       Lib:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"../../lib/glew32sd.lib" /NOLOGO /MACHINE:X86 static/debug/glew.res
+         .\static/debug\glew.obj
+         glew_static.vcxproj -> C:\Users\Guest\Desktop\4848\ssg\win32-ssg\glew-1.9.0\build\vc10\../../lib/glew32sd.lib
+       FinalizeBuildStatus:
+         Deleting file "static/debug/glew_static.unsuccessfulbuild".
+         Touching "static/debug/glew_static.lastbuildstate".
+     1>Done Building Project "C:\Users\Guest\Desktop\4848\ssg\win32-ssg\glew-1.9.0\build\vc10\glew_static.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.46
