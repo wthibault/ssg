@@ -19,7 +19,7 @@ After you download and open the GLUT bin zip file, you will need to:
 
 Copy glut32.dll to c:\windows\system,
 Copy glut32.lib to c:\program files (x86)\CodeBlocks\mingw\lib, and
-Copy glut.h     to c:\program files (x86)\mingw\include\GL
+Copy glut.h     to c:\program files (x86)\CodeBlocks\mingw\include\GL
 
 (These are default locations, your paths may be different. But basically, you place the .lib and .h files in the location of your compiler (in this case the mingw g++ compiler that comes with codeblocks). The .dll file goes in the windows system directory or something on your path.)
 

@@ -28,7 +28,8 @@ endif
 # for macosx
 # NOTE for mac you have to use the GLSL 1.2 shaders....
 #ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin11.4.2"
-ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.0.2"
+#ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.0.2"
+ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.1.0"
 # we are disabling warnings (-w)to not get the GLUT deprecations warnings in Mavericks..
 INCLUDES = -I$(INC_DIR) -framework OpenGL -framework GLUT -DUSE_APPLE_VERTEXARRAYS -w
 LIBS =
@@ -61,7 +62,8 @@ all : 	example0 \
 	depthrender \
 	gimbal-lock \
 	postprocess \
-	discardfragments
+	discardfragments \
+	primitives
 
 example0 : example0.cpp $(SSG_INCS) $(LIB_DIR)/ssg.a
 	g++ $(OPTS) -o example0 $(INCLUDES) example0.cpp $(LIB_DIR)/ssg.a $(LIBS)
@@ -108,6 +110,8 @@ postprocess : postprocess.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Came
 discardfragments : discardfragments.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
 	g++ $(OPTS) -o discardfragments $(INCLUDES) discardfragments.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
+primitives : primitives.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
+	g++ $(OPTS) -o primitives $(INCLUDES) primitives.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
 clean :
 	rm -f *.o
@@ -127,4 +131,5 @@ clean :
 	rm -f gimbal-lock
 	rm -f postprocess
 	rm -f discardfragments
+	rm -f primitives
 	rm -rf *.dSYM
