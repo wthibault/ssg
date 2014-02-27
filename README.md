@@ -141,3 +141,6 @@ This illustrates the gimbal-lock problem encountered when interpolating Euler an
 
 ## postprocess.cpp
 This shows how an effect chain can be built from a cascade of FrameBuffer objects.
+
+## primitives.cpp
+This shows how to subclass ssg::Primitive to create your own primitives.  Examples for a Cone, a tetrahedron, and a function plot for a function z=f(x,y).
