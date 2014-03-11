@@ -111,6 +111,10 @@ Texture::Texture(const char *bmpfilename, bool floatingPoint, bool mipmaps, unsi
 		    GL_RGBA,
 		    GL_UNSIGNED_BYTE,
 		    static_cast<GLvoid*>(rgbaData) );
+
+  if ( mipmaps ) 
+    generateMipmaps();
+
   glBindTexture ( GL_TEXTURE_2D, 0 );
 
   if (drawTextureShader == 0){
@@ -146,8 +150,6 @@ Texture::setupTexParams( bool floatingpoint, bool mipmaps )
 	       GL_RGBA, 
 	       floatingPoint?GL_FLOAT:GL_UNSIGNED_BYTE, 
 	       0);
-  if ( mipmaps ) 
-    generateMipmaps();
 }
 
 Texture::~Texture(){

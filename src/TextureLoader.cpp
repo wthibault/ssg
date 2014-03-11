@@ -48,7 +48,10 @@ unsigned char *loadImage (const char *filename, unsigned int &width, unsigned in
   return data;
 }
 
-unsigned char * loadBMPRaw(const char * imagepath, unsigned int& outWidth, unsigned int& outHeight, bool flipY){
+unsigned char * loadBMPRaw(const char * imagepath, 
+			   unsigned int& outWidth, 
+			   unsigned int& outHeight, 
+			   bool flipY){
 	printf("Reading image %s\n", imagepath);
 	outWidth = -1;
 	outHeight = -1;

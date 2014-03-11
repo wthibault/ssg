@@ -338,8 +338,8 @@ ssg::Triangle::Triangle () {
   indices_.push_back ( 2 );
 
   texCoords_.push_back ( glm::vec2 (0.5, 0.0) );
-  texCoords_.push_back ( glm::vec2 (0.0, 1.0) );
   texCoords_.push_back ( glm::vec2 (1.0, 1.0) );
+  texCoords_.push_back ( glm::vec2 (0.0, 1.0) );
 
   drawingPrimitive_ = GL_TRIANGLES;
 

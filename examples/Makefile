@@ -63,7 +63,8 @@ all : 	example0 \
 	gimbal-lock \
 	postprocess \
 	discardfragments \
-	primitives
+	primitives \
+	texturedtriangle
 
 example0 : example0.cpp $(SSG_INCS) $(LIB_DIR)/ssg.a
 	g++ $(OPTS) -o example0 $(INCLUDES) example0.cpp $(LIB_DIR)/ssg.a $(LIBS)
@@ -113,6 +114,11 @@ discardfragments : discardfragments.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC
 primitives : primitives.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
 	g++ $(OPTS) -o primitives $(INCLUDES) primitives.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
+texturedtriangle : texturedtriangle.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
+	g++ $(OPTS) -o texturedtriangle $(INCLUDES) texturedtriangle.cpp $(LIB_DIR)/ssg.a $(LIBS)
+
+
+
 clean :
 	rm -f *.o
 	rm -f *~
@@ -132,4 +138,5 @@ clean :
 	rm -f postprocess
 	rm -f discardfragments
 	rm -f primitives
+	rm -f texturedtriangle
 	rm -rf *.dSYM
