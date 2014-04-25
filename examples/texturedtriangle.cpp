@@ -87,7 +87,7 @@ void init (int argc, char **argv)
   mat->diffuse = vec4 ( 0.9, 0.9, 0.9, 1.0 );
   mat->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );
   mat->shininess = 400.0;
-  mat->diffuseTexture = new Texture ( "textures/landscape.png", false, true );
+  mat->diffuseTexture = new Texture ( "textures/landscape.bmp", false, true );
   mat->program = mat->loadShaders ( "TexturedPhongShading" );
 
   // attach the material to the primitive

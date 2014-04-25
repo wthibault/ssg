@@ -221,25 +221,40 @@ void Texture::unbind(unsigned int t)
 
 void Texture::loadChecks(unsigned int t)
 {
+  unsigned char *data = NULL;
+
   glActiveTexture(GL_TEXTURE0 + t);
   if ( floatingPoint ) {
-    std::cout << "checks not supported for floating point\n" ;
-    return;
-  }
-
-  unsigned char *data = new unsigned char [width * height * 4];
-  unsigned char *p = data;
-  // fill with checks
-  for ( int row=0;row<height;row++ ) {
-    for ( int col=0; col<width; col++ ) {
-      unsigned char c = (((((row&0x80)==0)^((col&0x80)))==0))*255;
-      *p++ = c;
-      *p++ = c;
-      *p++ = c;
-      *p++ = 255;
+    //    std::cout << "checks not supported for floating point\n" ;
+    //    return;
+    data = new unsigned char [width * height * 4 * sizeof(float)];
+    float *p = (float*)data;
+    // fill with checks
+    for ( int row=0;row<height;row++ ) {
+      for ( int col=0; col<width; col++ ) {
+	unsigned char c = (((((row&0x80)==0)^((col&0x80)))==0));
+	*p++ = c;
+	*p++ = c;
+	*p++ = c;
+	*p++ = 1.0;
+      }
     }
   }
-  // upload texture data
+  else {
+    data = new unsigned char [width * height * 4];
+    unsigned char *p = data;
+    // fill with checks
+    for ( int row=0;row<height;row++ ) {
+      for ( int col=0; col<width; col++ ) {
+	unsigned char c = (((((row&0x80)==0)^((col&0x80)))==0))*255;
+	*p++ = c;
+	*p++ = c;
+	*p++ = c;
+	*p++ = 255;
+      }
+    }
+    // upload texture data
+  }
   glBindTexture ( GL_TEXTURE_2D, textureId );
 
   glTexSubImage2D ( GL_TEXTURE_2D, 
@@ -247,8 +262,9 @@ void Texture::loadChecks(unsigned int t)
 		    0,0,
 		    width, height,
 		    GL_RGBA,
-		    GL_UNSIGNED_BYTE,
+		    floatingPoint?GL_FLOAT:GL_UNSIGNED_BYTE,
 		    static_cast<GLvoid*>(data) );
+  generateMipmaps();
 
   glBindTexture ( GL_TEXTURE_2D, 0 );
   delete data;

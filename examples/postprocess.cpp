@@ -34,6 +34,7 @@ public:
   }
   void addEffect ( std::string name ) {
     Texture *tex = new Texture (_width,_height, true, true, 0);
+    tex->loadChecks(0); //  XXX ??? makes it work on macbookproretina2013 ???
     FrameBufferObject *fbo = new FrameBufferObject ( tex );
     string vname ("shaders120/fxchain.vert");
     string fname ("shaders120/"+name+".frag");

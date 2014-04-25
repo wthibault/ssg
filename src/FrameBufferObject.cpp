@@ -53,18 +53,31 @@ FrameBufferObject::FrameBufferObject(Texture *texture, bool useDepthBuffer)
         glBindRenderbuffer(GL_RENDERBUFFER, 0);
     }
     
+    //    std::cout << "post depth\n";
+    //    checkFramebufferStatusOk();
+
     // create a framebuffer object
+
     glGenFramebuffers(1, &framebufferid);
     bind();
+
+    //n    std::cout << "post gen\n";
+    //    checkFramebufferStatusOk();
+
     // attach the texture to FBO color attachment point
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                            GL_TEXTURE_2D, texture->getTextureId(), 0);
     
+
+    //    std::cout << "post tex2d\n";
+    //    checkFramebufferStatusOk();
+
     // attach the renderbuffer to depth attachment point
     if (useDepthBuffer){
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
                               GL_RENDERBUFFER, rboId);
     }
+    //    std::cout << "post renderbuffer\n";
     checkFramebufferStatusOk();
     unbind();
 }
@@ -111,7 +124,7 @@ void FrameBufferObject::checkFramebufferStatusOk(){
             cout << " GL_FRAMEBUFFER_UNDEFINED​ is returned if target​ is the default framebuffer, but the default framebuffer does not exist."<<endl;
             break;
         case GL_FRAMEBUFFER_COMPLETE:
-            cout << "Framebuffer complete" << endl;
+	  //            cout << "Framebuffer complete" << endl;
             break;
     }
 }

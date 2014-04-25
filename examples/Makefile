@@ -1,8 +1,11 @@
-#OPTS = -g
-OPTS = -O3
+OPTS = -g
+#OPTS = -O3
 
 INC_DIR=../include
 LIB_DIR=../src
+# 
+# uncomment this, and fix for your system, if running Ubuntu 13.10 or so...
+NVIDIA_LIBS=-L/usr/lib/nvidia-319-updates
 
 HOST_PLATFORM := $(shell $(CPP) -dumpmachine)
 $(info $(HOST_PLATFORM))
@@ -16,7 +19,7 @@ endif
 ifeq   "$(HOST_PLATFORM)" "x86_64-linux-gnu"
 #for sn336,sn148, ubuntu 
 INCLUDES = -I$(INC_DIR) 
-LIBS = -lGL -lGLU -lglut -lGLEW 
+LIBS = $(NVIDIA_LIBS) -lGL -lGLU -lglut -lGLEW 
 endif
 
 ifeq   "$(HOST_PLATFORM)" "i686-linux-gnu"
@@ -64,7 +67,8 @@ all : 	example0 \
 	postprocess \
 	discardfragments \
 	primitives \
-	texturedtriangle
+	texturedtriangle \
+	shader
 
 example0 : example0.cpp $(SSG_INCS) $(LIB_DIR)/ssg.a
 	g++ $(OPTS) -o example0 $(INCLUDES) example0.cpp $(LIB_DIR)/ssg.a $(LIBS)
@@ -117,6 +121,9 @@ primitives : primitives.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera
 texturedtriangle : texturedtriangle.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
 	g++ $(OPTS) -o texturedtriangle $(INCLUDES) texturedtriangle.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
+shader : shader.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
+	g++ $(OPTS) -o shader $(INCLUDES) shader.cpp $(LIB_DIR)/ssg.a $(LIBS)
+
 
 
 clean :
@@ -139,4 +146,5 @@ clean :
 	rm -f discardfragments
 	rm -f primitives
 	rm -f texturedtriangle
+	rm -f shader
 	rm -rf *.dSYM

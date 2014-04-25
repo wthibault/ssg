@@ -1,10 +1,13 @@
-#OPTS = -g
-OPTS = -O3
+OPTS = -g
+#OPTS = -O3
 
 INC_DIR = ../include
 
 HOST_PLATFORM := $(shell $(CPP) -dumpmachine)
 $(info $(HOST_PLATFORM))
+
+# uncomment and fix for your system if nvidia under ubuntu 13.10
+NVIDIA_LIBS=L/usr/lib/nvidia-319-updates
 
 # settings for turing
 ifeq   "$(HOST_PLATFORM)" "x86_64-redhat-linux"
@@ -15,7 +18,7 @@ endif
 ifeq   "$(HOST_PLATFORM)" "x86_64-linux-gnu"
 #for sn336,sn148, ubuntu 
 INCLUDES = -I../include -I.
-LIBS = -lGL -lGLU -lglut -lGLEW 
+LIBS = $(NVIDIA_LIBS) -lGL -lGLU -lglut -lGLEW 
 endif
 
 ifeq   "$(HOST_PLATFORM)" "i686-linux-gnu"
