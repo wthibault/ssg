@@ -143,6 +143,7 @@ Texture::setupTexParams( bool floatingpoint, bool mipmaps )
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
   // allocate the memory for the texels
+  //  unsigned char *data = new unsigned char[width * height * 4 * floatingpoint?sizeof(GLfloat):1];
   glTexImage2D(GL_TEXTURE_2D, 0, 
 	       floatingPoint?GL_RGBA32F_ARB:GL_RGBA8, 
 	       width, height, 
@@ -150,6 +151,9 @@ Texture::setupTexParams( bool floatingpoint, bool mipmaps )
 	       GL_RGBA, 
 	       floatingPoint?GL_FLOAT:GL_UNSIGNED_BYTE, 
 	       0);
+	       //	       data);
+  //  delete [] data;
+  loadZeros(0);
 }
 
 Texture::~Texture(){
@@ -232,7 +236,7 @@ void Texture::loadChecks(unsigned int t)
     // fill with checks
     for ( int row=0;row<height;row++ ) {
       for ( int col=0; col<width; col++ ) {
-	unsigned char c = (((((row&0x80)==0)^((col&0x80)))==0));
+	float c = (((((row&0x80)==0)^((col&0x80)==0))==0));
 	*p++ = c;
 	*p++ = c;
 	*p++ = c;
@@ -253,8 +257,9 @@ void Texture::loadChecks(unsigned int t)
 	*p++ = 255;
       }
     }
-    // upload texture data
   }
+
+  // upload texture data
   glBindTexture ( GL_TEXTURE_2D, textureId );
 
   glTexSubImage2D ( GL_TEXTURE_2D, 
@@ -264,10 +269,63 @@ void Texture::loadChecks(unsigned int t)
 		    GL_RGBA,
 		    floatingPoint?GL_FLOAT:GL_UNSIGNED_BYTE,
 		    static_cast<GLvoid*>(data) );
+
   generateMipmaps();
 
   glBindTexture ( GL_TEXTURE_2D, 0 );
-  delete data;
+  delete [] data;
+}
+
+
+void Texture::loadZeros(unsigned int t)
+{
+  unsigned char *data = NULL;
+
+  glActiveTexture(GL_TEXTURE0 + t);
+  if ( floatingPoint ) {
+    data = new unsigned char [width * height * 4 * sizeof(float)];
+    float *p = (float*)data;
+    // fill with 0
+    for ( int row=0;row<height;row++ ) {
+      for ( int col=0; col<width; col++ ) {
+	float c = 0;
+	*p++ = c;
+	*p++ = c;
+	*p++ = c;
+	*p++ = 1.0;
+      }
+    }
+  }
+  else {
+    data = new unsigned char [width * height * 4];
+    unsigned char *p = data;
+    // fill with 0
+    for ( int row=0;row<height;row++ ) {
+      for ( int col=0; col<width; col++ ) {
+	unsigned char c = 0;
+	*p++ = c;
+	*p++ = c;
+	*p++ = c;
+	*p++ = 255;
+      }
+    }
+  }
+
+  // upload texture data
+  glBindTexture ( GL_TEXTURE_2D, textureId );
+
+  glTexSubImage2D ( GL_TEXTURE_2D, 
+		    0, 
+		    0,0,
+		    width, height,
+		    GL_RGBA,
+		    floatingPoint?GL_FLOAT:GL_UNSIGNED_BYTE,
+		    static_cast<GLvoid*>(data) );
+
+  generateMipmaps();
+
+  glBindTexture ( GL_TEXTURE_2D, 0 );
+  delete [] data;
 }
 
 

@@ -34,7 +34,6 @@ public:
   }
   void addEffect ( std::string name ) {
     Texture *tex = new Texture (_width,_height, true, true, 0);
-    tex->loadChecks(0); //  XXX ??? makes it work on macbookproretina2013 ???
     FrameBufferObject *fbo = new FrameBufferObject ( tex );
     string vname ("shaders120/fxchain.vert");
     string fname ("shaders120/"+name+".frag");
@@ -176,6 +175,7 @@ initPostprocess()
     delete fxChain;
 
   fxChain = new FxChain(width, height);
+#if 1
   fxChain->addEffect ( "edge" );
   fxChain->addEffect ( "threshold" );
   fxChain->addEffect ( "blur9x" );
@@ -184,6 +184,10 @@ initPostprocess()
     fxChain->addEffect ( "blur9x" );
     fxChain->addEffect ( "blur9y" );
   }
+#else
+  fxChain->addEffect ( "zoom1" );
+#endif
+
 
 
 #if 0

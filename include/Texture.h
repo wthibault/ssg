@@ -63,6 +63,7 @@ public:
     void generateMipmaps();
     // load checkerboard image
     void loadChecks(unsigned int texUnit);
+    void loadZeros(unsigned int texUnit);
     //    void loadBMP( const char* filename );
     void bind(unsigned int texUnit);
     void unbind(unsigned int texUnit);
