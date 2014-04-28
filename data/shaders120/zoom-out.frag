@@ -14,7 +14,7 @@ void main(void) {
   vec2 frag = vec2( gl_FragCoord.x / width, 
 		    gl_FragCoord.y / height );
   frag -= center;
-  frag *= 1.008;
+  frag *= 1.0 / 1.008;
   frag += center;
   vec2 src = frag;
 

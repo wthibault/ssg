@@ -147,10 +147,10 @@ void main()
   
   // two-sided lighting
   float ldotn = dot ( L, N );
-  float Kd = max( ldotn, -ldotn );
+  float Kd = min (0.0, max( ldotn, -ldotn ));
   vec4  diffuse = Kd * DiffuseProduct;
   
-  float Ks = pow( max(dot(N, H), -dot(N,H)), Shininess );
+  float Ks = min(1.0,pow( max(dot(N, H), -dot(N,H)), Shininess ));
   vec4  specular = Ks * SpecularProduct;
   
   noise *= 10.0;
