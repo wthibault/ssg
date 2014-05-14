@@ -153,9 +153,11 @@ void main()
   float Ks = min(1.0,pow( max(dot(N, H), -dot(N,H)), Shininess ));
   vec4  specular = Ks * SpecularProduct;
   
-  noise *= 10.0;
   //  gl_FragColor = vec4(noise*10.0,noise*5.0,noise*6.0,1.0) * diffuse +  (ambient + specular);
-  gl_FragColor =  diffuse +  (ambient + specular);
+  gl_FragColor =  clamp(diffuse +  (ambient + specular), 0.0, 1.0);
+
+  //  noise *= 10.0;
+  gl_FragColor.a = max(0.0,clamp(-noise,0.0,1.0));
 
 } 
 
