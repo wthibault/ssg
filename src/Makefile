@@ -7,7 +7,8 @@ HOST_PLATFORM := $(shell $(CPP) -dumpmachine)
 $(info $(HOST_PLATFORM))
 
 # uncomment and fix for your system if nvidia under ubuntu 13.10
-NVIDIA_LIBS=L/usr/lib/nvidia-319-updates
+#NVIDIA_LIBS=L/usr/lib/nvidia-319-updates
+NVIDIA_LIBS=L/usr/lib/nvidia-331-updates
 
 # settings for turing
 ifeq   "$(HOST_PLATFORM)" "x86_64-redhat-linux"
@@ -51,6 +52,7 @@ SSG_INCS = $(INC_DIR)/ssg.h \
 	$(INC_DIR)/TextureLoader.h \
 	$(INC_DIR)/ObjLoader.h \
 	$(INC_DIR)/FrameBufferObject.h \
+	$(INC_DIR)/PointLight.h \
 	$(INC_DIR)/ParticleSystem.h \
 	$(INC_DIR)/Camera.h \
 	$(INC_DIR)/Trackball.h 

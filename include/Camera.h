@@ -23,10 +23,16 @@ public:
   void setDistance ( float d ) { distance = d; }
 
   void setPosition ( glm::vec3 pos ) { position = pos; }
+  glm::vec3 getPosition ( ) { return position; }
+
   void setLookat   ( glm::vec3 look ) { lookat = look; }
+  glm::vec3 getLookat   ( ) { return lookat; }
 
   void setProjectionMatrix(glm::mat4 m) {P=m;}
+  glm::mat4 getProjectionMatrix() {return P;}
+
   void setModelviewMatrix(glm::mat4 m)  {M=m;}
+  glm::mat4 getModelviewMatrix()  {return M;}
 
   void setupPerspective ( int w, int h ) {
     glViewport (0, 0, (GLsizei) w, (GLsizei) h); 

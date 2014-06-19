@@ -79,6 +79,8 @@ Material() :
 //
 // XXX put time here? and camera?
 
+ class PointLight;
+
 class RenderingEnvironment
 {
  public:
@@ -88,13 +90,18 @@ class RenderingEnvironment
     return instance;
   }
 
+  // XXX DEPRECATED XXX
   glm::vec4 lightPosition;
   glm::vec4 lightColor;
+
+  ssg::PointLight &getLight(int i) { return pointLights[i]; }
 
  private:
   RenderingEnvironment() {};
   RenderingEnvironment(RenderingEnvironment &R); // don't implement!
   void operator=(RenderingEnvironment const &); // don't implement!
+
+  std::vector<PointLight> pointLights;
 };
 
 

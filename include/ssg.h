@@ -19,3 +19,4 @@
 #include "TextureLoader.h"
 #include "Trackball.h"
 #include "ParticleSystem.h"
+#include "PointLight.h"

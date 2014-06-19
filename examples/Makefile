@@ -5,7 +5,8 @@ INC_DIR=../include
 LIB_DIR=../src
 # 
 # uncomment this, and fix for your system, if running Ubuntu 13.10 or so...
-NVIDIA_LIBS=-L/usr/lib/nvidia-319-updates
+#NVIDIA_LIBS=-L/usr/lib/nvidia-319-updates
+NVIDIA_LIBS=-L/usr/lib/nvidia-331-updates
 
 HOST_PLATFORM := $(shell $(CPP) -dumpmachine)
 $(info $(HOST_PLATFORM))
