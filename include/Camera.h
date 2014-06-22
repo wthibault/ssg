@@ -4,6 +4,11 @@
 #pragma once
 #include "Trackball.h"
 #include <cmath>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_access.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 
 namespace ssg {
 
@@ -22,10 +27,10 @@ public:
   void dragMouse ( float x, float y )  { trackball.dragMouse(x,y); };
   void setDistance ( float d ) { distance = d; }
 
-  void setPosition ( glm::vec3 pos ) { position = pos; }
+  void setPosition ( glm::vec3 pos ) { position = pos; M = glm::lookAt(position,lookat,up); }
   glm::vec3 getPosition ( ) { return position; }
 
-  void setLookat   ( glm::vec3 look ) { lookat = look; }
+  void setLookat   ( glm::vec3 look ) { lookat = look; M = glm::lookAt(position,lookat,up); }
   glm::vec3 getLookat   ( ) { return lookat; }
 
   void setProjectionMatrix(glm::mat4 m) {P=m;}

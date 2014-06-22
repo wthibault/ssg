@@ -206,10 +206,23 @@ ssg::Primitive::setupShader ( glm::mat4 modelview,
 
   // load the light info from the rendering environment (same for all prims)
   // XXX take this to world coords 
-  glUniform4fv ( glGetUniformLocation ( material->program, "LightPosition"),
-		 1, 
-		 glm::value_ptr(RenderingEnvironment::getInstance().lightPosition) );
-  
+
+  if (RenderingEnvironment::getInstance().getNumPointLights() == 0) {
+    glUniform4fv ( glGetUniformLocation ( material->program, "LightPosition"),
+		   1, 
+		   glm::value_ptr(RenderingEnvironment::getInstance().lightPosition) );
+  } else {
+    glm::vec3 tmp;
+    tmp = RenderingEnvironment::getInstance().getPointLight(0).getPosition();
+    glUniform4fv ( glGetUniformLocation ( material->program, "LightPosition"),
+		   1, 
+		   glm::value_ptr(tmp) );
+    // light matrix too
+    glm::mat4 mtmp = RenderingEnvironment::getInstance().getPointLight(0).getLightMatrix();
+    glUniformMatrix4fv ( glGetUniformLocation ( material->program, "LightMatrix"),
+			 1, GL_FALSE, 
+			 glm::value_ptr(mtmp) );
+  }  
 
   // time
   glUniform1f ( glGetUniformLocation ( material->program, "Time"),
@@ -448,6 +461,19 @@ ssg::ssgPrependDataPath ( const char* basename )
     path = basename;
   return path;
 }
+
+//========================================================================
+
+
+void 
+ssg::RenderingEnvironment::addPointLight ( glm::vec3 pos, glm::vec3 at )
+{
+  // only one for now, and for backwards compat, wh put this in the old place too
+  pointLights.push_back(new PointLight(pos,at));
+  lightPosition = glm::vec4(pos,1.0);
+  lightColor = glm::vec4(1.0,1.0,1.0,1.0);
+}    
+
 
 //========================================================================
 

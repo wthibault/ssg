@@ -81,4 +81,17 @@ public:
 };
 
 
+class ShadowTexture
+{
+ private:
+  GLuint width;
+  GLuint height;
+  GLuint textureID;
+ public:
+  static const int SHADOW_WIDTH;
+  ShadowTexture ();
+  ~ShadowTexture();
+  GLuint getTextureId() { return textureID; }
+};
+
 #endif /* defined(__VertexBlending__Texture__) */

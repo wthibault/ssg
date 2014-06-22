@@ -78,6 +78,7 @@ Material() :
 // Usage:  RenderingEnvironment::getInstance().lightPosition = vec4(1,1,1,1);
 //
 // XXX put time here? and camera?
+// XXX lights should be in the graph, lighting their subgraph
 
  class PointLight;
 
@@ -94,14 +95,15 @@ class RenderingEnvironment
   glm::vec4 lightPosition;
   glm::vec4 lightColor;
 
-  ssg::PointLight &getLight(int i) { return pointLights[i]; }
+  int getNumPointLights () { return pointLights.size(); }
+  void addPointLight ( glm::vec3 pos, glm::vec3 at );
+  ssg::PointLight &getPointLight(int i) { return *(pointLights[i]); }
 
  private:
   RenderingEnvironment() {};
   RenderingEnvironment(RenderingEnvironment &R); // don't implement!
   void operator=(RenderingEnvironment const &); // don't implement!
-
-  std::vector<PointLight> pointLights;
+  std::vector<PointLight*> pointLights;
 };
 
 

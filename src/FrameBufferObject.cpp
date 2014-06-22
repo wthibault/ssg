@@ -83,6 +83,41 @@ FrameBufferObject::FrameBufferObject(Texture *texture, bool useDepthBuffer)
 }
 
 
+FrameBufferObject::FrameBufferObject(Texture *texture, ShadowTexture *depthTexture)
+  :texture(texture)
+{
+    
+  if (!texture || !depthTexture) {
+    std::cout << "FrameBufferObject gets no textures!!!";
+    return;
+  }
+    
+  // create a framebuffer object
+
+  glGenFramebuffers(1, &framebufferid);
+  bind();
+
+  //    std::cout << "post gen\n";
+  //    checkFramebufferStatusOk();
+
+  // attach the texture to FBO color attachment point
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+			 GL_TEXTURE_2D, texture->getTextureId(), 0);
+    
+
+  //    std::cout << "post tex2d\n";
+  //    checkFramebufferStatusOk();
+
+  // attach the depth texture to depth attachment point
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+			 GL_TEXTURE_2D, depthTexture->getTextureId(), 0);
+
+  //    std::cout << "post renderbuffer\n";
+  checkFramebufferStatusOk();
+  unbind();
+}
+
+
 FrameBufferObject::~FrameBufferObject(){
     glDeleteFramebuffers(1, &framebufferid);
 }

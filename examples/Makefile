@@ -49,6 +49,7 @@ SSG_INCS = $(INC_DIR)/ssg.h \
 	$(INC_DIR)/FrameBufferObject.h \
 	$(INC_DIR)/ParticleSystem.h \
 	$(INC_DIR)/Camera.h \
+	$(INC_DIR)/PointLight.h \
 	$(INC_DIR)/Trackball.h 
 
 
@@ -69,7 +70,8 @@ all : 	example0 \
 	discardfragments \
 	primitives \
 	texturedtriangle \
-	shader
+	shader \
+	shadows
 
 example0 : example0.cpp $(SSG_INCS) $(LIB_DIR)/ssg.a
 	g++ $(OPTS) -o example0 $(INCLUDES) example0.cpp $(LIB_DIR)/ssg.a $(LIBS)
@@ -125,6 +127,9 @@ texturedtriangle : texturedtriangle.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC
 shader : shader.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
 	g++ $(OPTS) -o shader $(INCLUDES) shader.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
+shadows : shadows.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
+	g++ $(OPTS) -o shadows $(INCLUDES) shadows.cpp $(LIB_DIR)/ssg.a $(LIBS)
+
 
 
 clean :
@@ -148,4 +153,5 @@ clean :
 	rm -f primitives
 	rm -f texturedtriangle
 	rm -f shader
+	rm -f shadows
 	rm -rf *.dSYM
