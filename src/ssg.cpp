@@ -212,17 +212,22 @@ ssg::Primitive::setupShader ( glm::mat4 modelview,
 		   1, 
 		   glm::value_ptr(RenderingEnvironment::getInstance().lightPosition) );
   } else {
+    // light position XXX
     glm::vec3 tmp;
     tmp = RenderingEnvironment::getInstance().getPointLight(0).getPosition();
     glUniform4fv ( glGetUniformLocation ( material->program, "LightPosition"),
 		   1, 
 		   glm::value_ptr(tmp) );
-    // light matrix too
+    // light matrix 
     glm::mat4 mtmp = RenderingEnvironment::getInstance().getPointLight(0).getLightMatrix();
     glUniformMatrix4fv ( glGetUniformLocation ( material->program, "LightMatrix"),
 			 1, GL_FALSE, 
 			 glm::value_ptr(mtmp) );
-  }  
+    // the shadow texture
+    RenderingEnvironment::getInstance().getPointLight(0).bindShadow(2);
+    glUniform1i ( glGetUniformLocation ( material->program, "ShadowMapTexture" ), 
+		    2 );
+  }
 
   // time
   glUniform1f ( glGetUniformLocation ( material->program, "Time"),

@@ -28,7 +28,11 @@ class PointLight
   void      setColor(glm::vec3 newcolor) { color=newcolor; }
   glm::vec3 getColor() { return color; }
 
-
+  void      bindShadow(unsigned int t)
+  {
+    glActiveTexture ( GL_TEXTURE0 + t );
+    glBindTexture ( GL_TEXTURE_2D, shadowMap->getTextureId() );
+  }
 
   glm::mat4 getLightMatrix()
     {
@@ -46,9 +50,14 @@ class PointLight
     // bind FBO as renderbuffer
     shadowMapFBO->bind(); 
 
+    glPolygonOffset(2.5f, 10.0f);
+    glEnable(GL_POLYGON_OFFSET_FILL);
+
     // render from light
     glClear(GL_DEPTH_BUFFER_BIT);
     lightCam.draw(shadowCasters); // need to use our own shader?????
+
+    glDisable(GL_POLYGON_OFFSET_FILL);
 
     // unbind FBO
     shadowMapFBO->unbind();
@@ -64,6 +73,14 @@ class PointLight
       setPosition(pos);
       setPointAt(at);
       lightCam.setupPerspective ( ShadowTexture::SHADOW_WIDTH, ShadowTexture::SHADOW_WIDTH );
+
+
+      std::cout << "lightCam modelview: " << lightCam.getModelviewMatrix() << std::endl;
+
+      std::cout << "lightCam projection: " << lightCam.getProjectionMatrix() << std::endl;
+
+      std::cout << "LightMatrix: " << getLightMatrix() << std::endl;
+
       // setup shadow map FBO
       // can we render depth without color?
       image = new Texture ( ShadowTexture::SHADOW_WIDTH, ShadowTexture::SHADOW_WIDTH, false, false, 2 ); // texture unit 2! (do we need this??XXX)

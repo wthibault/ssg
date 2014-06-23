@@ -1,9 +1,11 @@
-// PhongShading.frag = compute fragment lighting
+//
+// PhongShadingShadows.frag = compute fragment lighting with shadows
+//
 uniform vec4 AmbientProduct;
 uniform vec4 DiffuseProduct;
 uniform vec4 SpecularProduct;
 uniform float Shininess;
-uniform sampler2DShadow ShadowMapTex;
+uniform sampler2DShadow ShadowMapTexture;
 
 // these are all in eye coords
 varying vec3 Light, View, Normal;
@@ -41,7 +43,7 @@ void main()
   //      specular = vec4(0.0, 0.0, 0.0, 1.0);
   //    } 
 
-  float visibility = textureProj ( ShadowMapTex, ShadowMapCoord );
+  float visibility = textureProj ( ShadowMapTexture, ShadowMapCoord );
   gl_FragColor = clamp ( ambient + visibility* (diffuse + specular), 0.0, 1.0);
 } 
 

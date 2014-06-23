@@ -82,6 +82,7 @@ void init (int argc, char **argv)
   ObjFilePrimitive *prim;
   if ( argc == 2 ) {
     prim = new ObjFilePrimitive ( argv[1] );
+    prim->setMaterial(NULL); // make room for the shadowing shader (add a way to override baked in materials???)
   } else {
     cout << "usage: " << argv[0] << " objfile\n";
     exit(1);
@@ -91,6 +92,7 @@ void init (int argc, char **argv)
   Instance *instance = new Instance();
   instance->setMatrix ( mat4() );
   instance->addChild ( prim );
+
 
   // enable camera trackball
   camera.enableTrackball (true);
@@ -102,6 +104,12 @@ void init (int argc, char **argv)
   
   // PointLights do shadows...
   RenderingEnvironment::getInstance().addPointLight ( vec3(4,6,5), vec3(0,0,0) );
+
+  GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+
+  if (status != GL_FRAMEBUFFER_COMPLETE) {
+    printf("FB error, status: 0x%x\n", status);
+  }
 
 
 
