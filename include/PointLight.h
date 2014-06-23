@@ -28,6 +28,7 @@ class PointLight
   void      setColor(glm::vec3 newcolor) { color=newcolor; }
   glm::vec3 getColor() { return color; }
 
+  ssg::Camera &getLightCamera() { return lightCam; }
 
 
   glm::mat4 getLightMatrix()
