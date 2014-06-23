@@ -19,6 +19,7 @@ ModelNode *root;
 Primitive *prim;
 Camera camera;
 int width, height;
+int mainWindow, shadowMapWindow;
 
 float getNow() {
   return static_cast<double>(glutGet(GLUT_ELAPSED_TIME)) / 1000.0 ;
@@ -40,6 +41,12 @@ void display ()
 
   // recompute the shadow
   RenderingEnvironment::getInstance().getPointLight(0).updateShadow(root);
+
+  // draw the view from the light
+  glutSetWindow ( shadowMapWindow );
+  glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+  RenderingEnvironment::getInstance().getPointLight(0).getLightCamera().draw(root);
+  glutSetWindow ( mainWindow );
 
   // draw the scene (will use shadow if we have the right shader in place)
   camera.draw(root);
@@ -131,6 +138,13 @@ void init (int argc, char **argv)
   glClearColor (0.0, 0.0, 0.0, 1.0);
   glEnable(GL_DEPTH_TEST);
 
+  //
+  // window to display the shadow map texture
+  //
+  mainWindow = glutGetWindow();
+  shadowMapWindow = glutCreateWindow("shadow map");
+  
+  glutSetWindow(mainWindow);
 }
 
 

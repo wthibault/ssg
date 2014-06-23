@@ -34,6 +34,9 @@ class PointLight
     glBindTexture ( GL_TEXTURE_2D, shadowMap->getTextureId() );
   }
 
+  ssg::Camera &getLightCamera() { return lightCam; }
+
+
   glm::mat4 getLightMatrix()
     {
       glm::mat4 offsetMatrix ( glm::vec4(0.5, 0.0, 0.0, 0.0),
