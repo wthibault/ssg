@@ -224,6 +224,7 @@ ssg::Primitive::setupShader ( glm::mat4 modelview,
 			 1, GL_FALSE, 
 			 glm::value_ptr(mtmp) );
     // the shadow texture
+    // XXX only one light supported
     RenderingEnvironment::getInstance().getPointLight(0).bindShadow(2);
     glUniform1i ( glGetUniformLocation ( material->program, "ShadowMapTexture" ), 
 		    2 );

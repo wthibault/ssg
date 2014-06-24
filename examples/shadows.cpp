@@ -47,7 +47,6 @@ void display ()
       RenderingEnvironment::getInstance().getPointLight(0).getLightCamera().draw(root);
   } else {
     // draw the scene (will use shadow if we have the right shader in place)
-    
     camera.draw(root);
   }
 
@@ -112,15 +111,6 @@ void init (int argc, char **argv)
   //  RenderingEnvironment::getInstance().lightPosition = vec4 ( 4,10,5,1 );
   //  RenderingEnvironment::getInstance().lightColor = vec4 ( 1,1,1,1 );
   
-  // PointLights do shadows...
-  RenderingEnvironment::getInstance().addPointLight ( vec3(4,6,5), vec3(0,0,0) );
-
-  GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-
-  if (status != GL_FRAMEBUFFER_COMPLETE) {
-    printf("FB error, status: 0x%x\n", status);
-  }
-
 
 
   // create a material to use
@@ -133,6 +123,15 @@ void init (int argc, char **argv)
 
   // attach the material to the instance
   instance->setMaterial ( mat );
+
+  // PointLights do shadows...
+  // XXX must call this AFTER compiling the shader!!!
+  RenderingEnvironment::getInstance().addPointLight ( vec3(4,6,5), vec3(0,0,0) );
+  GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+  if (status != GL_FRAMEBUFFER_COMPLETE) {
+    printf("FB error, status: 0x%x\n", status);
+  }
+
 
   // set the instance as the scene root
   root = instance;

@@ -352,6 +352,8 @@ ShadowTexture::ShadowTexture ()
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
   GLfloat ones[]={1.0f, 1.0f, 1.0f, 1.0f};
   glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, ones);
+  //  glDrawBuffer(GL_NONE);
+  //  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 ShadowTexture::~ShadowTexture()
