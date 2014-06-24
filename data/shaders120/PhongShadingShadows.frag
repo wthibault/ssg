@@ -44,6 +44,7 @@ void main()
   //    } 
 
   float visibility = textureProj ( ShadowMapTexture, ShadowMapCoord );
+
   gl_FragColor = clamp ( ambient + visibility* (diffuse + specular), 0.0, 1.0);
 } 
 

@@ -53,14 +53,18 @@ class PointLight
     // bind FBO as renderbuffer
     shadowMapFBO->bind(); 
 
-    glPolygonOffset(2.5f, 10.0f);
-    glEnable(GL_POLYGON_OFFSET_FILL);
+    //    glPolygonOffset(2.5f, 10.0f);
+    //    glEnable(GL_POLYGON_OFFSET_FILL);
+
+    // Disable writes to the color buffer
+    //    glDrawBuffer(GL_NONE);
+    //    glReadBuffer(GL_NONE);
 
     // render from light
-    glClear(GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     lightCam.draw(shadowCasters); // need to use our own shader?????
 
-    glDisable(GL_POLYGON_OFFSET_FILL);
+    //    glDisable(GL_POLYGON_OFFSET_FILL);
 
     // unbind FBO
     shadowMapFBO->unbind();
