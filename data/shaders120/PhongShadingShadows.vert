@@ -1,4 +1,4 @@
-// PhongShading.vert = per fragment lighting
+// Phongshading.vert = per fragment lighting
 
 attribute  vec3 vPosition;
 attribute  vec3 vNormal;
@@ -22,8 +22,8 @@ void main()
   // Transform vertex normal into eye coordinates
   Normal = normalize( ModelView*vec4(vNormal, 0.0) ).xyz;
   
-  gl_Position = Projection * ModelView * vec4(vPosition.xyz,1.0);
   ShadowMapCoord = LightMatrix * vec4(vPosition.xyz,1.0);
+  gl_Position = Projection * ModelView * vec4(vPosition.xyz,1.0);
   
 
 }
