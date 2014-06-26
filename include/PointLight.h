@@ -19,20 +19,28 @@ class PointLight
   Texture           *image;
 
  public:
+
   void      setPosition(glm::vec3 pos) { lightCam.setPosition(pos); }
   glm::vec3 getPosition() { return lightCam.getPosition(); }
+
 
   void      setPointAt(glm::vec3 pointat) { lightCam.setLookat(pointat); }
   glm::vec3 getPointAt() { return lightCam.getLookat(); }
 
+
   void      setColor(glm::vec3 newcolor) { color=newcolor; }
   glm::vec3 getColor() { return color; }
+
 
   void      bindShadow(unsigned int t)
   {
     glActiveTexture ( GL_TEXTURE0 + t );
     glBindTexture ( GL_TEXTURE_2D, shadowMap->getTextureId() );
   }
+
+
+  ShadowTexture *getShadowTexture () { return shadowMap; }
+
 
   ssg::Camera &getLightCamera() { return lightCam; }
 

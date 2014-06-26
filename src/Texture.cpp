@@ -340,8 +340,8 @@ const int ShadowTexture::SHADOW_WIDTH = 4096;
 
 ShadowTexture::ShadowTexture ()
 {
-  glGenTextures(1,&textureID);
-  glBindTexture(GL_TEXTURE_2D, textureID);
+  glGenTextures(1,&textureId);
+  glBindTexture(GL_TEXTURE_2D, textureId);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32,
 	       SHADOW_WIDTH, SHADOW_WIDTH, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0 );
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -356,8 +356,4 @@ ShadowTexture::ShadowTexture ()
   //  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-ShadowTexture::~ShadowTexture()
-{
-  glDeleteTextures(1,&textureID);
-}
 

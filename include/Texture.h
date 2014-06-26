@@ -48,6 +48,7 @@
 // Create a texture
 class Texture {
 public:
+  Texture(){};
   Texture(GLuint width, GLuint height, bool floatingPoint = false, bool mipmaps = false,
 	  unsigned int texUnit = 0);
     Texture(const char* bmpfilename, bool floatingPoint = false,
@@ -81,17 +82,13 @@ public:
 };
 
 
-class ShadowTexture
+class ShadowTexture : public Texture
 {
- private:
-  GLuint width;
-  GLuint height;
-  GLuint textureID;
  public:
   static const int SHADOW_WIDTH;
   ShadowTexture ();
   ~ShadowTexture();
-  GLuint getTextureId() { return textureID; }
+  GLuint getTextureId() { return textureId; }
 };
 
 #endif /* defined(__VertexBlending__Texture__) */

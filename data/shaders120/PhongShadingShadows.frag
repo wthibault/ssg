@@ -26,17 +26,15 @@ void main()
   float Kd = max( dot(L, N), 0.0 );
   vec4  diffuse = Kd * DiffuseProduct;
   
-  float Ks = pow( max(dot(N, H), 0.0), Shininess );
+  float visibility = 1.0;
+  if ( texture( ShadowMapTexture, ShadowMapCoord.xy ).z < ShadowMapCoord.z){
+    visibility = 0.5;
+  }
+
+  float Ks =  pow( max(dot(N, H), 0.0), Shininess );
+
   vec4  specular = Ks * SpecularProduct;
   
-    float visibility = 1.0;
-    if ( texture( ShadowMapTexture, ShadowMapCoord.xy ).z < ShadowMapCoord.z){
-      visibility = 0.5;
-    }
-  //  float visibility = textureProj ( ShadowMapTexture, ShadowMapCoord );
-  //  if (visibility < ShadowMapCoord.z)
-  //    visibility = 0.5;
   gl_FragColor = clamp ( ambient + visibility* (diffuse + specular), 0.0, 1.0);
-  //  gl_FragColor = clamp ( visibility * (ambient + diffuse + specular), 0.0, 1.0);
 } 
 

@@ -19,16 +19,19 @@ ModelNode *root;
 Primitive *prim;
 Camera camera;
 int width, height;
-int drawFromLight = false;
+int drawMode = 0;
+//ShadowTexture *shadowTexture;
+Texture *shadowTexture;
 
 float getNow() {
   return static_cast<double>(glutGet(GLUT_ELAPSED_TIME)) / 1000.0 ;
 }
 
-vec3 lerp (vec3 start, vec3 end, float u )
-{
-  return vec3 ( start*(1-u) + end*u );
-}
+
+
+//
+// display()
+//
 
 void display ()
 {
@@ -42,9 +45,13 @@ void display ()
   // recompute the shadow
   RenderingEnvironment::getInstance().getPointLight(0).updateShadow(root);
 
-  if ( drawFromLight ) {
+  if ( drawMode == 1 ) {
     // draw the view from the light
-      RenderingEnvironment::getInstance().getPointLight(0).getLightCamera().draw(root);
+    RenderingEnvironment::getInstance().getPointLight(0).getLightCamera().draw(root);
+  } else if ( drawMode == 2 ) {
+    // draw the shadow texture
+    glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
+    shadowTexture->renderFullscreenQuad();
   } else {
     // draw the scene (will use shadow if we have the right shader in place)
     camera.draw(root);
@@ -55,6 +62,9 @@ void display ()
   lastFrame = now;
 
 }
+
+
+
 
 void timer ( int delay )
 {
@@ -73,8 +83,8 @@ void reshape (int w, int h)
 void keyboard (unsigned char key, int x, int y)
 {
   switch (key) {
-  case 'L':
-    drawFromLight ^= 1;
+  case ' ':
+    drawMode = (drawMode + 1) % 3;
     break;
   case 27: /* ESC */
     exit(0);
@@ -116,7 +126,7 @@ void init (int argc, char **argv)
   // create a material to use
   Material *mat = new Material;
   mat->ambient = vec4 ( 0.1, 0.1, 0.1, 1.0 );
-  mat->diffuse = vec4 ( 0.9, 0.0, 0.0, 1.0 );
+  mat->diffuse = vec4 ( 0.9, 0.9, 0.0, 1.0 );
   mat->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );
   mat->shininess = 133.0;
   mat->program = mat->loadShaders ( "PhongShadingShadows" );
@@ -125,12 +135,18 @@ void init (int argc, char **argv)
   instance->setMaterial ( mat );
 
   // PointLights do shadows...
-  // XXX must call this AFTER compiling the shader!!!
+  // XXX must call this AFTER compiling the shader!!! certain things in the shadow code glsl won't compile until the shader is built.
   RenderingEnvironment::getInstance().addPointLight ( vec3(4,6,5), vec3(0,0,0) );
   GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
   if (status != GL_FRAMEBUFFER_COMPLETE) {
     printf("FB error, status: 0x%x\n", status);
   }
+
+  // setup to draw the shadow texture
+  shadowTexture = RenderingEnvironment::getInstance().getPointLight(0).getShadowTexture();
+  //shadowTexture = new Texture("textures/lichen.bmp", false, false, 0 );
+  shadowTexture->setupRenderFullscreenQuad();
+
 
 
   // set the instance as the scene root

@@ -102,7 +102,7 @@ FrameBufferObject::FrameBufferObject(Texture *texture, ShadowTexture *depthTextu
 
   // attach the texture to FBO color attachment point
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-			 GL_TEXTURE_2D, texture->getTextureId(), 0);
+  	 GL_TEXTURE_2D, texture->getTextureId(), 0);
     
 
   //    std::cout << "post tex2d\n";
@@ -111,6 +111,7 @@ FrameBufferObject::FrameBufferObject(Texture *texture, ShadowTexture *depthTextu
   // attach the depth texture to depth attachment point
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
 			 GL_TEXTURE_2D, depthTexture->getTextureId(), 0);
+
 
   //    std::cout << "post renderbuffer\n";
   checkFramebufferStatusOk();
