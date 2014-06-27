@@ -101,8 +101,13 @@ FrameBufferObject::FrameBufferObject(Texture *texture, ShadowTexture *depthTextu
   //    checkFramebufferStatusOk();
 
   // attach the texture to FBO color attachment point
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-  	 GL_TEXTURE_2D, texture->getTextureId(), 0);
+  if ( texture ) {
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+			   GL_TEXTURE_2D, texture->getTextureId(), 0);
+  } else {
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+  }
     
 
   //    std::cout << "post tex2d\n";

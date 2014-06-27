@@ -61,21 +61,21 @@ class PointLight
     // bind FBO as renderbuffer
     shadowMapFBO->bind(); 
 
-        glPolygonOffset(2.5f, 10.0f);
-        glEnable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(2.5f, 10.0f);
+    glEnable(GL_POLYGON_OFFSET_FILL);
 
     // Disable writes to the color buffer
     //    glDrawBuffer(GL_NONE);
     //    glReadBuffer(GL_NONE);
 
     // render from light
-	glClearColor(0,0,0,1);
-	glEnable ( GL_DEPTH_TEST );
+    glClearColor(0,0,0,1);
+    glEnable ( GL_DEPTH_TEST );
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear( GL_DEPTH_BUFFER_BIT);
     lightCam.draw(shadowCasters); // need to use our own shader?????
 
-        glDisable(GL_POLYGON_OFFSET_FILL);
+    glDisable(GL_POLYGON_OFFSET_FILL);
 
     // unbind FBO
     shadowMapFBO->unbind();
@@ -93,15 +93,14 @@ class PointLight
       lightCam.setupPerspective ( ShadowTexture::SHADOW_WIDTH, ShadowTexture::SHADOW_WIDTH );
 
 
-      std::cout << "lightCam modelview: " << lightCam.getModelviewMatrix() << std::endl;
-
-      std::cout << "lightCam projection: " << lightCam.getProjectionMatrix() << std::endl;
-
-      std::cout << "LightMatrix: " << getLightMatrix() << std::endl;
+      // std::cout << "lightCam modelview: " << lightCam.getModelviewMatrix() << std::endl;
+      // std::cout << "lightCam projection: " << lightCam.getProjectionMatrix() << std::endl;
+      // std::cout << "LightMatrix: " << getLightMatrix() << std::endl;
 
       // setup shadow map FBO
       // can we render depth without color?
-      image = new Texture ( ShadowTexture::SHADOW_WIDTH, ShadowTexture::SHADOW_WIDTH, false, false, 2 ); // texture unit 2! (do we need this??XXX)
+      //      image = new Texture ( ShadowTexture::SHADOW_WIDTH, ShadowTexture::SHADOW_WIDTH, false, false, 2 ); // texture unit 2! (do we need this??XXX)
+      image = NULL; // don't need it!
       shadowMap = new ShadowTexture ();
       shadowMapFBO = new FrameBufferObject (image, shadowMap);
     };
@@ -110,7 +109,7 @@ class PointLight
   ~PointLight() 
     {
       // delete it all
-      delete image;
+      //      delete image;
       delete shadowMap;
       delete shadowMapFBO;
     };

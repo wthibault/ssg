@@ -54,6 +54,7 @@ void display ()
     shadowTexture->renderFullscreenQuad();
   } else {
     // draw the scene (will use shadow if we have the right shader in place)
+    shadowTexture->bind(2);
     camera.draw(root);
   }
 

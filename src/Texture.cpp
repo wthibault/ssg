@@ -342,7 +342,7 @@ ShadowTexture::ShadowTexture ()
 {
   glGenTextures(1,&textureId);
   glBindTexture(GL_TEXTURE_2D, textureId);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32,
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
 	       SHADOW_WIDTH, SHADOW_WIDTH, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0 );
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
