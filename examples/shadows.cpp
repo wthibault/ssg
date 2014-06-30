@@ -20,8 +20,8 @@ Primitive *prim;
 Camera camera;
 int width, height;
 int drawMode = 0;
-//ShadowTexture *shadowTexture;
-Texture *shadowTexture;
+ShadowTexture *shadowTexture;
+//Texture *shadowTexture;
 
 float getNow() {
   return static_cast<double>(glutGet(GLUT_ELAPSED_TIME)) / 1000.0 ;
@@ -46,16 +46,45 @@ void display ()
   RenderingEnvironment::getInstance().getPointLight(0).updateShadow(root);
 
   if ( drawMode == 1 ) {
+
     // draw the view from the light
     RenderingEnvironment::getInstance().getPointLight(0).getLightCamera().draw(root);
+
   } else if ( drawMode == 2 ) {
+
     // draw the shadow texture
+    shadowTexture->bind(0);
     glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
     shadowTexture->renderFullscreenQuad();
+
+#if 0
+    // code from fabian....c
+    glUseProgramObjectARB(0);
+	 glMatrixMode(GL_PROJECTION);
+	 glLoadIdentity();
+	 glOrtho(-ShadowTexture::SHADOW_WIDTH/2,ShadowTexture::SHADOW_WIDTH/2,-ShadowTexture::SHADOW_WIDTH/2,ShadowTexture::SHADOW_WIDTH/2,1,20);
+	 glMatrixMode(GL_MODELVIEW);
+	 glLoadIdentity();
+	 glColor4f(1,1,1,1);
+	 glActiveTextureARB(GL_TEXTURE0);
+	 glBindTexture(GL_TEXTURE_2D,shadowTexture->getTextureId());
+	 //	 glEnable(GL_TEXTURE_2D);
+	 glTranslated(0,0,-1);
+	 glBegin(GL_QUADS);
+	 glTexCoord2d(0,0);glVertex3f(0,0,0);
+	 glTexCoord2d(1,0);glVertex3f(ShadowTexture::SHADOW_WIDTH/2,0,0);
+	 glTexCoord2d(1,1);glVertex3f(ShadowTexture::SHADOW_WIDTH/2,ShadowTexture::SHADOW_WIDTH/2,0);
+	 glTexCoord2d(0,1);glVertex3f(0,ShadowTexture::SHADOW_WIDTH/2,0);
+	 glEnd();
+	 //	 glDisable(GL_TEXTURE_2D);
+#endif
+
   } else {
+
     // draw the scene (will use shadow if we have the right shader in place)
     shadowTexture->bind(2);
     camera.draw(root);
+
   }
 
 
@@ -146,7 +175,7 @@ void init (int argc, char **argv)
   // setup to draw the shadow texture
   shadowTexture = RenderingEnvironment::getInstance().getPointLight(0).getShadowTexture();
   //shadowTexture = new Texture("textures/lichen.bmp", false, false, 0 );
-  shadowTexture->setupRenderFullscreenQuad();
+  shadowTexture->setupRenderFullscreenQuad("shaders120/DebugShadows.vert","shaders120/DebugShadows.frag");
 
 
 
@@ -156,7 +185,7 @@ void init (int argc, char **argv)
   // misc OpenGL state
   glClearColor (0.0, 0.0, 0.0, 1.0);
   glEnable(GL_DEPTH_TEST);
-
+  glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
 }
 
 

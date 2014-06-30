@@ -42,11 +42,10 @@ class PointLight
   ShadowTexture *getShadowTexture () { return shadowMap; }
 
 
-  ssg::Camera &getLightCamera() { return lightCam; }
+  ssg::Camera&  getLightCamera() { return lightCam; }
 
 
-  glm::mat4 getLightMatrix()
-    {
+  glm::mat4 getLightMatrix()   {
       glm::mat4 offsetMatrix ( glm::vec4(0.5, 0.0, 0.0, 0.0),
 			       glm::vec4(0.0, 0.5, 0.0, 0.0),
 			       glm::vec4(0.0, 0.0, 0.5, 0.0),
@@ -69,16 +68,23 @@ class PointLight
     //    glReadBuffer(GL_NONE);
 
     // render from light
+    GLint vp[4];
+    glGetIntegerv(GL_VIEWPORT,vp);
+    glViewport ( 0,0,ShadowTexture::SHADOW_WIDTH,ShadowTexture::SHADOW_WIDTH);
     glClearColor(0,0,0,1);
     glEnable ( GL_DEPTH_TEST );
 
     glClear( GL_DEPTH_BUFFER_BIT);
+
     lightCam.draw(shadowCasters); // need to use our own shader?????
 
     glDisable(GL_POLYGON_OFFSET_FILL);
 
     // unbind FBO
     shadowMapFBO->unbind();
+
+    // restore viewport
+    glViewport(vp[0],vp[1],vp[2],vp[3]);
 
   };
   

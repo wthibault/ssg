@@ -87,7 +87,7 @@ FrameBufferObject::FrameBufferObject(Texture *texture, ShadowTexture *depthTextu
   :texture(texture)
 {
     
-  if (!texture || !depthTexture) {
+  if (texture && !depthTexture || !texture && !depthTexture) {
     std::cout << "FrameBufferObject gets no textures!!!";
     return;
   }
@@ -106,7 +106,6 @@ FrameBufferObject::FrameBufferObject(Texture *texture, ShadowTexture *depthTextu
 			   GL_TEXTURE_2D, texture->getTextureId(), 0);
   } else {
     glDrawBuffer(GL_NONE);
-    glReadBuffer(GL_NONE);
   }
     
 

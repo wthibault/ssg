@@ -215,6 +215,7 @@ ssg::Primitive::setupShader ( glm::mat4 modelview,
     // light position XXX
     glm::vec3 tmp;
     tmp = RenderingEnvironment::getInstance().getPointLight(0).getPosition();
+    glm::vec4 pos = glm::vec4(tmp, 1.0);
     glUniform4fv ( glGetUniformLocation ( material->program, "LightPosition"),
 		   1, 
 		   glm::value_ptr(tmp) );

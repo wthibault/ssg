@@ -27,9 +27,13 @@ void main()
   vec4  diffuse = Kd * DiffuseProduct;
   
   float visibility = 1.0;
-  if ( texture( ShadowMapTexture, ShadowMapCoord.xy ).z < ShadowMapCoord.z){
-    visibility = 0.5;
+  vec4 smCoord = ShadowMapCoord / ShadowMapCoord.w;
+  //  if ( texture2D( ShadowMapTexture, smCoord.st ).z < smCoord.z){
+  //  if ( texture2D( ShadowMapTexture, ShadowMapCoord.st ).z < smCoord.z){
+  if ( textureProj( ShadowMapTexture, ShadowMapCoord ).z < smCoord.z){
+    visibility = 0.25;
   }
+  
 
   float Ks =  pow( max(dot(N, H), 0.0), Shininess );
 
