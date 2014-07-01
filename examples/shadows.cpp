@@ -23,6 +23,8 @@ int drawMode = 0;
 ShadowTexture *shadowTexture;
 //Texture *shadowTexture;
 
+
+
 float getNow() {
   return static_cast<double>(glutGet(GLUT_ELAPSED_TIME)) / 1000.0 ;
 }
@@ -43,7 +45,10 @@ void display ()
   root->update(now-lastFrame);
 
   // recompute the shadow
+#if 1
   RenderingEnvironment::getInstance().getPointLight(0).updateShadow(root);
+#else
+#endif
 
   if ( drawMode == 1 ) {
 
@@ -82,7 +87,7 @@ void display ()
   } else {
 
     // draw the scene (will use shadow if we have the right shader in place)
-    shadowTexture->bind(2);
+    shadowTexture->bind(0);
     camera.draw(root);
 
   }

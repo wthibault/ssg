@@ -347,14 +347,31 @@ ShadowTexture::ShadowTexture ()
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER );
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER );
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 
   GLfloat ones[]={1.0f, 1.0f, 1.0f, 1.0f};
   glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, ones);
 
+#if 0
+  // create a test shadow (debug)
+
+  GLfloat *testTex = new GLfloat [SHADOW_WIDTH*SHADOW_WIDTH];
+  for (int i = 0; i < SHADOW_WIDTH; i++ ) {
+    for (int j = 0; j < SHADOW_WIDTH; j++ ) {
+      //      testTex[i*SHADOW_WIDTH+j] = i * 1.0f / SHADOW_WIDTH;
+      testTex[i*SHADOW_WIDTH+j] = (GLfloat)rand();
+    }
+  }
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+	       SHADOW_WIDTH, SHADOW_WIDTH, 0, GL_DEPTH_COMPONENT, GL_FLOAT, (void*)testTex );
+
+#else
+
   glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
 	       SHADOW_WIDTH, SHADOW_WIDTH, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0 );
+
+#endif
 
   glBindTexture(GL_TEXTURE_2D, 0);
 }

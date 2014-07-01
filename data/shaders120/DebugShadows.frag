@@ -12,8 +12,9 @@ varying vec4 ShadowMapCoord;
 
 void main() 
 { 
+  vec4 shadowcoord = ShadowMapCoord / ShadowMapCoord.w;
   float depth = texture(ShadowMapTexture, ShadowMapCoord).x;
-  depth = 1.0 - (1.0 - depth) * 25.0;
+  depth = depth;
   gl_FragColor = vec4(depth);
 } 
 

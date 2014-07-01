@@ -113,7 +113,8 @@ FrameBufferObject::FrameBufferObject(Texture *texture, ShadowTexture *depthTextu
   //    checkFramebufferStatusOk();
 
   // attach the depth texture to depth attachment point
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+  //  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+  glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
 			 GL_TEXTURE_2D, depthTexture->getTextureId(), 0);
 
 
