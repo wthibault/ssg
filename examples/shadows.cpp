@@ -29,6 +29,18 @@ float getNow() {
   return static_cast<double>(glutGet(GLUT_ELAPSED_TIME)) / 1000.0 ;
 }
 
+void
+updatePointLightPosition()
+{
+  float now = getNow();
+  float lightRotationRate = 4.0;
+  float lightRadius = 10.0;
+  float theta = 2*M_PI * now / lightRotationRate;
+  float x = lightRadius * cos ( theta );
+  float y = lightRadius * sin ( theta );
+  float z = 5.0;
+  RenderingEnvironment::getInstance().getPointLight(0).getLightCamera().setPosition(vec3(x,y,z));
+}
 
 
 //
@@ -45,10 +57,8 @@ void display ()
   root->update(now-lastFrame);
 
   // recompute the shadow
-#if 1
+  updatePointLightPosition();
   RenderingEnvironment::getInstance().getPointLight(0).updateShadow(root);
-#else
-#endif
 
   if ( drawMode == 1 ) {
 
@@ -58,11 +68,12 @@ void display ()
   } else if ( drawMode == 2 ) {
 
     // draw the shadow texture
+    shadowTexture->unbind(2);
     shadowTexture->bind(0);
     glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
     shadowTexture->renderFullscreenQuad();
 
-#if 0
+#if 1
     // code from fabian....c
     glUseProgramObjectARB(0);
 	 glMatrixMode(GL_PROJECTION);
@@ -73,7 +84,7 @@ void display ()
 	 glColor4f(1,1,1,1);
 	 glActiveTextureARB(GL_TEXTURE0);
 	 glBindTexture(GL_TEXTURE_2D,shadowTexture->getTextureId());
-	 //	 glEnable(GL_TEXTURE_2D);
+	  glEnable(GL_TEXTURE_2D);
 	 glTranslated(0,0,-1);
 	 glBegin(GL_QUADS);
 	 glTexCoord2d(0,0);glVertex3f(0,0,0);
@@ -81,13 +92,13 @@ void display ()
 	 glTexCoord2d(1,1);glVertex3f(ShadowTexture::SHADOW_WIDTH/2,ShadowTexture::SHADOW_WIDTH/2,0);
 	 glTexCoord2d(0,1);glVertex3f(0,ShadowTexture::SHADOW_WIDTH/2,0);
 	 glEnd();
-	 //	 glDisable(GL_TEXTURE_2D);
+	  glDisable(GL_TEXTURE_2D);
 #endif
 
   } else {
 
     // draw the scene (will use shadow if we have the right shader in place)
-    shadowTexture->bind(0);
+    //    shadowTexture->bind(2);
     camera.draw(root);
 
   }

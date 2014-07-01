@@ -83,6 +83,7 @@ FrameBufferObject::FrameBufferObject(Texture *texture, bool useDepthBuffer)
 }
 
 
+// use this constructor if you want to render shadows
 FrameBufferObject::FrameBufferObject(Texture *texture, ShadowTexture *depthTexture)
   :texture(texture)
 {
@@ -97,20 +98,16 @@ FrameBufferObject::FrameBufferObject(Texture *texture, ShadowTexture *depthTextu
   glGenFramebuffers(1, &framebufferid);
   bind();
 
-  //    std::cout << "post gen\n";
-  //    checkFramebufferStatusOk();
 
   // attach the texture to FBO color attachment point
   if ( texture ) {
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 			   GL_TEXTURE_2D, texture->getTextureId(), 0);
   } else {
     glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
   }
     
-
-  //    std::cout << "post tex2d\n";
-  //    checkFramebufferStatusOk();
 
   // attach the depth texture to depth attachment point
   //  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,

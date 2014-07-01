@@ -13,3 +13,6 @@ clean:
 	cd src; make clean
 	cd examples; make clean
 	rm -f *~
+	rm -f include/*~
+	rm -f data/shaders120/*~
+
