@@ -67,38 +67,16 @@ void display ()
 
   } else if ( drawMode == 2 ) {
 
+    // XXX NOT WORKINGG XXX
     // draw the shadow texture
     shadowTexture->unbind(2);
     shadowTexture->bind(0);
     glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
     shadowTexture->renderFullscreenQuad();
 
-#if 1
-    // code from fabian....c
-    glUseProgramObjectARB(0);
-	 glMatrixMode(GL_PROJECTION);
-	 glLoadIdentity();
-	 glOrtho(-ShadowTexture::SHADOW_WIDTH/2,ShadowTexture::SHADOW_WIDTH/2,-ShadowTexture::SHADOW_WIDTH/2,ShadowTexture::SHADOW_WIDTH/2,1,20);
-	 glMatrixMode(GL_MODELVIEW);
-	 glLoadIdentity();
-	 glColor4f(1,1,1,1);
-	 glActiveTextureARB(GL_TEXTURE0);
-	 glBindTexture(GL_TEXTURE_2D,shadowTexture->getTextureId());
-	  glEnable(GL_TEXTURE_2D);
-	 glTranslated(0,0,-1);
-	 glBegin(GL_QUADS);
-	 glTexCoord2d(0,0);glVertex3f(0,0,0);
-	 glTexCoord2d(1,0);glVertex3f(ShadowTexture::SHADOW_WIDTH/2,0,0);
-	 glTexCoord2d(1,1);glVertex3f(ShadowTexture::SHADOW_WIDTH/2,ShadowTexture::SHADOW_WIDTH/2,0);
-	 glTexCoord2d(0,1);glVertex3f(0,ShadowTexture::SHADOW_WIDTH/2,0);
-	 glEnd();
-	  glDisable(GL_TEXTURE_2D);
-#endif
-
   } else {
 
     // draw the scene (will use shadow if we have the right shader in place)
-    //    shadowTexture->bind(2);
     camera.draw(root);
 
   }
