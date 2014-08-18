@@ -28,10 +28,8 @@ void main()
   
   float visibility = 1.0;
   vec4 smCoord = ShadowMapCoord / ShadowMapCoord.w;
-  //  if ( texture2D( ShadowMapTexture, smCoord.st ).z < smCoord.z){
-  //  if ( texture2D( ShadowMapTexture, ShadowMapCoord.st ).z < smCoord.z){
   if ( textureProj( ShadowMapTexture, ShadowMapCoord ).z < smCoord.z){
-    visibility = 0.25;
+    visibility = 0.0;
   }
   
 

@@ -21,7 +21,6 @@ void main()
 
   // Transform vertex normal into eye coordinates
   Normal = normalize( ModelView*vec4(vNormal, 0.0) ).xyz;
-  
 
   ShadowMapCoord = LightMatrix * vec4(vPosition.xyz,1.0);
   gl_Position = Projection * ModelView * vec4(vPosition.xyz,1.0);

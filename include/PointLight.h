@@ -1,4 +1,5 @@
 //
+// XXX this is actuall a spot light, 65-degree fov barn doors
 // PointLight.h -- includes shadows
 //
 
@@ -58,6 +59,8 @@ class PointLight
   {
 
     // bind FBO as renderbuffer
+    GLint oldFBO;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFBO);
     shadowMapFBO->bind(); 
 
     glPolygonOffset(2.5f, 10.0f);
@@ -83,6 +86,8 @@ class PointLight
 
     // unbind FBO
     shadowMapFBO->unbind();
+    glBindFramebuffer(GL_FRAMEBUFFER, oldFBO);
+    
 
     // restore viewport
     glViewport(vp[0],vp[1],vp[2],vp[3]);
