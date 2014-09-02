@@ -33,7 +33,10 @@ endif
 # NOTE for mac you have to use the GLSL 1.2 shaders....
 #ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin11.4.2"
 #ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.0.2"
-ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.1.0"
+#ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.1.0"
+ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.3.0"
+# XXX FIX use prefix dummy
+
 # we are disabling warnings (-w)to not get the GLUT deprecations warnings in Mavericks..
 INCLUDES = -I$(INC_DIR) -framework OpenGL -framework GLUT -DUSE_APPLE_VERTEXARRAYS -w
 LIBS =

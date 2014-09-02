@@ -1,3 +1,4 @@
+#version 120
 //
 // PhongShadingShadows.frag = compute fragment lighting with shadows
 //
@@ -28,7 +29,8 @@ void main()
   
   float visibility = 1.0;
   vec4 smCoord = ShadowMapCoord / ShadowMapCoord.w;
-  if ( textureProj( ShadowMapTexture, ShadowMapCoord ).z < smCoord.z){
+  //  if ( textureProj( ShadowMapTexture, ShadowMapCoord ).z < smCoord.z){
+  if ( texture2D( ShadowMapTexture, smCoord.xy ).z < smCoord.z){
     visibility = 0.0;
   }
   

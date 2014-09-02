@@ -1,3 +1,4 @@
+#version 120
 // Phongshading.vert = per fragment lighting
 
 attribute  vec3 vPosition;
