@@ -234,6 +234,10 @@ ssg::Primitive::setupShader ( glm::mat4 modelview,
   // time
   glUniform1f ( glGetUniformLocation ( material->program, "Time"),
 		glutGet(GLUT_ELAPSED_TIME) / 1000.0 );
+
+  // shadow enable flag
+  glUniform1i ( glGetUniformLocation ( material->program, "ShadowEnable"), 
+		material->shadowEnable );
 }
 
 

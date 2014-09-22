@@ -46,13 +46,14 @@ namespace ssg {
 struct Material
 {
 Material() :
-    ambient (0.1, 0.1, 0.1, 1.0),
+  ambient (0.1, 0.1, 0.1, 1.0),
     diffuse (0.8, 0.8, 0.8, 1.0),
     specular(1.0, 1.0, 1.0, 1.0 ),
     shininess(75.0),
     program(0),
     diffuseTexture(0),
-    bumpTexture(0)
+    bumpTexture(0),
+    shadowEnable(1)
   {}
   ~Material() {}
   // XXX change load to affect self directly (program)
@@ -65,6 +66,7 @@ Material() :
   unsigned int program;
   Texture *diffuseTexture;
   Texture *bumpTexture;
+  int shadowEnable;
 };
 
 

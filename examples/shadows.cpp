@@ -21,6 +21,7 @@ Camera camera;
 int width, height;
 int drawMode = 0;
 ShadowTexture *shadowTexture;
+Material *mat = 0;
 //Texture *shadowTexture;
 
 
@@ -107,6 +108,9 @@ void reshape (int w, int h)
 void keyboard (unsigned char key, int x, int y)
 {
   switch (key) {
+  case 's':
+    mat->shadowEnable ^= 1;
+    break;
   case ' ':
     drawMode = (drawMode + 1) % 3;
     break;
@@ -148,7 +152,7 @@ void init (int argc, char **argv)
 
 
   // create a material to use
-  Material *mat = new Material;
+  mat = new Material;
   mat->ambient = vec4 ( 0.1, 0.1, 0.1, 1.0 );
   mat->diffuse = vec4 ( 0.9, 0.9, 0.0, 1.0 );
   mat->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );

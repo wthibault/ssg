@@ -8,6 +8,7 @@ uniform vec4 SpecularProduct;
 uniform float Shininess;
 //uniform sampler2DShadow ShadowMapTexture;
 uniform sampler2D ShadowMapTexture;
+uniform int  ShadowEnable;
 
 // these are all in eye coords
 varying vec3 Light, View, Normal;
@@ -30,7 +31,7 @@ void main()
   float visibility = 1.0;
   vec4 smCoord = ShadowMapCoord / ShadowMapCoord.w;
   //  if ( textureProj( ShadowMapTexture, ShadowMapCoord ).z < smCoord.z){
-  if ( texture2D( ShadowMapTexture, smCoord.xy ).z < smCoord.z){
+  if ( ShadowEnable==1 && texture2D( ShadowMapTexture, smCoord.xy ).z < smCoord.z){
     visibility = 0.0;
   }
   
