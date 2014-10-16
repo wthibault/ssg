@@ -101,11 +101,34 @@ class RenderingEnvironment
   void addPointLight ( glm::vec3 pos, glm::vec3 at );
   ssg::PointLight &getPointLight(int i) { return *(pointLights[i]); }
 
+  void setFogEnabled ( bool enabled ) { fogEnabled = enabled; }
+  void setFogDensity ( float density ) { fogDensity = density; }
+  void setFogColor ( glm::vec4 color ) { fogColor = color; }
+  void setFogStart ( float d ) { fogStart = d; }
+  void setFogEnd ( float d ) { fogEnd = d; }
+  glm::vec4 &getFogColor() { return fogColor; }
+  float &getFogDensity() { return fogDensity; }
+  bool &getFogEnabled() { return fogEnabled; }
+  float &getFogStart() { return fogStart; }
+  float &getFogEnd() { return fogEnd; }
+
  private:
-  RenderingEnvironment() {};
-  RenderingEnvironment(RenderingEnvironment &R); // don't implement!
+ RenderingEnvironment() : 
+  fogEnabled(false), 
+    fogColor(0,0,0,1) ,
+    fogStart ( 2.0f ),
+    fogEnd  ( 100.0f )
+      {};
+
+  RenderingEnvironment(RenderingEnvironment &R); // don't implement! (its a singleton.)
   void operator=(RenderingEnvironment const &); // don't implement!
-  std::vector<PointLight*> pointLights;
+
+  std::vector<PointLight*>     pointLights;
+  bool                         fogEnabled;
+  float                        fogDensity; // XXX TODO add start+end distances
+  glm::vec4                    fogColor;
+  float                        fogStart;
+  float                        fogEnd;
 };
 
 

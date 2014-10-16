@@ -34,8 +34,10 @@ endif
 #ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin11.4.2"
 #ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.0.2"
 #ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.1.0"
-ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.3.0"
-# XXX FIX use prefix dummy
+#ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.3.0"
+
+ifneq (,$(findstring apple, $(HOST_PLATFORM)))
+
 
 # we are disabling warnings (-w)to not get the GLUT deprecations warnings in Mavericks..
 INCLUDES = -I$(INC_DIR) -framework OpenGL -framework GLUT -DUSE_APPLE_VERTEXARRAYS -w
@@ -74,7 +76,8 @@ all : 	example0 \
 	primitives \
 	texturedtriangle \
 	shader \
-	shadows
+	shadows \
+	fog
 
 example0 : example0.cpp $(SSG_INCS) $(LIB_DIR)/ssg.a
 	g++ $(OPTS) -o example0 $(INCLUDES) example0.cpp $(LIB_DIR)/ssg.a $(LIBS)
@@ -133,6 +136,9 @@ shader : shader.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB
 shadows : shadows.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
 	g++ $(OPTS) -o shadows $(INCLUDES) shadows.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
+fog : fog.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
+	g++ $(OPTS) -o fog $(INCLUDES) fog.cpp $(LIB_DIR)/ssg.a $(LIBS)
+
 
 
 clean :
@@ -157,4 +163,5 @@ clean :
 	rm -f texturedtriangle
 	rm -f shader
 	rm -f shadows
+	rm -f fog
 	rm -rf *.dSYM

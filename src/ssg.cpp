@@ -238,7 +238,24 @@ ssg::Primitive::setupShader ( glm::mat4 modelview,
   // shadow enable flag
   glUniform1i ( glGetUniformLocation ( material->program, "ShadowEnable"), 
 		material->shadowEnable );
+
+  // fog
+  if (RenderingEnvironment::getInstance().getFogEnabled()) {
+    glUniform1i ( glGetUniformLocation ( material->program, "FogEnable" ), true );
+    glUniform1f ( glGetUniformLocation ( material->program, "FogDensity"),
+		  RenderingEnvironment::getInstance().getFogDensity() );
+    glUniform4fv ( glGetUniformLocation ( material->program, "FogColor"), 1,
+		   glm::value_ptr(RenderingEnvironment::getInstance().getFogColor()) );
+    glUniform1f ( glGetUniformLocation ( material->program, "FogStart"),
+		  RenderingEnvironment::getInstance().getFogStart() );
+    glUniform1f ( glGetUniformLocation ( material->program, "FogEnd"),
+		  RenderingEnvironment::getInstance().getFogEnd() );
+  } else {
+    glUniform1i ( glGetUniformLocation ( material->program, "FogEnable" ), false );
+  }
 }
+
+
 
 
 void

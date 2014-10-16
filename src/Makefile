@@ -33,7 +33,12 @@ endif
 #ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin11.4.2"
 #ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.0.2"
 #ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.1.0"
-ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.3.0"
+#ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.3.0"
+#ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin13.4.0"
+
+ifneq (,$(findstring apple, $(HOST_PLATFORM)))
+
+
 INCLUDES = -I../include -framework OpenGL -framework GLUT -DUSE_APPLE_VERTEXARRAYS
 LIBS =
 endif
