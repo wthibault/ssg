@@ -248,8 +248,14 @@ ssg::Primitive::setupShader ( glm::mat4 modelview,
 		   glm::value_ptr(RenderingEnvironment::getInstance().getFogColor()) );
     glUniform1f ( glGetUniformLocation ( material->program, "FogStart"),
 		  RenderingEnvironment::getInstance().getFogStart() );
-    glUniform1f ( glGetUniformLocation ( material->program, "FogEnd"),
-		  RenderingEnvironment::getInstance().getFogEnd() );
+    //    glUniform1f ( glGetUniformLocation ( material->program, "FogEnd"),
+    //		  RenderingEnvironment::getInstance().getFogEnd() );
+    glUniform1i ( glGetUniformLocation ( material->program, "EnableLayeredFog" ), 
+		  RenderingEnvironment::getInstance().getLayeredFogEnabled() );
+    glUniform4fv ( glGetUniformLocation ( material->program, "FogBottomPlane"),1,
+		   glm::value_ptr(RenderingEnvironment::getInstance().getFogBottomPlane()) );
+    glUniform4fv ( glGetUniformLocation ( material->program, "FogTopPlane"), 1,
+		   glm::value_ptr(RenderingEnvironment::getInstance().getFogTopPlane()) );
   } else {
     glUniform1i ( glGetUniformLocation ( material->program, "FogEnable" ), false );
   }

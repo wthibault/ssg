@@ -26,6 +26,7 @@ vec4  fogColor;
 float fogDensity;
 float fogStart = 2.0;
 float fogEnd = 10;
+bool  enableLayeredFog = false;
 
 vec4 backgroundColor ( 0.6,0.6,0.6,1.0 );
 
@@ -50,8 +51,9 @@ void display ()
   RenderingEnvironment &env = RenderingEnvironment::getInstance();
   env.setFogDensity ( fogDensity );
   env.setFogStart ( fogStart );
-  env.setFogEnd ( fogEnd );
-
+  env.setLayeredFogEnabled ( enableLayeredFog );
+  env.setFogTopPlane ( vec4(0,1,0,0.25) );
+  env.setFogBottomPlane ( vec4(0,-1,0, -4) );
   // draw
   camera.draw(root);
 
@@ -108,14 +110,8 @@ void keyboard (unsigned char key, int x, int y)
     glutPostRedisplay();
     break;
 
-  case 'e':
-    fogEnd += 0.1;
-    printFogParams();
-    glutPostRedisplay();
-    break;
-  case 'E':
-    fogEnd -= 0.1;
-    printFogParams();
+  case 'l':
+    enableLayeredFog = ~enableLayeredFog;
     glutPostRedisplay();
     break;
 
@@ -146,7 +142,10 @@ void init (int argc, char **argv)
 
   // create a root Instance to contain this primitive
   Instance *instance = new Instance();
-  instance->setMatrix ( scale (mat4(), vec3(10,10,10)) );
+  float size = 1.0;
+  float dist = 0.0;
+  instance->setMatrix ( scale ( translate ( mat4(), vec3(0,0,-dist) ),
+				vec3(size,size,size)) );
   instance->addChild ( prim );
 
 
@@ -180,7 +179,7 @@ void init (int argc, char **argv)
   //  env.setFogColor ( vec4(0.0,0.0,0.0,1) );
   env.setFogColor ( backgroundColor );
   env.setFogStart ( 2 );
-  env.setFogEnd ( 100 );
+
 
   // set the instance as the scene root
   root = instance;

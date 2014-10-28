@@ -105,19 +105,27 @@ class RenderingEnvironment
   void setFogDensity ( float density ) { fogDensity = density; }
   void setFogColor ( glm::vec4 color ) { fogColor = color; }
   void setFogStart ( float d ) { fogStart = d; }
-  void setFogEnd ( float d ) { fogEnd = d; }
+  void setLayeredFogEnabled ( bool enabled ) { layeredFogEnabled = enabled; }
+  void setFogTopPlane ( glm::vec4 plane ) { fogTopPlane = plane; }
+  void setFogBottomPlane ( glm::vec4 plane ) { fogBottomPlane = plane; }
+  //  void setFogEnd ( float d ) { fogEnd = d; }
   glm::vec4 &getFogColor() { return fogColor; }
   float &getFogDensity() { return fogDensity; }
   bool &getFogEnabled() { return fogEnabled; }
   float &getFogStart() { return fogStart; }
-  float &getFogEnd() { return fogEnd; }
+  bool &getLayeredFogEnabled() { return layeredFogEnabled; }
+  glm::vec4 &getFogBottomPlane() { return fogBottomPlane; }
+  glm::vec4 &getFogTopPlane() { return fogTopPlane; }
+  //  float &getFogEnd() { return fogEnd; }
 
  private:
  RenderingEnvironment() : 
   fogEnabled(false), 
     fogColor(0,0,0,1) ,
     fogStart ( 2.0f ),
-    fogEnd  ( 100.0f )
+    layeredFogEnabled(false),
+    fogTopPlane ( 0,1,0,-1 ),
+    fogBottomPlane ( 0,-1,0,-1 )
       {};
 
   RenderingEnvironment(RenderingEnvironment &R); // don't implement! (its a singleton.)
@@ -129,6 +137,9 @@ class RenderingEnvironment
   glm::vec4                    fogColor;
   float                        fogStart;
   float                        fogEnd;
+  bool                         layeredFogEnabled;
+  glm::vec4                    fogBottomPlane;
+  glm::vec4                    fogTopPlane;
 };
 
 
