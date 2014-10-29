@@ -1,10 +1,11 @@
 // 
 // ssg.cpp
 //  simple scene graph
-// (c) William C. Thibault, 2012, 2013
+// (c) William C. Thibault, 2012, 2013, 2014
 // All Rights Reversed.
 //
 //
+#define GLM_SWIZZLE
 #include "ssg.h"
 #include <fstream>
 
@@ -106,6 +107,18 @@ ssg::Primitive::init () {
 }
 
 
+glm::vec4 transformPlane ( glm::vec4 &plane, glm::mat4 &M )
+{
+  // based on http://stackoverflow.com/questions/7685495/transforming-a-3d-plane-by-4x4-matrix
+  // needs "#define GLM_SWIZZLE" before including glm.hpp
+  glm::vec3 pn (plane.xyz);
+  glm::vec4 P = glm::vec4 ( pn * plane.w, 1.0 );
+  glm::vec4 N = glm::vec4 ( pn, 0.0 );
+  P = M * P;
+  N = glm::transpose ( glm::inverse ( M ) ) * N;
+  float d = glm::dot ( glm::vec3(P.xyz), glm::vec3(N.xyz) );
+  return glm::vec4 ( N.xyz, d );
+}
 
 void
 ssg::Primitive::setupShader ( glm::mat4 modelview,
@@ -250,12 +263,15 @@ ssg::Primitive::setupShader ( glm::mat4 modelview,
 		  RenderingEnvironment::getInstance().getFogStart() );
     //    glUniform1f ( glGetUniformLocation ( material->program, "FogEnd"),
     //		  RenderingEnvironment::getInstance().getFogEnd() );
-    glUniform1i ( glGetUniformLocation ( material->program, "EnableLayeredFog" ), 
-		  RenderingEnvironment::getInstance().getLayeredFogEnabled() );
+    glUniform1i ( glGetUniformLocation ( material->program, "EnableSlabFog" ), 
+		  RenderingEnvironment::getInstance().getSlabFogEnabled() );
+    // send in the fog planes in eye coords
+    glm::vec4 B = transformPlane ( RenderingEnvironment::getInstance().getFogBottomPlane(), modelview );
+    glm::vec4 T = transformPlane ( RenderingEnvironment::getInstance().getFogTopPlane(), modelview );
     glUniform4fv ( glGetUniformLocation ( material->program, "FogBottomPlane"),1,
-		   glm::value_ptr(RenderingEnvironment::getInstance().getFogBottomPlane()) );
+		   glm::value_ptr(B) );
     glUniform4fv ( glGetUniformLocation ( material->program, "FogTopPlane"), 1,
-		   glm::value_ptr(RenderingEnvironment::getInstance().getFogTopPlane()) );
+		   glm::value_ptr(T) );
   } else {
     glUniform1i ( glGetUniformLocation ( material->program, "FogEnable" ), false );
   }

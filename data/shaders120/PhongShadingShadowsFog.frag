@@ -13,16 +13,18 @@ uniform float FogDensity;
 uniform vec4  FogColor;
 uniform float FogStart;
 //uniform float FogEnd; // ignored for now
-uniform int   EnableLayeredFog;
+uniform int   EnableSlabFog;
+
+
+//
+// these are all in eye coords
+//
+varying vec3 Light, View, Normal, EyeCoords;
+varying vec4 ShadowMapCoord;
 // should have unit normals, and be in eye space
 // outward facing (wrt fog)
 uniform vec4  FogBottomPlane;  
 uniform vec4  FogTopPlane;
-
-
-// these are all in eye coords
-varying vec3 Light, View, Normal, EyeCoords;
-varying vec4 ShadowMapCoord;
 
 const float EPSILON = 1.0e-6;
 const float BIGNUMBER = 1.0e6;
@@ -37,11 +39,11 @@ float intersectEyeRayPlane( vec3 dir, vec4 plane)
     return -plane.w / ndotdir;
 }
 
-float layeredFogLength ()
+float slabFogLength ()
 {
-  // eye is at the origin and so is the ray tail. length in fog?
-  vec3 dir = normalize (EyeCoords);
+  // eye is at the origin and so is the ray tail. find length of ray in fog
   float tsurf = length (EyeCoords);
+  vec3 dir = normalize (EyeCoords);
   float t1 = intersectEyeRayPlane ( dir, FogBottomPlane );
   float t2 = intersectEyeRayPlane ( dir, FogTopPlane );
   
@@ -94,13 +96,24 @@ void main()
 
   float z;
 
-  if (EnableLayeredFog==1)
-    z = layeredFogLength();
+  if (EnableSlabFog==1)
+    z = slabFogLength();
   else
     z = length ( EyeCoords );
 
+
+//   // debug
+//   if (z < 0) {
+//     gl_FragColor = vec4 ( 1.0, 0.0, 0.0, 1.0 );//red
+//   } else if (z == 0.0) {
+//     gl_FragColor = vec4 ( 0.0, 1.0, 0.0, 1.0 );//green
+//   } else if (z > 0.0) {
+//     gl_FragColor = vec4 ( 0.0, 0.0, 1.0, 1.0 );// blue
+//   }
+  
+
   float fogDist = max ( 0.0, z - FogStart );
-  fogDist *= fogDist;
+  fogDist *= fogDist;  // squared dist looks "good". to me. for now.
 
   float fogFactor = exp ( -FogDensity * fogDist );
   gl_FragColor = fogFactor * surfaceColor + (1-fogFactor) * FogColor;

@@ -24,9 +24,9 @@ Material *mat = 0;
 
 vec4  fogColor;
 float fogDensity;
-float fogStart = 2.0;
+float fogStart = 0.0;
 float fogEnd = 10;
-bool  enableLayeredFog = false;
+bool  enableSlabFog = false;
 
 vec4 backgroundColor ( 0.6,0.6,0.6,1.0 );
 
@@ -51,9 +51,18 @@ void display ()
   RenderingEnvironment &env = RenderingEnvironment::getInstance();
   env.setFogDensity ( fogDensity );
   env.setFogStart ( fogStart );
-  env.setLayeredFogEnabled ( enableLayeredFog );
-  env.setFogTopPlane ( vec4(0,1,0,0.25) );
-  env.setFogBottomPlane ( vec4(0,-1,0, -4) );
+  env.setSlabFogEnabled ( enableSlabFog );
+  // ground fog
+  glm::vec4 top    ( 0, 1,0,   0.25 );
+  glm::vec4 bottom ( 0, -1,0,   -4.0 );
+  // thin slab of fog
+  //  glm::vec4 top    ( 0, 1,0,   -0.1 );
+  //  glm::vec4 bottom ( 0,-1,0,   -0.1 );
+  env.setFogTopPlane ( top );
+  env.setFogBottomPlane ( bottom );
+
+  //  env.setFogTopPlane ( vec4(0,1,0,0.25) );
+  //  env.setFogBottomPlane ( vec4(0,-1,0, -4) );
   // draw
   camera.draw(root);
 
@@ -111,7 +120,7 @@ void keyboard (unsigned char key, int x, int y)
     break;
 
   case 'l':
-    enableLayeredFog = ~enableLayeredFog;
+    enableSlabFog = ~enableSlabFog;
     glutPostRedisplay();
     break;
 

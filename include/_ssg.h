@@ -105,7 +105,7 @@ class RenderingEnvironment
   void setFogDensity ( float density ) { fogDensity = density; }
   void setFogColor ( glm::vec4 color ) { fogColor = color; }
   void setFogStart ( float d ) { fogStart = d; }
-  void setLayeredFogEnabled ( bool enabled ) { layeredFogEnabled = enabled; }
+  void setSlabFogEnabled ( bool enabled ) { slabFogEnabled = enabled; }
   void setFogTopPlane ( glm::vec4 plane ) { fogTopPlane = plane; }
   void setFogBottomPlane ( glm::vec4 plane ) { fogBottomPlane = plane; }
   //  void setFogEnd ( float d ) { fogEnd = d; }
@@ -113,7 +113,7 @@ class RenderingEnvironment
   float &getFogDensity() { return fogDensity; }
   bool &getFogEnabled() { return fogEnabled; }
   float &getFogStart() { return fogStart; }
-  bool &getLayeredFogEnabled() { return layeredFogEnabled; }
+  bool &getSlabFogEnabled() { return slabFogEnabled; }
   glm::vec4 &getFogBottomPlane() { return fogBottomPlane; }
   glm::vec4 &getFogTopPlane() { return fogTopPlane; }
   //  float &getFogEnd() { return fogEnd; }
@@ -123,7 +123,7 @@ class RenderingEnvironment
   fogEnabled(false), 
     fogColor(0,0,0,1) ,
     fogStart ( 2.0f ),
-    layeredFogEnabled(false),
+    slabFogEnabled(false),
     fogTopPlane ( 0,1,0,-1 ),
     fogBottomPlane ( 0,-1,0,-1 )
       {};
@@ -137,7 +137,7 @@ class RenderingEnvironment
   glm::vec4                    fogColor;
   float                        fogStart;
   float                        fogEnd;
-  bool                         layeredFogEnabled;
+  bool                         slabFogEnabled;
   glm::vec4                    fogBottomPlane;
   glm::vec4                    fogTopPlane;
 };
