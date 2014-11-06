@@ -24,8 +24,15 @@ void main()
 
   // Compute terms in the illumination equation
   vec4 ambient = AmbientProduct;
-  
-  float Kd = max( dot(L, N), 0.0 );
+  if ( dot(N,L) < 0.0 ) {
+     N = N * -1.0;
+     H = H * -1.0;
+  }
+  //  N = float(dot(N,L)<0.0) * -1.0 * N;
+
+  float Kd = max( dot(N,L), 0.0 );
+  //float Kd = max( 0.5 + dot(L, N)/2.0, 0.0 );
+
   vec4  diffuse = Kd * DiffuseProduct;
   
   float visibility = 1.0;
@@ -36,10 +43,14 @@ void main()
   }
   
 
-  float Ks =  pow( max(dot(N, H), 0.0), Shininess );
+  float Ks =  min ( 1.0, pow( max(dot(N, H), 0.0), Shininess ));
 
   vec4  specular = Ks * SpecularProduct;
   
   gl_FragColor = clamp ( ambient + visibility* (diffuse + specular), 0.0, 1.0);
+  //      gl_FragColor.a = 1.0;
+  //       gl_FragColor.r = N.x;
+  //        gl_FragColor.g = N.y;
+  //        gl_FragColor.b = N.z;
 } 
 

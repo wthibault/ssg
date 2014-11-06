@@ -27,9 +27,10 @@ void main()
   // twosided
   //float Kd = max ( dot(L,N), dot(L,-N) );
   float ndotv = dot ( N,V );
-  if ( ndotv < 0.0 )
-      N = -1.0 * N;
-  float Kd = max( dot(L, N), -dot(L,N) );
+  //  if ( ndotv < 0.0 )
+  //      N = -1.0 * N;
+  //  float Kd = max( dot(L, N), -dot(L,N) );
+  float Kd = dot(L, N);
   vec4  diffuse = Kd * DiffuseProduct;
   
   float Ks = pow( max(dot(N, H), 0.0), Shininess );
@@ -39,16 +40,18 @@ void main()
   //      specular = vec4(0.0, 0.0, 0.0, 1.0);
   //    } 
 
-  vec4 finalColor = clamp ( ambient + diffuse + specular, 0.0, 1.0);
-  const float LOG2 = 1.442695;
-  float z = gl_FragCoord.z / gl_FragCoord.w;
-  float fogFactor = exp2( -gl_Fog.density * 
-				   gl_Fog.density * 
-				   z * 
-				   z * 
-				   LOG2 );
-  fogFactor = clamp(fogFactor, 0.0, 1.0);
+  // vec4 finalColor = clamp ( ambient + diffuse + specular, 0.0, 1.0);
+  // const float LOG2 = 1.442695;
+  // float z = gl_FragCoord.z / gl_FragCoord.w;
+  // float fogFactor = exp2( -gl_Fog.density * 
+  // 				   gl_Fog.density * 
+  // 				   z * 
+  // 				   z * 
+  // 				   LOG2 );
+  // fogFactor = clamp(fogFactor, 0.0, 1.0);
 
-  gl_FragColor = mix(gl_Fog.color, finalColor, fogFactor );
+  // gl_FragColor = mix(gl_Fog.color, finalColor, fogFactor );
+  
+  gl_FragColor = ambient + diffuse + specular;
 } 
 
