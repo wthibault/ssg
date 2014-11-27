@@ -182,6 +182,7 @@ class Primitive : public ModelNode {
   virtual glm::mat4 getWorldToLocalMatrix();
 
   void setupShader ( glm::mat4 mv, glm::mat4 proj, Material *m );
+  void setDrawingPrimitive ( GLuint prim );
   void endShader ();
   void generateAndLoadArrayBuffer();
 

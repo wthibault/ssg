@@ -121,6 +121,12 @@ glm::vec4 transformPlane ( glm::vec4 &plane, glm::mat4 &M )
 }
 
 void
+ssg::Primitive::setDrawingPrimitive ( GLuint prim )
+{
+  drawingPrimitive_ = prim;
+}
+
+void
 ssg::Primitive::setupShader ( glm::mat4 modelview,
 			 glm::mat4 projection,
 			 Material *material )
