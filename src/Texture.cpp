@@ -336,8 +336,11 @@ void Texture::loadZeros(unsigned int t)
 //
 
 
-//const int ShadowTexture::SHADOW_WIDTH = 4096;
+#ifdef HIGHRES_SHADOWS
 const int ShadowTexture::SHADOW_WIDTH = 8192;
+#else
+const int ShadowTexture::SHADOW_WIDTH = 2048;
+#endif
 
 ShadowTexture::ShadowTexture ()
 {

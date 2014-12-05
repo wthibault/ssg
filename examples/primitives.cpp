@@ -8,6 +8,7 @@ using namespace glm;
 using namespace ssg;
 
 ModelNode *root;
+Primitive *prim;
 Camera     camera;
 int width, height;
 
@@ -264,6 +265,18 @@ void keyboard (unsigned char key, int x, int y)
 {
   switch (key) {
 
+  case 'p':
+    prim->setDrawingPrimitive ( GL_POINTS );
+    break;
+    
+  case 'l':
+    prim->setDrawingPrimitive ( GL_LINES );
+    break;
+    
+  case 't':
+    prim->setDrawingPrimitive ( GL_TRIANGLES );
+    break;
+    
   case 27: /* ESC */
     exit(0);
     break;
@@ -292,7 +305,6 @@ void init (int argc, char **argv)
   
   // create a primitive using our subclass of Primitive. 
 
-  Primitive *prim;
 //  prim = new Cone;
     prim = new MyPrimitive;
 //      prim = new TetraBall;
