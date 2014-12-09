@@ -180,6 +180,7 @@ class Primitive : public ModelNode {
 		      Material *material = 0);
 
   virtual glm::mat4 getWorldToLocalMatrix();
+  virtual void      setDrawingPrimitive ( GLuint prim );
 
   virtual void setupShader ( glm::mat4 mv, glm::mat4 proj, Material *m );
   virtual void endShader ();
