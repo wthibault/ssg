@@ -79,14 +79,14 @@ void main()
     visibility = 0.0;
   }
 
-  if (EnableSlabFog==1)
+  //  if (EnableSlabFog==1)
     z = slabFogLength();
-  else
-    z = length ( EyeCoords );
+    //  else
+    //    z = length ( EyeCoords );
 
 
 // for point, procedural alpha
-   float alpha = length(gl_PointCoord);
+//   float alpha = length(gl_PointCoord);
 
   float fogDist = max ( 0.0, z - FogStart );
   fogDist *= fogDist;  // squared dist looks "good". to me. for now.
@@ -95,6 +95,7 @@ void main()
   gl_FragColor = fogFactor * VertexColor*visibility + (1-fogFactor) * FogColor;
 
 // for point
-  glFragColor.a = alpha;
+//  gl_FragColor.a = alpha;
+  gl_FragColor.a = 1.0;
 } 
 

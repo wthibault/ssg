@@ -16,7 +16,7 @@ varying vec4 VertexColor;
 
 void main()
 {
-    // Transform vertex  position into eye coordinates
+  // Transform vertex  position into eye coordinates
   vec3 pos = (ModelView * vec4(vPosition.xyz,1.0)).xyz;
 	
   Light = normalize( LightPosition.xyz - pos );
@@ -24,10 +24,11 @@ void main()
   EyeCoords = pos;
 
   // Transform vertex normal into eye coordinates
-  Normal = normalize( ModelView*vec4(vNormal, 0.0) ).xyz;
+  //  Normal = normalize( ModelView*vec4(vNormal, 0.0) ).xyz;
 
   ShadowMapCoord = LightMatrix * vec4(vPosition.xyz,1.0);
   VertexColor = vec4 ( vColor, 1.0 );
+  //  gl_Position = Projection * ModelView * vec4(vPosition.xyz,1.0);
   gl_Position = Projection * ModelView * vec4(vPosition.xyz,1.0);
   
 

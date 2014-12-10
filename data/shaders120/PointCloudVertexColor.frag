@@ -22,6 +22,7 @@ uniform int   EnableSlabFog;
 varying vec3 Light, View, Normal, EyeCoords;
 varying vec4 ShadowMapCoord;
 varying vec3 VertexColor;
+
 // should have unit normals, and be in eye space
 // outward facing (wrt fog)
 uniform vec4  FogBottomPlane;  
@@ -70,7 +71,7 @@ float slabFogLength ()
 
 void main() 
 { 
-  vec4 surfaceColor = vec4 ( clamp ( VertexColor, 0.0, 1.0), 1.0 );
+  //  vec4 surfaceColor = vec4 ( clamp ( VertexColor, 0.0, 1.0), 1.0 );
 
 //   float z;
 
@@ -100,7 +101,7 @@ void main()
 
 //   gl_FragColor = fogFactor * surfaceColor + (1-fogFactor) * FogColor;
 
-  gl_FragColor = surfaceColor;
+  gl_FragColor = vec4(VertexColor,1.0);
 
   // for point
   //  gl_FragColor.a = alpha;
