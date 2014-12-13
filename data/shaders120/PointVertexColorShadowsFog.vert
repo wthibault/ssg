@@ -24,7 +24,7 @@ void main()
   EyeCoords = pos;
 
   // Transform vertex normal into eye coordinates
-  Normal = normalize( ModelView*vec4(vNormal, 0.0) ).xyz;
+//  Normal = normalize( ModelView*vec4(vNormal, 0.0) ).xyz;
 
   ShadowMapCoord = LightMatrix * vec4(vPosition.xyz,1.0);
   VertexColor = vec4 ( vColor, 1.0 );
