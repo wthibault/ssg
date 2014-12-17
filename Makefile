@@ -1,13 +1,15 @@
 
 .PHONY: src examples clean
 
-all : src examples
+all : 
+	$(MAKE) src 
+	$(MAKE) examples
 
 src :
-	cd src; make
+	$(MAKE) -C src
 
 examples:
-	cd examples; make
+	$(MAKE) -C examples
 
 clean:
 	cd src; make clean

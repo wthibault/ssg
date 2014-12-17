@@ -95,7 +95,7 @@ void main()
   gl_FragColor = fogFactor * VertexColor*visibility + (1-fogFactor) * FogColor;
 
 // for point
-//  gl_FragColor.a = alpha;
   gl_FragColor.a = 1.0;
+
 } 
 
