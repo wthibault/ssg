@@ -19,7 +19,10 @@ public:
     distance(6),
     position(0,0,distance),
     lookat ( 0,0,0 ),
-    up ( 0,1,0 )
+    up ( 0,1,0 ),
+    fovy ( 65.0 ),
+    wscreen ( 640 ), 
+    hscreen ( 480 )
       { M = glm::translate ( glm::mat4(), glm::vec3(0,0,-distance) );}
 
   void enableTrackball(bool on) { trackballEnabled=on; }
@@ -33,6 +36,14 @@ public:
   void setLookat   ( glm::vec3 look ) { lookat = look; M = glm::lookAt(position,lookat,up); }
   glm::vec3 getLookat   ( ) { return lookat; }
 
+  void setFov ( float afovy ) { 
+    // you'd better call setupPerspective from the resize callback else aspect ratio probably wrong.
+    // later, you can call setFov(fovy) to change the "lens"
+    fovy = afovy; 
+    setupPerspective ( wscreen, hscreen );
+  }
+  float getFov () { return fovy; }
+
   void setProjectionMatrix(glm::mat4 m) {P=m;}
   glm::mat4 getProjectionMatrix() {return P;}
 
@@ -40,8 +51,10 @@ public:
   glm::mat4 getModelviewMatrix()  {return M;}
 
   void setupPerspective ( int w, int h ) {
+    hscreen = h;
+    wscreen = w;
     glViewport (0, 0, (GLsizei) w, (GLsizei) h); 
-    P = glm::perspective ( 65.0f, (GLfloat) w / (GLfloat) h, 0.1f, 200.0f );
+    P = glm::perspective ( fovy, (GLfloat) w / (GLfloat) h, 0.1f, 200.0f );
     float halfw = float(w)/2.0f;
     float halfh = float(h)/2.0f;
     trackball = Trackball ( halfw, halfh, std::min ( halfw, halfw ) );
@@ -66,6 +79,8 @@ protected:
   Trackball trackball;
   float     distance;
   glm::vec3 position, lookat, up;
+  float     fovy;
+  int       wscreen, hscreen;
   glm::mat4 P;
   glm::mat4 M;
   
