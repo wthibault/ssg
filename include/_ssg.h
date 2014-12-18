@@ -195,6 +195,7 @@ protected:
   std::vector<glm::vec3>     normals_;
   std::vector<unsigned int>  indices_;
   std::vector<glm::vec2>     texCoords_;
+  std::vector<glm::vec3>     colors_;
   //  Material *material_;
   void   deleteGLBuffers_();
 };
