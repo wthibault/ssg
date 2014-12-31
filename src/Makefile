@@ -8,7 +8,7 @@ $(info $(HOST_PLATFORM))
 
 # uncomment and fix for your system if nvidia under ubuntu 13.10
 #NVIDIA_LIBS=L/usr/lib/nvidia-319-updates
-NVIDIA_LIBS=L/usr/lib/nvidia-331-updates
+#NVIDIA_LIBS=L/usr/lib/nvidia-331-updates
 
 # settings for turing
 ifeq   "$(HOST_PLATFORM)" "x86_64-redhat-linux"
