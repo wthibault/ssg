@@ -34,8 +34,8 @@ public:
   virtual  void init();
   virtual  void update(float dt);
   virtual  void draw (glm::mat4 mv,
-	     glm::mat4 proj,
-		      ssg::Material *mat);
+		      glm::mat4 proj,
+		      Ptr<ssg::Material> mat);
 
   int findFreeSlot ( int slot );
   glm::vec3 initialVelocity();

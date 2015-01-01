@@ -15,12 +15,10 @@ using namespace std;
 
 
 
-ModelNode *root;
-Primitive *prim;
+Ptr<Instance> root;
 Camera camera;
 int width, height;
 int drawMode = 0;
-Material *mat = 0;
 
 vec4  fogColor;
 float fogDensity;
@@ -143,14 +141,15 @@ void init (int argc, char **argv)
   ObjFilePrimitive *prim;
   if ( argc == 2 ) {
     prim = new ObjFilePrimitive ( argv[1] );
-    prim->setMaterial(NULL); // make room for the shadowing shader (add a way to override baked in materials???)
+    //    prim->setMaterial(NULL); // make room for the shadowing shader (add a way to override baked in materials???)
   } else {
     cout << "usage: " << argv[0] << " objfile\n";
-    exit(1);
+    //    exit(1);
+    prim = new ObjFilePrimitive ( "objfiles/cube.obj" );
   }
 
   // create a root Instance to contain this primitive
-  Instance *instance = new Instance();
+  Ptr<Instance> instance ( new Instance() );
   float size = 1.0;
   float dist = 0.0;
   instance->setMatrix ( scale ( translate ( mat4(), vec3(0,0,-dist) ),
@@ -163,7 +162,7 @@ void init (int argc, char **argv)
 
 
   // create a material to use
-  mat = new Material;
+  Ptr<Material> mat ( new Material );
   mat->ambient = vec4 ( 0.1, 0.1, 0.1, 1.0 );
   mat->diffuse = vec4 ( 0.9, 0.9, 0.0, 1.0 );
   mat->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );
@@ -184,7 +183,7 @@ void init (int argc, char **argv)
   // enable fog and initialize fog params
   RenderingEnvironment &env = RenderingEnvironment::getInstance();
   env.setFogEnabled(true);
-  fogDensity = 0.5;
+  fogDensity = 0.06;
   //  env.setFogColor ( vec4(0.0,0.0,0.0,1) );
   env.setFogColor ( backgroundColor );
   env.setFogStart ( 2 );

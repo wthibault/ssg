@@ -55,7 +55,9 @@ bool loadObjectGroups ( const char * filename,
 			std::vector<glm::vec3> &outNormal, 
 			std::vector<glm::vec2> &outUv,
 			std::vector< 	std::vector<int> > &outIndices, // per group
-			std::vector<ssg::Material *> &outMaterials,  // per group (w/textures)
+			//			std::vector<ssg::Material *> &outMaterials,  // per group (w/textures)
+			std::vector<ssg::Ptr<ssg::Material> > &outMaterials,  // per group (w/textures)
+
 			float scale=1.0f);
 
 #endif

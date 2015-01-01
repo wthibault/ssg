@@ -53,9 +53,10 @@ Material() :
     program(0),
     diffuseTexture(0),
     bumpTexture(0),
-    shadowEnable(1)
+    shadowEnable(1),
+    count_(0)
   {}
-  ~Material() {}
+  virtual ~Material() { glDeleteProgram ( program ); }
   // XXX change load to affect self directly (program)
   unsigned int loadShaders ( const char* basename );
 
@@ -64,9 +65,10 @@ Material() :
   glm::vec4 specular;
   float shininess;
   unsigned int program;
-  Texture *diffuseTexture;
-  Texture *bumpTexture;
+  Texture *diffuseTexture; // XXX use Ptr here...
+  Texture *bumpTexture;    // XXX use Ptr here...
   int shadowEnable;
+  int count_;
 };
 
 
@@ -143,6 +145,49 @@ class RenderingEnvironment
 };
 
 
+//
+// Ptr is a "smart reference counted pointer" (can't use std::shared_ptr with some libs....uh.)
+// and we don't want to use boost here
+// note: the count is kept in the object not the pointer. 
+//
+template <class T>
+class Ptr {
+ public:
+  T* operator-> () { return p_; }
+  T& operator* ()  { return *p_; }
+
+ Ptr() : p_(0) {} // should we have a default constructor?
+ Ptr(T* p)    : p_(p) { if (p_) ++p_->count_; }  // p must not be NULL
+
+  // create from derived class pointers: Ptr<ModelNode> x ( Ptr<Instance> p(new Instance() ) );
+  template <class U> Ptr ( const Ptr<U>& p) 
+    : p_(dynamic_cast<T*>(p.get())) // safely downcast the pointer
+    { if (p_) ++p_->count_; }
+
+  ~Ptr() 
+    { 
+      //      std::cout << "~Ptr\n";
+      if (p_ && --p_->count_ == 0) delete p_; 
+    }
+
+  // copy constructor
+ Ptr(Ptr const& p) : p_(p.p_) { if (p_) ++p_->count_; }
+
+  Ptr& operator= (Ptr const& p)
+    { // DO NOT CHANGE THE ORDER OF THESE STATEMENTS!
+      // (This order properly handles self-assignment)
+      // (This order also properly handles recursion, e.g., if a T contains Ptrs)
+      T* const old = p_;
+      p_ = p.p_;
+      ++p_->count_;
+      if (old && (--old->count_ == 0)) delete old;
+      return *this;
+    }
+  T* get() const {return p_;}
+ private:
+  T* p_;    // p_ is never NULL, except sometimes. 
+};
+
 //////////////////////////////////////////////////////////////////
 // M o d e l N o d e
 // the base class for the scene graph
@@ -150,17 +195,23 @@ class RenderingEnvironment
 
 class ModelNode {
 public:
- ModelNode() : parent_(0), material_(0), isVisible_(true) {};
+
+ ModelNode() : parent_(), material_(), isVisible_(true), count_(0) {}
+  virtual ~ModelNode() {// std::cout << "~ModelNode\n"; 
+  }
   virtual void init() {}
   virtual void update( float dt ) {}
   virtual void draw ( glm::mat4 modelview,
 		      glm::mat4 projection,
-		      Material *material = 0) =0;
-  virtual void setMaterial ( Material *m );
-  ModelNode *parent_;
-  Material  *material_;
+		      Ptr<Material> material ) {}
+  virtual void setMaterial ( Ptr<Material> m );
+
+  ModelNode*     parent_;
+  Ptr<Material>  material_;
   bool      isVisible_;
-  virtual glm::mat4 getWorldToLocalMatrix()=0;
+  virtual glm::mat4 getWorldToLocalMatrix() {}
+  // protected:
+  int       count_;  // reference count
 };
 
 //////////////////////////////////////////////////////////////////
@@ -171,18 +222,19 @@ public:
 class Primitive : public ModelNode {
  public:
  Primitive() : vao_(0), arrayBuffer_(0), elementBuffer_(0) {};
-  ~Primitive();
+  virtual ~Primitive();
+  friend class Ptr<Primitive>;
 
   virtual void init ();
   virtual void update ( float dt ) = 0;
   virtual void draw ( glm::mat4 modelview,
 		      glm::mat4 projection,
-		      Material *material = 0);
+		      Ptr<Material> material );
 
   virtual glm::mat4 getWorldToLocalMatrix();
   virtual void      setDrawingPrimitive ( GLuint prim );
 
-  virtual void setupShader ( glm::mat4 mv, glm::mat4 proj, Material *m );
+  virtual void setupShader ( glm::mat4 mv, glm::mat4 proj, Ptr<Material> m );
   virtual void endShader ();
   virtual void generateAndLoadArrayBuffer();
 
@@ -196,7 +248,6 @@ protected:
   std::vector<unsigned int>  indices_;
   std::vector<glm::vec2>     texCoords_;
   std::vector<glm::vec3>     colors_;
-  //  Material *material_;
   void   deleteGLBuffers_();
 };
 
@@ -210,18 +261,29 @@ public:
   Instance () : //material_(0),
     matrix_(glm::mat4(1.0))
     {};
+  virtual ~Instance();
+  friend class Ptr<Instance>;
+  
   virtual void update ( float dt );
   virtual void draw ( glm::mat4 modelview,
 		      glm::mat4 projection,
-		      Material *material = 0) ;
+		      Ptr<Material> material) ;
   virtual void setMatrix ( glm::mat4 mat );
   virtual glm::mat4 getMatrix ();
+
   virtual void addChild ( ModelNode * child );
-  virtual ModelNode* getChild ( int i );
+  //virtual void addChild ( Instance* child );
+  //virtual void addChild ( Primitive* child );
+  virtual void addChild ( Ptr<ModelNode> child );
+  //virtual void addChild ( Ptr<Instance> child );
+  //virtual void addChild ( Ptr<Primitive> child );
+
+  virtual Ptr<ModelNode> getChild ( int i );
+
   virtual glm::mat4 getWorldToLocalMatrix();
 
 protected:
-  std::vector<ModelNode*> children_;
+  std::vector<Ptr<ModelNode> > children_;
   glm::mat4 matrix_;
   glm::mat4 worldToLocal_;
   glm::mat4 localToWorld_;
@@ -266,8 +328,8 @@ class ObjFilePrimitive : public Primitive {
   virtual void update(float dt) {}
   virtual void draw ( glm::mat4 modelview,
 		      glm::mat4 projection,
-		      Material *material = 0) ;
-  std::vector<Material *>         materials_;
+		      Ptr<Material> material ) ;
+  std::vector<Ptr<Material> >         materials_;
   std::vector< std::vector<unsigned int> > groupIndices_;
   std::vector<unsigned int> groupElementArrayIds_;
 };

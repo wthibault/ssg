@@ -14,10 +14,12 @@ using namespace glm;
 using namespace std;
 using namespace ssg;
 
-ModelNode *root;
-Primitive *prim;
+
+Ptr<Instance> root;
+
 Camera camera;
 int width, height;
+
 vector<vec3> controlPoints;
 vector<vec3> angles;
 
@@ -86,16 +88,13 @@ void display ()
 
   root->update(now-lastFrame);
 
-  Instance *iroot = dynamic_cast<Instance*>(root);
-  Instance *mover = dynamic_cast<Instance*> ( iroot->getChild(1) ); 
+  Ptr<Instance> mover ( Ptr<Instance> (root->getChild(1)) ); 
 
   // interpolate along a quadratic Bezier curve
   float motionStartTime = 5.0;
   float motionEndTime = motionStartTime+4.0;
 
   // move the mover
-
-
 
   float u = ((now - motionStartTime) / (motionEndTime - motionStartTime) );
 
@@ -105,10 +104,12 @@ void display ()
   mover->setMatrix ( transMat * rotMat );
 
   // add a marker to the scene at each position
-  Instance *marker = new Instance();
+  //Instance *marker = new Instance();
+  Ptr<Instance> marker (new Instance());
   marker->addChild ( new Marker() );
   marker->setMatrix ( mover->getMatrix() );
-  iroot->addChild ( marker );
+  //  iroot->addChild ( marker );
+  root->addChild ( marker );
 
   camera.draw(root);
 
@@ -162,7 +163,9 @@ void init (int argc, char **argv)
     movingObject = new ObjFilePrimitive ( argv[2] );
   } else {
     cout << "usage: " << argv[0] << " backgroundObjFile moverObjfile\n";
-    exit(1);
+    //    exit(1);
+    background = new ObjFilePrimitive ( "objfiles/cube.obj" );
+    movingObject = new ObjFilePrimitive ( "objfiles/cube.obj" );
   }
 
   // create the graph

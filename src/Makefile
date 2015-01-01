@@ -1,5 +1,5 @@
-OPTS = -g
-#OPTS = -O3
+#OPTS = -g
+OPTS = -O3 -DHIGHRES_SHADOWS
 
 INC_DIR = ../include
 

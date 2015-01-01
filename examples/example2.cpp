@@ -8,8 +8,8 @@
 using namespace glm;
 using namespace ssg;
 
-ModelNode *root;
-Primitive *prim;
+Ptr<Instance> root;
+Ptr<Primitive> prim;
 mat4 projectionMatrix;
 mat4 modelviewMatrix;
 
@@ -33,8 +33,9 @@ void display ()
   mat4 Rz = rotate ( mat4(), zrange * sin(_angle * 0.4f), vec3(0.0, 0.0, 1.0) );
   mat4 Ry = rotate ( mat4(), yrange * sin(_angle * 2.0f), vec3(0.0, 1.0, 0.0) );
   mat4 mv = modelviewMatrix * Ry * Rx * Rz;
+  Ptr<Material> mat;
 
-  root->draw(mv, projectionMatrix );
+  root->draw(mv, projectionMatrix, mat );
 
   glutSwapBuffers();
 }
@@ -56,7 +57,7 @@ void reshape (int w, int h)
 
 
 Instance *
-createRandomInstance ( Primitive *prim )
+createRandomInstance ( Ptr<Primitive> prim )
 {
   // Create a new instance to refer to the same primitive, transformed
   // An Instance is created, and the given Primitive is added as a child of the new Instance.
@@ -90,7 +91,7 @@ void keyboard (unsigned char key, int x, int y)
 {
   switch (key) {
   case 'a':
-    dynamic_cast<Instance*>(root)->addChild ( createRandomInstance ( prim ) );
+    root->addChild ( createRandomInstance ( prim ) );
     break;
 
   case 27: /* ESC */
@@ -107,15 +108,15 @@ void init (int argc, char **argv)
   // create a primitive.  if supplied on command line, read a .obj wavefront file
 
   if ( argc >= 2 ) {
-    prim = new ObjFilePrimitive ( argv[1] );
+    prim = Ptr<Primitive> (new ObjFilePrimitive ( argv[1] ));
   } else {
-    prim = new Triangle;
+    prim = Ptr<Primitive> (new Triangle);
     std::cout << "usage: " << argv[0] << " [objfile.obj]\n";
   }
   std::cout << "Hit 'a' to add an instance with a random orientation\n";
 
   // create a root Instance to contain this primitive
-  Instance *instance = new Instance();
+  Ptr<Instance> instance ( new Instance() );
   instance->setMatrix ( mat4() );
   instance->addChild ( prim );
 

@@ -7,8 +7,8 @@
 using namespace glm;
 using namespace ssg;
 
-ModelNode *root;
-Primitive *prim;
+Ptr<Instance> root;
+Ptr<Primitive> prim;
 Camera     camera;
 int width, height;
 
@@ -305,12 +305,10 @@ void init (int argc, char **argv)
   
   // create a primitive using our subclass of Primitive. 
 
-//  prim = new Cone;
-    prim = new MyPrimitive;
-//      prim = new TetraBall;
+  prim = Ptr<Primitive> ( new MyPrimitive );
 
   // create a root Instance to contain this primitive
-  Instance* instance = new Instance();
+  Ptr<Instance> instance ( new Instance() );
   instance->setMatrix ( mat4() );
   instance->addChild ( prim );
 
@@ -319,7 +317,7 @@ void init (int argc, char **argv)
   RenderingEnvironment::getInstance().lightColor = vec4 ( 1,1,1,1 );
 
   // create a material to use
-  Material *mat = new Material;
+  Ptr<Material> mat ( new Material );
   mat->ambient = vec4 ( 0.1, 0.1, 0.1, 1.0 );
   mat->diffuse = vec4 ( 0.8, 0.8, 0.5, 1.0 );
   mat->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );

@@ -15,14 +15,14 @@ using namespace std;
 
 
 
-ModelNode *root;
-Primitive *prim;
+Ptr<Instance> root;
+
 Camera camera;
 int width, height;
 int drawMode = 0;
 ShadowTexture *shadowTexture;
 Material *mat = 0;
-//Texture *shadowTexture;
+
 
 
 
@@ -34,7 +34,7 @@ void
 updatePointLightPosition()
 {
   float now = getNow();
-  float lightRotationRate = 4.0;
+  float lightRotationRate = 100;
   float lightRadius = 10.0;
   float theta = 2*M_PI * now / lightRotationRate;
   float x = lightRadius * cos ( theta );
@@ -59,7 +59,7 @@ void display ()
 
   // recompute the shadow
   updatePointLightPosition();
-  RenderingEnvironment::getInstance().getPointLight(0).updateShadow(root);
+  RenderingEnvironment::getInstance().getPointLight(0).updateShadow(root.get());
 
   if ( drawMode == 1 ) {
 
@@ -129,10 +129,11 @@ void init (int argc, char **argv)
   ObjFilePrimitive *prim;
   if ( argc == 2 ) {
     prim = new ObjFilePrimitive ( argv[1] );
-    prim->setMaterial(NULL); // make room for the shadowing shader (add a way to override baked in materials???)
+    //    prim->setMaterial(NULL); // make room for the shadowing shader (add a way to override baked in materials???)
   } else {
     cout << "usage: " << argv[0] << " objfile\n";
-    exit(1);
+    //    exit(1);
+    prim = new ObjFilePrimitive ( "objfiles/bone6.obj" );
   }
 
   // create a root Instance to contain this primitive
@@ -143,6 +144,7 @@ void init (int argc, char **argv)
 
   // enable camera trackball
   camera.enableTrackball (true);
+  camera.setDistance ( 2 );
 
   // the lights are global for all objects in the scene
   // XXX old deprecated XXX

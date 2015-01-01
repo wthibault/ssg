@@ -8,8 +8,7 @@
 using namespace glm;
 using namespace ssg;
 
-ModelNode *root;          
-Primitive *prim;          
+Ptr<Instance> root;          
 mat4 projectionMatrix;    
 mat4 modelviewMatrix;
 
@@ -31,8 +30,9 @@ display ()
   // mouse control 
   mat4 tball = trackball.getMat4();
   mat4 mv = modelviewMatrix * tball;
+  Ptr<Material> mat;
 
-  root->draw(mv, projectionMatrix );
+  root->draw(mv, projectionMatrix, mat );
 
   glutSwapBuffers();
 }
@@ -76,16 +76,17 @@ init (int argc, char **argv)
 {
   
   // create a primitive.  if supplied on command line, read a .obj wavefront file
-
+  Ptr<Primitive> prim;          
   if ( argc >= 2 ) {
-    prim = new ObjFilePrimitive ( argv[1] );
+    prim = Ptr<Primitive> ( new ObjFilePrimitive ( argv[1] ) );
   } else {
     std::cout << "usage: " << argv[0] << " [objfile.obj]\n";
-    exit(1);
+    //    exit(1);
+    prim = Ptr<Primitive> ( new ObjFilePrimitive ( "objfiles/bone6.obj" ) );
   }
 
   // create a root Instance to contain this primitive
-  Instance *instance = new Instance();
+  Ptr<Instance> instance ( new Instance() );
   instance->setMatrix ( mat4() );
   instance->addChild ( prim );
 
@@ -94,7 +95,7 @@ init (int argc, char **argv)
   RenderingEnvironment::getInstance().lightColor = vec4 ( 1,1,1,1 );
 
   // create a material to use
-  Material *mat = new Material;
+  Ptr<Material> mat ( new Material );
   mat->ambient = vec4 ( 0.1, 0.1, 0.1, 1.0 );
   mat->diffuse = vec4 ( 0.8, 0.8, 0.8, 1.0 );
   mat->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );
@@ -105,7 +106,7 @@ init (int argc, char **argv)
   instance->setMaterial ( mat );
   // override the materials read from the objfile
   ObjFilePrimitive *op;
-  if ( op = dynamic_cast<ObjFilePrimitive*>(prim) ) {
+  if ( op = dynamic_cast<ObjFilePrimitive*>(prim.get()) ) {
     for ( int i = 0; i < op->materials_.size(); i++ ) {
       op->materials_[i] = mat;
     }

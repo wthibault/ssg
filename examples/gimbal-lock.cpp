@@ -9,8 +9,8 @@
 using namespace glm;
 using namespace ssg;
 
-ModelNode *root;
-Primitive *prim;
+Ptr<Instance> root;
+Ptr<Primitive> prim;
 mat4 projectionMatrix;
 mat4 modelviewMatrix;
 
@@ -30,8 +30,9 @@ void display ()
   mat4 Rz = rotate ( mat4(), zrot, vec3(0.0, 0.0, 1.0) );
   mat4 Ry = rotate ( mat4(), yrot, vec3(0.0, 1.0, 0.0) );
   mat4 mv = modelviewMatrix * Ry * Rx * Rz;
+  Ptr<Material> mat;
 
-  root->draw(mv, projectionMatrix );
+  root->draw(mv, projectionMatrix,mat );
 
   glutSwapBuffers();
 }
@@ -52,11 +53,11 @@ void reshape (int w, int h)
 }
 
 
-Instance *
-createRandomInstance ( Primitive *prim )
+Ptr<Instance>
+createRandomInstance ( Ptr<Primitive> prim )
 {
   // create a new instance to refer to the same primitive, transformed
-  Instance* anotherInstance = new Instance();
+  Ptr<Instance> anotherInstance (new Instance);
   anotherInstance->addChild ( prim );
   mat4 trans = translate ( mat4(),   2.0f * vec3(urand()-0.5, urand()-0.5, urand()-0.5) );
   vec3 axis = normalize ( vec3 ( urand(), urand(), urand() ) );
@@ -65,7 +66,7 @@ createRandomInstance ( Primitive *prim )
   anotherInstance->setMatrix ( rot * trans );
 
   // create a material to use
-  Material *mat = new Material;
+  Ptr<Material> mat ( new Material );
   mat->ambient = vec4 ( 0.1,0.1,0.1, 1.0 );
   vec3 color = normalize ( vec3(urand(),urand(), urand() ) );
   mat->diffuse = vec4 ( color, 1.0 );
@@ -108,15 +109,15 @@ void init (int argc, char **argv)
   // create a primitive.  if supplied on command line, read a .obj wavefront file
 
   if ( argc >= 2 ) {
-    prim = new ObjFilePrimitive ( argv[1] );
+    prim = Ptr<Primitive> (new ObjFilePrimitive ( argv[1] ) );
   } else {
-    prim = new Triangle;
     std::cout << "usage: " << argv[0] << " [objfile.obj]\n";
+    prim = Ptr<Primitive> (new Triangle);
   }
-  std::cout << "Hit 'x' or 'X' to rotate about x-axis (y,Y,z,Z), 1,2,3 for 90 degree rotate\n";
+  std::cout << "Hold 'x' or 'X' to rotate about x-axis (y,Y,z,Z), hit 1,2,3 for 90 degree rotate\n";
 
   // create a root Instance to contain this primitive
-  Instance *instance = new Instance();
+  Ptr<Instance> instance ( new Instance() );
   instance->setMatrix ( mat4() );
   instance->addChild ( prim );
 
@@ -125,7 +126,7 @@ void init (int argc, char **argv)
   RenderingEnvironment::getInstance().lightColor = vec4 ( 1,1,1,1 );
 
   // create a material to use
-  Material *mat = new Material;
+  Ptr<Material> mat ( new Material );
   mat->ambient = vec4 ( 0.1, 0.1, 0.2, 1.0 );
   mat->diffuse = vec4 ( 0.5, 0.5, 0.1, 1.0 );
   mat->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );

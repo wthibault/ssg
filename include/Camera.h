@@ -71,8 +71,16 @@ public:
     // if (trackballEnabled) 
     //   M = M * trackball.getMat4();
 
-    scene->draw( M, P );
+    Ptr<Material> m;
+    scene->draw( M, P, m );
   }
+  void draw ( ssg::Ptr<ssg::Instance> scene ) {
+    draw (  scene.get() );
+  }
+  void draw ( ssg::Ptr<ssg::Primitive> scene ) {
+    draw (  scene.get()  );
+  }
+
 
 protected:
   bool      trackballEnabled;

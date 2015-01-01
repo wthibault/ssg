@@ -10,10 +10,9 @@ using namespace std;
 using namespace ssg;
 using namespace glm;
 
-ModelNode *root;
-Primitive *prim;
-Camera     camera;
-int        height;
+Ptr<Instance> root;
+Camera        camera;
+int           height;
 
 void display ()
 {
@@ -61,17 +60,14 @@ void keyboard (unsigned char key, int x, int y)
 void init (int argc, char **argv)
 {
 
-  //  create a primitive.
-  Primitive *prim = new Triangle;
+  // create the root node
+  root = Ptr<Instance> ( new Instance() );
 
-  // create a root Instance to contain this primitive
-  Instance *instance = new Instance();
+  // set the root's matrix to the identity matrix
+  root->setMatrix ( mat4() );
 
-  // set the instance's matrix to the identity matrix
-  instance->setMatrix ( mat4() );
-
-  // add the primitive as a child of the instance
-  instance->addChild ( prim );
+  // add the primitive as a child of the root
+  root->addChild ( new Triangle() );
 
   // the lights are global for all objects in the scene
   RenderingEnvironment::getInstance().lightPosition = vec4 ( 0,0,10,1 );
@@ -85,10 +81,7 @@ void init (int argc, char **argv)
   mat->program = mat->loadShaders ( "PhongShading" );
 
   // attach the material to the primitive
-  instance->setMaterial ( mat );
-
-  // set the instance as the scene root
-  root = instance;
+  root->setMaterial ( mat );
 
   // enable camera trackball
   camera.enableTrackball (true);

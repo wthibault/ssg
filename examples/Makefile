@@ -1,5 +1,7 @@
-OPTS = -g
-#OPTS = -O3
+#OPTS = -g
+OPTS = -O3
+
+#OPTS += -std=c++0x
 
 INC_DIR=../include
 LIB_DIR=../src
@@ -77,7 +79,8 @@ all : 	example0 \
 	texturedtriangle \
 	shader \
 	shadows \
-	fog
+	fog \
+	ptrTest
 
 example0 : example0.cpp $(SSG_INCS) $(LIB_DIR)/ssg.a
 	g++ $(OPTS) -o example0 $(INCLUDES) example0.cpp $(LIB_DIR)/ssg.a $(LIBS)
@@ -139,6 +142,9 @@ shadows : shadows.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(L
 fog : fog.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
 	g++ $(OPTS) -o fog $(INCLUDES) fog.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
+ptrTest : ptrTest.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
+	g++ $(OPTS) -o ptrTest $(INCLUDES) ptrTest.cpp $(LIB_DIR)/ssg.a $(LIBS)
+
 
 
 clean :
@@ -164,4 +170,5 @@ clean :
 	rm -f shader
 	rm -f shadows
 	rm -f fog
+	rm -f ptrTest
 	rm -rf *.dSYM

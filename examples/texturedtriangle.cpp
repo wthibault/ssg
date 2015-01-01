@@ -10,8 +10,8 @@ using namespace std;
 using namespace ssg;
 using namespace glm;
 
-ModelNode *root;
-Primitive *prim;
+Ptr<Instance> root;
+
 Camera     camera;
 int        height;
 
@@ -62,15 +62,15 @@ void init (int argc, char **argv)
 {
 
   //  create a primitive.
-  Primitive *prim;
+  Ptr<Primitive> prim;
   if ( argc >= 2 ) {
-    prim = new ObjFilePrimitive ( argv[1] );
+    prim = Ptr<Primitive> (new ObjFilePrimitive ( argv[1] ) );
   } else {
-    prim = new Triangle;
+    prim = Ptr<Primitive> ( new Triangle);
   }
 
   // create a root Instance to contain this primitive
-  Instance *instance = new Instance();
+  Ptr<Instance> instance ( new Instance() );
 
   // set the instance's matrix to the identity matrix
   instance->setMatrix ( mat4() );
@@ -82,7 +82,7 @@ void init (int argc, char **argv)
   RenderingEnvironment::getInstance().lightPosition = vec4 ( 0,0,10,1 );
   RenderingEnvironment::getInstance().lightColor = vec4 ( 1,1,1,1 );
   // create a material
-  Material *mat = new Material;
+  Ptr<Material> mat ( new Material );
   mat->ambient = vec4 ( 0.1, 0.1, 0.1, 1.0 );
   mat->diffuse = vec4 ( 0.9, 0.9, 0.9, 1.0 );
   mat->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );

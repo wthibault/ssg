@@ -14,8 +14,7 @@ using namespace glm;
 using namespace std;
 using namespace ssg;
 
-ModelNode *root;
-Primitive *prim;
+Ptr<Instance> root;
 mat4 projectionMatrix;
 mat4 modelviewMatrix;
 
@@ -41,11 +40,9 @@ void display ()
     currentFrame++;
   }
 
-#if 0
-  root->draw(mv, projectionMatrix );
-#else
-  dynamic_cast<Instance*>(root)->getChild ( currentFrame-startFrame )->draw(mv,projectionMatrix);
-#endif
+  Ptr<Material> mat;
+  //  dynamic_cast<Instance*>(root)->getChild ( currentFrame-startFrame )->draw(mv,projectionMatrix,mat);
+  root->getChild ( currentFrame-startFrame )->draw(mv,projectionMatrix,mat);
 
   glutSwapBuffers();
 }
@@ -97,7 +94,7 @@ void init (int argc, char **argv)
   }
 
   // create a root Instance to contain this primitive
-  Instance *instance = new Instance();
+  Ptr<Instance> instance (new Instance());
   instance->setMatrix ( mat4() );
 
   // read in each frame as a child
@@ -113,7 +110,7 @@ void init (int argc, char **argv)
   RenderingEnvironment::getInstance().lightColor = vec4 ( 1,1,1,1 );
 
   // create a material to use
-  Material *mat = new Material;
+  Ptr<Material> mat ( new Material );
   mat->ambient = vec4 ( 0.1, 0.1, 0.2, 1.0 );
   mat->diffuse = vec4 ( 0.5, 0.5, 0.1, 1.0 );
   mat->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );

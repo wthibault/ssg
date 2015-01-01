@@ -117,7 +117,7 @@ ParticleSystem::update ( float dt )
 void
 ParticleSystem::draw ( glm::mat4 mv,
 		       glm::mat4 proj,
-		       Material *mat) 
+		       Ptr<Material> mat) 
 {
 
   // copy the positions of living points to the vertex array

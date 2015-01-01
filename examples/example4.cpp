@@ -13,8 +13,8 @@ using namespace glm;
 using namespace std;
 using namespace ssg;
 
-ModelNode *root;
-Primitive *prim;
+Ptr<Instance> root;
+
 Camera camera;
 int width, height;
 
@@ -88,16 +88,17 @@ void init (int argc, char **argv)
 {
   
   //  create a primitive.  if supplied on command line, read a .obj wavefront file
-  ObjFilePrimitive *prim;
+  Ptr<Primitive> prim;
   if ( argc == 2 ) {
-    prim = new ObjFilePrimitive ( argv[1] );
+    prim = Ptr<Primitive> (new ObjFilePrimitive ( argv[1] ) );
   } else {
     cout << "usage: " << argv[0] << " objfile\n";
-    exit(1);
+    //    exit(1);
+    prim = Ptr<Primitive> ( new ObjFilePrimitive ( "objfiles/cube.obj" ) );
   }
 
   // create a root Instance to contain this primitive
-  Instance *instance = new Instance();
+  Ptr<Instance> instance ( new Instance() );
   instance->setMatrix ( mat4() );
   instance->addChild ( prim );
 
@@ -109,7 +110,7 @@ void init (int argc, char **argv)
   RenderingEnvironment::getInstance().lightColor = vec4 ( 1,1,1,1 );
 
   // create a material to use
-  Material *mat = new Material;
+  Ptr<Material> mat ( new Material );
   mat->ambient = vec4 ( 0.1, 0.1, 0.2, 1.0 );
   mat->diffuse = vec4 ( 0.5, 0.5, 0.1, 1.0 );
   mat->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );

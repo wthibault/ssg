@@ -14,12 +14,12 @@ using namespace glm;
 using namespace std;
 using namespace ssg;
 
-ModelNode *root;
-Primitive *prim;
+Ptr<Instance> root;
+
 Camera camera;
 int width, height;
 vector<vec3> controlPoints;
-Instance *body, *ulArm, *llArm, *urArm, *lrArm, *ulLeg, *urLeg, *llLeg, *lrLeg, *head;
+Ptr<Instance> body, ulArm, llArm, urArm, lrArm, ulLeg, urLeg, llLeg, lrLeg, head;
 
 float baseFrequency = 4.0; //Hz
 
@@ -168,60 +168,59 @@ void keyboard (unsigned char key, int x, int y)
 void init (int argc, char **argv)
 {
   
-  //  create a primitive.  if supplied on command line, read a .obj wavefront file
-  ObjFilePrimitive *bodyprim, *upperArm, *lowerArm, *headPrim;
-  bodyprim = new ObjFilePrimitive ( "objfiles/body.obj" );
-  upperArm = new ObjFilePrimitive ( "objfiles/upper_arm.obj" );
-  lowerArm = new ObjFilePrimitive ( "objfiles/lower_arm.obj" );
-  headPrim = new ObjFilePrimitive ( "objfiles/bill.obj" );
+  //  create primitives
+  Ptr<Primitive> bodyprim (new ObjFilePrimitive ( "objfiles/body.obj" ));
+  Ptr<Primitive> upperArm (new ObjFilePrimitive ( "objfiles/upper_arm.obj" ));
+  Ptr<Primitive> lowerArm (new ObjFilePrimitive ( "objfiles/lower_arm.obj" ));
+  Ptr<Primitive> headPrim (new ObjFilePrimitive ( "objfiles/bill.obj" ));
 
   // create the graph
 
-  body = new Instance;
+  body = Ptr<Instance> (new Instance);
   body->addChild ( bodyprim );
   body->setMatrix ( mat4() );
 
-  ulArm = new Instance;
+  ulArm = Ptr<Instance> (new Instance);
   ulArm->addChild ( upperArm );
   ulArm->setMatrix ( upperLeftArmMatrix(0,0) );
   body->addChild ( ulArm );
 
-  llArm = new Instance;
+  llArm = Ptr<Instance> (new Instance);
   llArm->addChild ( lowerArm );
   llArm->setMatrix ( lowerLeftArmMatrix(0) );
   ulArm->addChild ( llArm );
 
-  urArm = new Instance;
-  Instance *urArmLink = new Instance;
+  urArm = Ptr<Instance> ( new Instance );
+  Ptr<Instance> urArmLink ( new Instance );
   urArmLink->addChild ( upperArm );
   urArmLink->setMatrix ( rotate(mat4(), 180.0f,vec3(0,0,1)) );
   urArm->addChild ( urArmLink );
   urArm->setMatrix ( upperRightArmMatrix(0) );
   body->addChild ( urArm );
 
-  lrArm = new Instance;
-  Instance *lrArmLink = new Instance;
+  lrArm = Ptr<Instance> (new Instance);
+  Ptr<Instance> lrArmLink ( new Instance );
   lrArmLink->addChild ( lowerArm );
   lrArmLink->setMatrix ( rotate ( mat4(), 180.0f, vec3(0,0,1) ) );
   lrArm->addChild ( lrArmLink );
   lrArm->setMatrix ( lowerRightArmMatrix(0) );
   urArm->addChild ( lrArm );
 
-  ulLeg = new Instance;
-  Instance* ulLegLink = new Instance;
+  ulLeg = Ptr<Instance> ( new Instance );
+  Ptr<Instance> ulLegLink ( new Instance );
   ulLegLink->addChild ( upperArm );
   ulLegLink->setMatrix ( rotate ( mat4(), -90.0f, vec3(0,0,1) ) );
   ulLeg->addChild ( ulLegLink );
   ulLeg->setMatrix ( upperLeftLegMatrix(0) );
   body->addChild ( ulLeg );
 
-  urLeg = new Instance;
+  urLeg = Ptr<Instance> ( new Instance );
   urLeg->addChild ( ulLegLink ); // sharing is caring
   urLeg->setMatrix ( upperRightLegMatrix(0) );
   body->addChild ( urLeg );
 
-  llLeg = new Instance;
-  Instance *llLegLink = new Instance;
+  llLeg = Ptr<Instance> ( new Instance );
+  Ptr<Instance> llLegLink ( new Instance );
   llLegLink->addChild ( lowerArm );
   llLegLink->setMatrix ( rotate ( mat4(), -90.0f, vec3(0,0,1) ) );
   llLeg->addChild ( llLegLink );
@@ -229,12 +228,12 @@ void init (int argc, char **argv)
   llLeg->setMatrix ( mat4());
   ulLeg->addChild ( llLeg );
 
-  lrLeg = new Instance;
+  lrLeg = Ptr<Instance> ( new Instance );
   lrLeg->addChild ( llLegLink ); // share
   llLeg->setMatrix ( lowerLeftLegMatrix(0) );
   urLeg->addChild ( llLeg );
 
-  head = new Instance;
+  head = Ptr<Instance> ( new Instance );
   head->addChild ( headPrim );
   head->setMatrix ( headMatrix (0) );
   body->addChild(head);

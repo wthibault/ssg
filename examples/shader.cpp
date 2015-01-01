@@ -19,8 +19,8 @@ Texture *fboTexture = NULL;
 string shaderName;  // the base name of the .vert/.frag shader pair used for rendering the graph
 string fragShaderName; // the base name of the .frag shader for the effects pass
 
-ModelNode *root;
-Primitive *prim;
+Ptr<Instance> root;
+
 Camera camera;
 int width, height;
 
@@ -119,18 +119,21 @@ void init (int argc, char **argv)
   
 
   //  create a primitive.  if supplied on command line, read a .obj wavefront file
-  ObjFilePrimitive *prim;
+  Ptr<Primitive> prim;
   if ( argc == 4 ) {
-    prim = new ObjFilePrimitive ( argv[1] );
+    prim = Ptr<Primitive> (new ObjFilePrimitive ( argv[1] ) );
     shaderName = argv[2];
     fragShaderName = argv[3];
   } else {
     cout << "usage: " << argv[0] << " objfilename 3DshaderName FXshaderName\n";
-    exit(1);
+      //    exit(1);
+    prim = Ptr<Primitive> (new ObjFilePrimitive ( "objfiles/cube.obj" ) );
+    shaderName = "PhongShading";
+    fragShaderName = "edge";
   }
 
   // create a root Instance to contain this primitive
-  Instance *instance = new Instance();
+  Ptr<Instance> instance ( new Instance() );
   instance->setMatrix ( mat4() );
   instance->addChild ( prim );
 

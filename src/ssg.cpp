@@ -27,18 +27,27 @@ std::string shaderDir ("shaders120"); // #version 120 (mac)
 /////////////////////////////////////////////////////////////////
 
 void
-ssg::ModelNode::setMaterial ( Material *m ) { 
+ssg::ModelNode::setMaterial ( Ptr<Material> m ) { 
   material_ = m; 
 };
+
+//ssg::ModelNode* ssg::ModelNode::top;
 
 //////////////////////////////////////////////////////////////////
 // Primitive
 //////////////////////////////////////////////////////////////////
 ssg::Primitive::~Primitive()
 {
-  if ( material_ )
-    delete material_;
+  //  std::cout << "~Primitive\n";
+  //  if ( material_ )
+  //    delete material_;
   deleteGLBuffers_();
+
+  points_.clear();
+  normals_.clear();
+  indices_.clear();
+  texCoords_.clear();
+  colors_.clear();
 }
 
 void
@@ -128,15 +137,15 @@ ssg::Primitive::setDrawingPrimitive ( GLuint prim )
 
 void
 ssg::Primitive::setupShader ( glm::mat4 modelview,
-			 glm::mat4 projection,
-			 Material *material )
+			      glm::mat4 projection,
+			      Ptr<Material> material )
 {
 
-  if ( !material ) {
+  if ( !material.get() ) {
     // no material passed in
-    if ( !material_ ) {
+    if ( !material_.get() ) {
       // no material on primitive, make one now and keep it
-      material_ = new Material;
+      material_ = Ptr<Material> (new Material);
       material_->ambient = glm::vec4 ( 0.2, 0.2, 0.2, 1.0 );
       material_->diffuse = glm::vec4 ( 0.7, 0.7, 0.7, 1.0 );
       material_->specular = glm::vec4 ( 0.1, 0.1, 0.1, 1.0 );
@@ -298,8 +307,8 @@ ssg::Primitive::endShader()
 
 void 
 ssg::Primitive::draw ( glm::mat4 modelview, 
-		  glm::mat4 projection,
-		  Material *material) {
+		       glm::mat4 projection,
+		       Ptr<Material> material) {
 
   if ( isVisible_ ) {
 
@@ -325,32 +334,52 @@ ssg::Primitive::getWorldToLocalMatrix() {
 // I n s t a n c e
 //////////////////////////////////////////////////////////////////
 
+ssg::Instance::~Instance() 
+{
+  // int n = children_.size();
+  // for (int i=0; i < n; i++) {
+  //   delete children_[i];
+  // }
+  //  std::cout << "~Instance\n";
+  children_.clear();
+}
+
+
 void 
 ssg::Instance::update ( float dt )  {
-  std::vector<ModelNode*>::iterator node;
+
+  //  std::vector<ModelNode*>::iterator node;
+  std::vector<Ptr<ModelNode> >::iterator node;
   if ( parent_ ) {
     localToWorld_ = dynamic_cast<Instance*>(parent_)->localToWorld_ * matrix_;
     worldToLocal_ = glm::inverse(matrix_) * dynamic_cast<Instance*>(parent_)->worldToLocal_;
   }
-  for ( node = children_.begin(); node != children_.end(); node++ ) {
-    (*node)->update ( dt );
-  }
+
+    for (int i=0; i < children_.size(); i++ ) {
+      children_[i]->update ( dt );
+    }
+  //  for ( node = children_.begin(); node != children_.end(); node++ ) {
+  //    (*node)->update ( dt );
+  //  }
+
 }
 
 void 
 ssg::Instance::draw ( glm::mat4 modelview, 
-		 glm::mat4 projection,
-		 Material *material )   {
+		      glm::mat4 projection,
+		      Ptr<Material> material )   {
   if ( isVisible_ ) {
 
     // draw every child node
-    std::vector<ModelNode*>::iterator node;
+    //    std::vector<ModelNode*>::iterator node;
+    std::vector<Ptr<ModelNode> >::iterator node;
     // append the instance transform to the ctm
     glm::mat4 ctm = modelview * matrix_;
-    if ( material_ && !material )
+    if ( material_.get() && !material.get() )
       material = material_;
-    for ( node = children_.begin(); node != children_.end(); node++ ) {
-      (*node)->draw ( ctm, projection, material );
+
+    for (int i=0; i < children_.size(); i++ ) {
+      children_[i]->draw ( ctm, projection, material );
     }
 
   }
@@ -366,13 +395,49 @@ ssg::Instance::getMatrix () {
   return matrix_;
 }
 
+
+#if 1
 void 
-ssg::Instance::addChild ( ModelNode * child ) {
+ssg::Instance::addChild ( ModelNode* child ) {
+  children_.push_back ( Ptr<ModelNode> (child) );
+  child->parent_ = this;
+}
+void 
+ssg::Instance::addChild ( Ptr<ModelNode> child ) {
+  children_.push_back ( child );
+  child->parent_ = this;
+}
+#else
+void 
+ssg::Instance::addChild ( Instance* child ) {
+  children_.push_back ( Ptr<ModelNode> (child) );
+  child->parent_ = this;
+}
+
+void 
+ssg::Instance::addChild ( Primitive* child ) {
+  children_.push_back ( Ptr<ModelNode> (child) );
+  child->parent_ = this;
+}
+
+
+
+void 
+ssg::Instance::addChild ( Ptr<Instance> child ) {
   children_.push_back ( child );
   child->parent_ = this;
 }
 
-ssg::ModelNode* 
+
+void 
+ssg::Instance::addChild ( Ptr<Primitive> child ) {
+  children_.push_back ( child );
+  child->parent_ = this;
+}
+
+#endif
+
+ssg::Ptr<ssg::ModelNode> 
 ssg::Instance::getChild ( int i ) {
   if ( i >= 0 && i < children_.size() )
     return children_[i];

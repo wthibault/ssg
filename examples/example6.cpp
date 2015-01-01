@@ -14,8 +14,11 @@ using namespace std;
 using namespace ssg;
 
 
-ModelNode *root;
-Primitive *prim;
+// the scene graph. 
+// use Ptr<T> instead of *T to avoid memory leaks
+// Ptr<T> behaves just like a pointer to T
+Ptr<Instance> root;
+
 Camera camera;
 int width, height;
 
@@ -44,8 +47,8 @@ void display ()
 
   root->update(now-lastFrame);
 
-  Instance *iroot = dynamic_cast<Instance*>(root);
-  Instance *mover = dynamic_cast<Instance*> ( iroot->getChild(1) ); 
+  // we are assuming the graph was constructed with the second child as the node to animate
+  Ptr<Instance> mover ( root->getChild(1) ); 
 
   // interpolate along a quadratic Bezier curve
   float motionStartTime = 5.0;
@@ -63,10 +66,15 @@ void display ()
     mover->setMatrix ( translate(mat4(), deCasteljau2 (controlPoints, u ) ) );
 
   // add a marker to the scene at each position
+  // note: you should usually keep pointers to ssg nodes in Ptr smart pointers,
+  //       but in cases like this where you don't maintain a copy of the pointer,
+  //       and immediately store it in the graph,
+  //       we can just use a regular pointer.
+  //       Be sure never to call free on it!
   Instance *marker = new Instance();
   marker->addChild ( new Marker() );
   marker->setMatrix ( mover->getMatrix() );
-  iroot->addChild ( marker );
+  root->addChild ( marker );
 
   camera.draw(root);
 
@@ -106,24 +114,25 @@ void init (int argc, char **argv)
 {
   
   //  create a primitive.  if supplied on command line, read a .obj wavefront file
-  //ObjFilePrimitive *background, *movingObject;
+
   Primitive *background, *movingObject;
   if ( argc == 3 ) {
     background = new ObjFilePrimitive ( argv[1] );
     movingObject = new ObjFilePrimitive ( argv[2] );
   } else {
     cout << "usage: " << argv[0] << " backgroundObjFile moverObjfile\n";
-    //exit(1);
-	background = new Triangle;
-	movingObject = new Triangle;
+    background = new Triangle;
+    movingObject = new Triangle;
   }
 
   // create the graph
   // the second child of the root must be an instance: it will have its matrix changed
-  Instance *scene = new Instance();
+  //  Instance *scene = new Instance();
+  Ptr<Instance> scene (new Instance());
   scene->setMatrix ( mat4() );
   scene->addChild ( background );
-  Instance *mover = new Instance();
+  //  Instance *mover = new Instance();
+  Ptr<Instance> mover (new Instance());
   mover->addChild ( movingObject );
   scene->addChild ( mover );
 

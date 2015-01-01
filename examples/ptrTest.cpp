@@ -1,6 +1,6 @@
 //
-// example1.cpp
-// a simple ssg program to display a .obj file
+// ptrTest.cpp
+// try to test the smart pointers
 //
 
 #include "ssg.h"
@@ -12,9 +12,55 @@ Camera        camera;
 
 int width, height;
 
+// for the scene graph
+const int branchingFactor = 5;
+const int depth = 3;
+
+
+Ptr<Instance>
+createGraph ( int n, int level )
+{
+  Ptr<Primitive> prim ( new Triangle ); // shared
+  Ptr<Instance> instance ( new Instance );
+  for (int i=0; i<n; i++) {
+    if ( level ) {
+      Ptr<Instance> child ( createGraph ( n, level-1 ) ); 
+      glm::vec3 pos ( urand()-0.5, urand()-0.5, urand()-0.5 ) ;
+      child->setMatrix ( glm::translate ( glm::mat4(), pos ) );
+      instance->addChild ( child );
+    } else {
+      instance->addChild ( prim );
+    }
+  }
+  return instance;
+}
+
+Ptr<Instance>
+createSimpleGraph ()
+{
+  Ptr<Instance> instance ( new Instance );
+  Ptr<Primitive> prim  ( new Triangle );
+  instance->addChild (prim);
+  return instance;
+}
+
 
 void display ()
 {
+  // clobber the old graph with a new one
+  // check with top to see if memory is leaking
+
+  root = createGraph ( branchingFactor, depth );
+  //  root = createSimpleGraph();
+
+  Ptr<Material> mat ( new Material );
+  mat->ambient = vec4 ( 0.1, 0.1, 0.2, 1.0 );
+  mat->diffuse = vec4 ( 0.1, 0.5, 0.5, 1.0 );
+  mat->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );
+  mat->shininess = 133.0;
+  mat->program = mat->loadShaders ( "BumpMappedTexturedPhongShading" );
+  root->setMaterial ( mat );
+
   glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
   camera.draw(root);
   glutSwapBuffers();
@@ -64,20 +110,10 @@ motion ( int x, int y )
 void init (int argc, char **argv)
 {
   
-  // create a primitive.  if supplied on command line, read a .obj wavefront file
+  // allocate a scene graph
 
-  Ptr<Primitive> prim;
-  if ( argc >= 2 ) {
-    prim = Ptr<Primitive> (new ObjFilePrimitive ( argv[1] ));
-  } else {
-    prim = Ptr<Primitive> (new Triangle);
-    std::cout << "usage: " << argv[0] << " [objfile.obj]\n";
-  }
-
-  // create an Instance to contain this primitive
-  Ptr<Instance> instance ( new Instance() );
-  instance->setMatrix ( mat4() );
-  instance->addChild ( prim );
+  //  Ptr<Instance> instance ( createGraph ( branchingFactor, depth ) );
+  Ptr<Instance> instance ( createSimpleGraph() );
 
   // the lights are global for all objects in the scene
   RenderingEnvironment::getInstance().lightPosition = vec4 ( 0,0,10,1 );

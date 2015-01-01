@@ -13,12 +13,11 @@ using namespace glm;
 using namespace std;
 using namespace ssg;
 
-ModelNode *root;
-Primitive *prim;
+Ptr<Instance> root;
 Camera camera;
 int width, height;
 vector<vec3> controlPoints;
-Instance *link0, *link1, *link2;
+Ptr<Instance> link0, link1, link2;
 
 vec3 upperArmJointOffset (1,1,0);
 vec3 lowerArmJointOffset (1,0,0);
@@ -101,16 +100,16 @@ void init (int argc, char **argv)
 
   // create the graph
 
-  link0 = new Instance;
+  link0 = Ptr<Instance> (new Instance);
   link0->addChild ( body );
   link0->setMatrix ( mat4() );
 
-  link1 = new Instance;
+  link1 = Ptr<Instance> (new Instance);
   link1->addChild ( upperArm );
   link1->setMatrix ( upperArmMatrix(0) );
   link0->addChild ( link1 );
 
-  link2 = new Instance;
+  link2 = Ptr<Instance> (new Instance);
   link2->addChild ( lowerArm );
   link2->setMatrix ( lowerArmMatrix(0) );
   link1->addChild ( link2 );

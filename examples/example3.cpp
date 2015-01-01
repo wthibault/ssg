@@ -7,8 +7,7 @@
 using namespace glm;
 using namespace ssg;
 
-ModelNode *root;          
-Primitive *prim;          
+Ptr<Instance> root;          
 mat4 projectionMatrix;    
 mat4 modelviewMatrix;
 
@@ -18,7 +17,9 @@ Trackball trackball(320,240,240);
 
 
 //const char *shader = "DepthMap";
-const char *shader = "ConstantShading";
+//const char *shader = "ConstantShading";
+//const char *shader = "PhongShadingShadowsFog";
+const char *shader = "PointVertexColorShadowsFog";
 
 void 
 display ()
@@ -30,8 +31,9 @@ display ()
   // mouse control 
   mat4 tball = trackball.getMat4();
   mat4 mv = modelviewMatrix * tball;
+  Ptr<Material> mat;
 
-  root->draw(mv, projectionMatrix );
+  root->draw(mv, projectionMatrix, mat );
 
   glutSwapBuffers();
 }
@@ -56,13 +58,13 @@ reshape (int w, int h)
   trackball = Trackball ( halfw, halfh, fmin ( halfw, halfw ) );
 }
 
-Instance *
+Ptr<Instance>
 createRandomInstanceNewSystem ()
 {
   // create a new instance to refer to the same primitive, transformed
-  ParticleSystem *prim = new ParticleSystem();
+  Ptr<Primitive> prim ( new ParticleSystem() );
   
-  Instance* anotherInstance = new Instance();
+  Ptr<Instance> anotherInstance ( new Instance() );
   anotherInstance->addChild ( prim );
   vec2 pos = vec2 ( urand() - 0.5f, urand() - 0.5f );
   float len = 2*glm::length(pos);
@@ -70,7 +72,7 @@ createRandomInstanceNewSystem ()
 					90.0f, vec3(0,0,1) ) );
 
   // create a material to use
-  Material *mat = new Material;
+  Ptr<Material>mat ( new Material );
   mat->ambient = vec4 ( 0.1,0.1,0.1, 1.0 );
   vec3 rimcolor = vec3 ( 1.0, 0.0, 0.0 );
   vec3 centercolor = vec3 ( 1.0, 1.0, 0.0 );
@@ -89,7 +91,7 @@ keyboard (unsigned char key, int x, int y)
 {
   switch (key) {
   case 'a':
-    dynamic_cast<Instance*>(root)->addChild ( createRandomInstanceNewSystem() );
+    root->addChild ( createRandomInstanceNewSystem() );
     break;
 
   case 27: /* ESC */
@@ -106,11 +108,12 @@ init (int argc, char **argv)
   
   // create a primitive.  if supplied on command line, read a .obj wavefront file
 
+  Ptr<Primitive> prim;
   if ( argc >= 2 ) {
-    prim = new ObjFilePrimitive ( argv[1] );
+    prim = Ptr<Primitive> (new ObjFilePrimitive ( argv[1] ) );
   } else {
     //    prim = new Triangle;
-    prim = new ParticleSystem();
+    prim = Ptr<Primitive> (new ParticleSystem() );
     std::cout << "usage: " << argv[0] << " [objfile.obj]\n";
   }
   std::cout << "Hit 'a' to add a new particle system.\n";

@@ -330,7 +330,7 @@ bool loadObjectGroups ( const char * filename,
 			vector<vec3> &outNormal, 
 			vector<vec2> &outUv,
 			vector< vector<unsigned int> > &outIndices, // per group
-			vector<Material *> &outMaterials, // per group
+			vector<Ptr<Material> > &outMaterials, // per group
 			float scale)
 {
 	
@@ -404,7 +404,7 @@ bool loadObjectGroups ( const char * filename,
       }
       printDebug ( materials[token] );
       groups[currentGroupName]->mat = materials[token];
-      outMaterials.push_back(materials[token]);
+      outMaterials.push_back(Ptr<Material> (materials[token]));
 
     } else if (token.compare("v")==0){
       positions.push_back( toVec3(iss));
@@ -543,7 +543,6 @@ void printDebug(Material *m){
 ObjFilePrimitive::ObjFilePrimitive ( const char *filename ) 
 {
 
-  //  std::vector<int> tmp_indices;
   bool okay = loadObjectGroups( filename,
 				points_,
 				normals_,
@@ -584,12 +583,12 @@ ObjFilePrimitive::ObjFilePrimitive ( const char *filename )
 void 
 ObjFilePrimitive::draw ( glm::mat4 modelview, 
 			 glm::mat4 projection,
-			 Material *material) {
+			 Ptr<Material> material) {
 
   // loop over all groups as they have different materials.
   for (int i = 0; i < groupIndices_.size(); i++ ) {
 
-    if (!material) {
+    if (!material.get()) {
       setupShader ( modelview, projection, materials_[i] );
     } else {
       setupShader ( modelview, projection, material );
