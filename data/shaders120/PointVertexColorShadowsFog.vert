@@ -25,7 +25,6 @@ void main()
 
   ShadowMapCoord = LightMatrix * vec4(vPosition.xyz,1.0);
   VertexColor = vec4 ( vColor, 1.0 );
-  //  gl_Position = Projection * ModelView * vec4(vPosition.xyz,1.0);
   gl_Position = Projection * ModelView * vec4(vPosition.xyz,1.0);
   
 
