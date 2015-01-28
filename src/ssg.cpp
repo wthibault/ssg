@@ -396,7 +396,6 @@ ssg::Instance::getMatrix () {
 }
 
 
-#if 1
 void 
 ssg::Instance::addChild ( ModelNode* child ) {
   children_.push_back ( Ptr<ModelNode> (child) );
@@ -407,35 +406,20 @@ ssg::Instance::addChild ( Ptr<ModelNode> child ) {
   children_.push_back ( child );
   child->parent_ = this;
 }
-#else
-void 
-ssg::Instance::addChild ( Instance* child ) {
-  children_.push_back ( Ptr<ModelNode> (child) );
-  child->parent_ = this;
-}
-
-void 
-ssg::Instance::addChild ( Primitive* child ) {
-  children_.push_back ( Ptr<ModelNode> (child) );
-  child->parent_ = this;
-}
 
 
+// void 
+// ssg::Instance::addChild ( Ptr<Instance> child ) {
+//   children_.push_back ( child );
+//   child->parent_ = this;
+// }
 
-void 
-ssg::Instance::addChild ( Ptr<Instance> child ) {
-  children_.push_back ( child );
-  child->parent_ = this;
-}
+// void 
+// ssg::Instance::addChild ( Ptr<Primitive> child ) {
+//   children_.push_back ( child );
+//   child->parent_ = this;
+// }
 
-
-void 
-ssg::Instance::addChild ( Ptr<Primitive> child ) {
-  children_.push_back ( child );
-  child->parent_ = this;
-}
-
-#endif
 
 ssg::Ptr<ssg::ModelNode> 
 ssg::Instance::getChild ( int i ) {
@@ -444,6 +428,48 @@ ssg::Instance::getChild ( int i ) {
   else 
     return 0;
 }
+
+int
+ssg::Instance::numChildren ()
+{
+  return children_.size();
+}
+
+
+void 
+ssg::Instance::setChild ( ModelNode* child, int slot ) {
+  if (slot>0 && slot<children_.size()) {
+    children_[slot] = Ptr<ModelNode> (child);
+    child->parent_ = this;
+  }
+}
+
+void 
+ssg::Instance::setChild ( Ptr<ModelNode> child, int slot ) {
+  if (slot>0 && slot<children_.size()) {
+    children_[slot] = child;
+    child->parent_ = this;
+  }
+}
+
+// void 
+// ssg::Instance::setChild ( Ptr<Instance> child, int slot ) {
+//   if (slot>0 && slot<children_.size()) {
+//     p->children_[slot] = child;
+//     child->parent_ = this;
+//   }
+// }
+
+// void 
+// ssg::Instance::setChild ( Ptr<Primitive> child, int slot ) {
+//   if (slot>0 && slot<children_.size()) {
+//     p->children_[slot] = child;
+//     child->parent_ = this;
+//   }
+// }
+
+
+
 
 glm::mat4 
 ssg::Instance::getWorldToLocalMatrix() {

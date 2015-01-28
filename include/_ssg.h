@@ -280,6 +280,11 @@ public:
 
   virtual Ptr<ModelNode> getChild ( int i );
 
+  virtual int   numChildren();
+
+  virtual void  setChild ( ModelNode * child, int slot );
+  virtual void  setChild ( Ptr<ModelNode> child, int slot );
+
   virtual glm::mat4 getWorldToLocalMatrix();
 
 protected:
