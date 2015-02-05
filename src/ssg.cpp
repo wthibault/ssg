@@ -90,7 +90,8 @@ ssg::Primitive::generateAndLoadArrayBuffer()
 		NULL, GL_DYNAMIC_DRAW );
   glBufferSubData( GL_ARRAY_BUFFER, 0, sizeofPoints, &points_[0] );
   glBufferSubData( GL_ARRAY_BUFFER, sizeofPoints, sizeofNormals, &normals_[0] );
-  glBufferSubData( GL_ARRAY_BUFFER, sizeofPoints + sizeofNormals, sizeofTexCoords, &texCoords_[0] );
+  if ( sizeofTexCoords )
+	glBufferSubData( GL_ARRAY_BUFFER, sizeofPoints + sizeofNormals, sizeofTexCoords, &texCoords_[0] );
   // unbind the the arraybuffer, but keep the vertex array bound
   glBindBuffer ( GL_ARRAY_BUFFER, 0 );
 }

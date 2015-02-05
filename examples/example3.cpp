@@ -55,7 +55,11 @@ reshape (int w, int h)
   modelviewMatrix = translate ( mat4(), vec3(0,0,-4) );
   float halfw = float(w)/2.0f;
   float halfh = float(h)/2.0f;
+#ifdef _WIN32
+  trackball = Trackball ( halfw, halfh, std::min ( halfw, halfw ) );
+#else
   trackball = Trackball ( halfw, halfh, fmin ( halfw, halfw ) );
+#endif
 }
 
 Ptr<Instance>

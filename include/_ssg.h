@@ -209,7 +209,7 @@ public:
   ModelNode*     parent_;
   Ptr<Material>  material_;
   bool      isVisible_;
-  virtual glm::mat4 getWorldToLocalMatrix() {}
+  virtual glm::mat4 getWorldToLocalMatrix() {return glm::mat4();}  // XXX BORKED
   // protected:
   int       count_;  // reference count
 };
