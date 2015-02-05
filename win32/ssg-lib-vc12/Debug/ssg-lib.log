@@ -1,0 +1,75 @@
+﻿Build started 2/5/2015 8:30:40 AM.
+     1>Project "C:\Users\COSLAB\Desktop\Thibault\ssg-master\win32\ssg-lib-vc12\ssg-lib.vcxproj" on node 2 (Build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\ssg-lib.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D GLEW_STATIC /D WIN32 /D _DEBUG /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\src\FrameBufferObject.cpp ..\..\src\InitShader.cpp ..\..\src\ObjLoader.cpp ..\..\src\ParticleSystem.cpp ..\..\src\ssg.cpp ..\..\src\Texture.cpp ..\..\src\TextureLoader.cpp
+         TextureLoader.cpp
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\stb_image.c(559): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\stb_image.c(621): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\stb_image.c(659): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\stb_image.c(4552): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\textureloader.cpp(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\textureloader.cpp(108): warning C4018: '<' : signed/unsigned mismatch
+         Texture.cpp
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\texture.cpp(93): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\texture.cpp(237): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\texture.cpp(238): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\texture.cpp(251): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\texture.cpp(252): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\texture.cpp(289): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\texture.cpp(290): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\texture.cpp(303): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\texture.cpp(304): warning C4018: '<' : signed/unsigned mismatch
+         ssg.cpp
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\ssg.cpp(359): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\ssg.cpp(382): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\ssg.cpp(427): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\ssg.cpp(442): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\ssg.cpp(450): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\ssg.cpp(603): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdlib.h(449) : see declaration of 'getenv'
+         ParticleSystem.cpp
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\particlesystem.cpp(42): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\particlesystem.cpp(90): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\particlesystem.cpp(104): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\particlesystem.cpp(152): warning C4018: '<' : signed/unsigned mismatch
+         ObjLoader.cpp
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\objloader.cpp(181): warning C4101: 'shininess' : unreferenced local variable
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\objloader.cpp(267): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\objloader.cpp(277): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\objloader.cpp(443): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\objloader.cpp(462): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\objloader.cpp(504): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\objloader.cpp(571): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\objloader.cpp(589): warning C4018: '<' : signed/unsigned mismatch
+         InitShader.cpp
+     1>c:\users\coslab\desktop\thibault\ssg-master\src\initshader.cpp(23): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
+         FrameBufferObject.cpp
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D GLEW_STATIC /D WIN32 /D _DEBUG /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TC /analyze- /errorReport:prompt "glew-1.9.0\src\glew.c"
+         glew.c
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\Lib.exe /OUT:"C:\Users\COSLAB\Desktop\Thibault\ssg-master\win32\ssg-lib-vc12\Debug\ssg-lib.lib" /NOLOGO Debug\FrameBufferObject.obj
+         Debug\InitShader.obj
+         Debug\ObjLoader.obj
+         Debug\ParticleSystem.obj
+         Debug\ssg.obj
+         Debug\Texture.obj
+         Debug\TextureLoader.obj
+         Debug\glew.obj
+         ssg-lib.vcxproj -> C:\Users\COSLAB\Desktop\Thibault\ssg-master\win32\ssg-lib-vc12\Debug\ssg-lib.lib
+       FinalizeBuildStatus:
+         Deleting file "Debug\ssg-lib.unsuccessfulbuild".
+         Touching "Debug\ssg-lib.lastbuildstate".
+     1>Done Building Project "C:\Users\COSLAB\Desktop\Thibault\ssg-master\win32\ssg-lib-vc12\ssg-lib.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:08.03
