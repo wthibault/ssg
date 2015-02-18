@@ -54,7 +54,7 @@ public:
     hscreen = h;
     wscreen = w;
     glViewport (0, 0, (GLsizei) w, (GLsizei) h); 
-    P = glm::perspective ( fovy, (GLfloat) w / (GLfloat) h, 0.1f, 200.0f );
+    P = glm::perspective ( fovy, (GLfloat) w / (GLfloat) h, 0.02f, 200.0f );
     float halfw = float(w)/2.0f;
     float halfh = float(h)/2.0f;
     trackball = Trackball ( halfw, halfh, std::min ( halfw, halfw ) );

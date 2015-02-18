@@ -80,7 +80,8 @@ all : 	example0 \
 	shader \
 	shadows \
 	fog \
-	ptrTest
+	ptrTest \
+	maze
 
 example0 : example0.cpp $(SSG_INCS) $(LIB_DIR)/ssg.a
 	g++ $(OPTS) -o example0 $(INCLUDES) example0.cpp $(LIB_DIR)/ssg.a $(LIBS)
@@ -145,6 +146,9 @@ fog : fog.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/
 ptrTest : ptrTest.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
 	g++ $(OPTS) -o ptrTest $(INCLUDES) ptrTest.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
+maze : maze.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
+	g++ $(OPTS) -o maze $(INCLUDES) maze.cpp $(LIB_DIR)/ssg.a $(LIBS)
+
 
 
 clean :
@@ -171,4 +175,5 @@ clean :
 	rm -f shadows
 	rm -f fog
 	rm -f ptrTest
+	rm -f maze
 	rm -rf *.dSYM
