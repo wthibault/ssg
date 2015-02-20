@@ -121,6 +121,6 @@ void main()
   float fogFactor = exp ( -FogDensity * fogDist );
   gl_FragColor = fogFactor * surfaceColor + (1-fogFactor) * FogColor;
 // for point
-  glFragColor.a = alpha;
+  gl_FragColor.a = alpha;
 } 
 
