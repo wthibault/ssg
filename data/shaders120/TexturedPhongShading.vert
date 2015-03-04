@@ -25,5 +25,7 @@ void main()
   
   gl_Position = Projection * ModelView * vec4(vPosition.xyz,1.0);
   
-  uv = vTexCoord;
+  //  uv = vTexCoord;
+  // flip for opengl texture storage order
+  uv = vec2(vTexCoord.x, 1.0 - vTexCoord.y);
 }

@@ -63,8 +63,12 @@ void init (int argc, char **argv)
 
   //  create a primitive.
   Ptr<Primitive> prim;
+  string texturefile ( "textures/landscape.bmp" );
   if ( argc >= 2 ) {
     prim = Ptr<Primitive> (new ObjFilePrimitive ( argv[1] ) );
+    if (argc >= 3) {
+      texturefile = argv[2];
+    }
   } else {
     prim = Ptr<Primitive> ( new Triangle);
   }
@@ -87,7 +91,7 @@ void init (int argc, char **argv)
   mat->diffuse = vec4 ( 0.9, 0.9, 0.9, 1.0 );
   mat->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );
   mat->shininess = 400.0;
-  mat->diffuseTexture = new Texture ( "textures/landscape.bmp", false, true );
+  mat->diffuseTexture = new Texture ( texturefile.c_str(), false, true );
   mat->program = mat->loadShaders ( "TexturedPhongShading" );
 
   // attach the material to the primitive
