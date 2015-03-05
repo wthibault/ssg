@@ -102,7 +102,7 @@ void init (int argc, char **argv)
 
   // enable camera trackball
   camera.enableTrackball (true);
-  camera.setDistance ( 2.5 );
+  camera.setDistance ( 3.5 );
 
   // misc OpenGL state
   glClearColor (0.0, 0.0, 0.0, 1.0);
