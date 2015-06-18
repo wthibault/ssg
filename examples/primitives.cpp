@@ -4,6 +4,7 @@
 //
 
 #include "ssg.h"
+#include <cmath>
 using namespace glm;
 using namespace ssg;
 
@@ -159,7 +160,8 @@ public:
     // now the circular base
     vec3 vertical = vec3 (0,0,1); // points up 
     vec3 radial; // points outward from the center of the base to the vertex
-    float step = M_PI * 2.0 / numDivs;
+	const float PI = 3.14159265358979323846;
+    float step = PI * 2.0 / numDivs;
     for (int i = 0; i < numDivs+1; i++ ) {
       float angle = i * step;
       float x = r * cos ( angle );

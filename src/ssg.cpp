@@ -90,7 +90,8 @@ ssg::Primitive::generateAndLoadArrayBuffer()
 		NULL, GL_DYNAMIC_DRAW );
   glBufferSubData( GL_ARRAY_BUFFER, 0, sizeofPoints, &points_[0] );
   glBufferSubData( GL_ARRAY_BUFFER, sizeofPoints, sizeofNormals, &normals_[0] );
-  glBufferSubData( GL_ARRAY_BUFFER, sizeofPoints + sizeofNormals, sizeofTexCoords, &texCoords_[0] );
+  if ( sizeofTexCoords )
+	glBufferSubData( GL_ARRAY_BUFFER, sizeofPoints + sizeofNormals, sizeofTexCoords, &texCoords_[0] );
   // unbind the the arraybuffer, but keep the vertex array bound
   glBindBuffer ( GL_ARRAY_BUFFER, 0 );
 }
@@ -631,13 +632,16 @@ ssg::ssgPrependDataPath ( const char* basename )
   // else prepend the SSG_DATA environment variable
 
   std::string path;
-  std::string dataPath = getenv("SSG_DATA");
+  std::string dataPath ( getenv("SSG_DATA") );
   if ( dataPath.length() > 0 ) {
     path = dataPath; 
 	path += "//";
 	path += basename;
-  } else
-    path = basename;
+  } else {
+    //    path = basename;
+    std::cout << "ERROR: SSG_DATA environment variable not set!\n";
+    exit(1);
+  }
   return path;
 }
 

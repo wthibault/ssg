@@ -4,6 +4,7 @@
 #pragma once
 #include "Trackball.h"
 #include <cmath>
+#include <algorithm>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_access.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -54,7 +55,7 @@ public:
     hscreen = h;
     wscreen = w;
     glViewport (0, 0, (GLsizei) w, (GLsizei) h); 
-    P = glm::perspective ( fovy, (GLfloat) w / (GLfloat) h, 0.1f, 200.0f );
+    P = glm::perspective ( fovy, (GLfloat) w / (GLfloat) h, 0.02f, 200.0f );
     float halfw = float(w)/2.0f;
     float halfh = float(h)/2.0f;
     trackball = Trackball ( halfw, halfh, std::min ( halfw, halfw ) );
