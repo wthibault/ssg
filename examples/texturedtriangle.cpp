@@ -67,6 +67,7 @@ void init (int argc, char **argv)
     prim = Ptr<Primitive> (new ObjFilePrimitive ( argv[1] ) );
   } else {
     prim = Ptr<Primitive> ( new Triangle);
+    //prim = Ptr<Primitive> ( new Quad);
   }
 
   // create a root Instance to contain this primitive
