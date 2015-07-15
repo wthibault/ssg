@@ -51,11 +51,14 @@ public:
   void setModelviewMatrix(glm::mat4 m)  {M=m;}
   glm::mat4 getModelviewMatrix()  {return M;}
 
-  void setupPerspective ( int w, int h ) {
+  void setupPerspective ( int w, int h, float ratio=0.0 ) {
     hscreen = h;
     wscreen = w;
     glViewport (0, 0, (GLsizei) w, (GLsizei) h); 
-    P = glm::perspective ( fovy, (GLfloat) w / (GLfloat) h, 0.02f, 200.0f );
+    if (ratio != 0)
+      P = glm::perspective ( fovy, ratio, 0.02f, 200.0f );
+    else
+      P = glm::perspective ( fovy, (GLfloat) w / (GLfloat) h, 0.02f, 200.0f );
     float halfw = float(w)/2.0f;
     float halfh = float(h)/2.0f;
     trackball = Trackball ( halfw, halfh, std::min ( halfw, halfw ) );

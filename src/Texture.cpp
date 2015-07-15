@@ -49,7 +49,7 @@
 using namespace std;
 using namespace glm;
 
-Texture::Texture(GLuint width, GLuint height, bool floatingPoint, bool mipmaps, unsigned int t )
+ssg::Texture::Texture(GLuint width, GLuint height, bool floatingPoint, bool mipmaps, unsigned int t )
   : width(width), 
     height(height), 
     floatingPoint(floatingPoint), 
@@ -68,7 +68,7 @@ Texture::Texture(GLuint width, GLuint height, bool floatingPoint, bool mipmaps, 
 }
 
 
-Texture::Texture(const char *bmpfilename, bool floatingPoint, bool mipmaps, unsigned int texUnit )
+ssg::Texture::Texture(const char *bmpfilename, bool floatingPoint, bool mipmaps, unsigned int texUnit )
   : floatingPoint(floatingPoint)
 {
 
@@ -128,7 +128,7 @@ Texture::Texture(const char *bmpfilename, bool floatingPoint, bool mipmaps, unsi
 
 
 void
-Texture::setupTexParams( bool floatingpoint, bool mipmaps )
+ssg::Texture::setupTexParams( bool floatingpoint, bool mipmaps )
 {
   glGenTextures(1, &textureId);
   glBindTexture(GL_TEXTURE_2D, textureId);
@@ -156,11 +156,12 @@ Texture::setupTexParams( bool floatingpoint, bool mipmaps )
   loadZeros(0);
 }
 
-Texture::~Texture(){
+ssg::Texture::~Texture(){
   glDeleteTextures(1, &textureId);
 }
 
-void Texture::renderFullscreenQuad(){
+void 
+ssg::Texture::renderFullscreenQuad(){
   glUseProgram(drawTextureShader);
   glBindVertexArray(drawTextureVertexArrayObject);
   glActiveTexture(GL_TEXTURE0);
@@ -172,7 +173,8 @@ void Texture::renderFullscreenQuad(){
   glUseProgram(0);
 }
 
-void Texture::setupRenderFullscreenQuad(const char* vprog, const char* fprog){
+void 
+ssg::Texture::setupRenderFullscreenQuad(const char* vprog, const char* fprog){
   //  drawTextureShader = InitShader("shaders120/fullscreentexture.vert",  
   //				 "shaders120/fullscreentexture.frag");
 
@@ -206,24 +208,28 @@ void Texture::setupRenderFullscreenQuad(const char* vprog, const char* fprog){
   //	    << std::endl;
 }
 
-void Texture::generateMipmaps(){
+void 
+ssg::Texture::generateMipmaps(){
   glBindTexture(GL_TEXTURE_2D, textureId);
   glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void Texture::bind(unsigned int t)
+void 
+ssg::Texture::bind(unsigned int t)
 {
   glActiveTexture ( GL_TEXTURE0 + t );
   glBindTexture ( GL_TEXTURE_2D, textureId );
 }
 
-void Texture::unbind(unsigned int t)
+void 
+ssg::Texture::unbind(unsigned int t)
 {
   glActiveTexture ( GL_TEXTURE0 + t );
   glBindTexture ( GL_TEXTURE_2D, 0 );
 }
 
-void Texture::loadChecks(unsigned int t)
+void 
+ssg::Texture::loadChecks(unsigned int t)
 {
   unsigned char *data = NULL;
 
@@ -277,7 +283,8 @@ void Texture::loadChecks(unsigned int t)
 }
 
 
-void Texture::loadZeros(unsigned int t)
+void 
+ssg::Texture::loadZeros(unsigned int t)
 {
   unsigned char *data = NULL;
 
@@ -337,12 +344,13 @@ void Texture::loadZeros(unsigned int t)
 
 
 #ifdef HIGHRES_SHADOWS
-const int ShadowTexture::SHADOW_WIDTH = 8192;
+const int ssg::ShadowTexture::SHADOW_WIDTH = 8192;
+//const int ShadowTexture::SHADOW_WIDTH = 4096;
 #else
-const int ShadowTexture::SHADOW_WIDTH = 2048;
+const int ssg::ShadowTexture::SHADOW_WIDTH = 2048;
 #endif
 
-ShadowTexture::ShadowTexture ()
+ssg::ShadowTexture::ShadowTexture ()
 {
   glGenTextures(1,&textureId);
   glBindTexture(GL_TEXTURE_2D, textureId);

@@ -39,7 +39,7 @@
 
 using namespace std;
 
-FrameBufferObject::FrameBufferObject(Texture *texture, bool useDepthBuffer)
+ssg::FrameBufferObject::FrameBufferObject(Texture *texture, bool useDepthBuffer)
 :texture(texture){
     
     
@@ -84,7 +84,7 @@ FrameBufferObject::FrameBufferObject(Texture *texture, bool useDepthBuffer)
 
 
 // use this constructor if you want to render shadows
-FrameBufferObject::FrameBufferObject(Texture *texture, ShadowTexture *depthTexture)
+ssg::FrameBufferObject::FrameBufferObject(Texture *texture, ShadowTexture *depthTexture)
   :texture(texture)
 {
     
@@ -121,19 +121,22 @@ FrameBufferObject::FrameBufferObject(Texture *texture, ShadowTexture *depthTextu
 }
 
 
-FrameBufferObject::~FrameBufferObject(){
+ssg::FrameBufferObject::~FrameBufferObject(){
     glDeleteFramebuffers(1, &framebufferid);
 }
 
-void FrameBufferObject::bind(){
+void 
+ssg::FrameBufferObject::bind(){
     glBindFramebuffer(GL_FRAMEBUFFER, framebufferid);
 }
 
-void FrameBufferObject::unbind(){
+void 
+ssg::FrameBufferObject::unbind(){
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void FrameBufferObject::checkFramebufferStatusOk(){
+void 
+ssg::FrameBufferObject::checkFramebufferStatusOk(){
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     switch (status){
         case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:

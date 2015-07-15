@@ -43,7 +43,7 @@
 #define    glBindVertexArray glBindVertexArrayAPPLE
 #endif
 
-
+namespace ssg {
 
 // Create a texture
 class Texture {
@@ -90,5 +90,7 @@ class ShadowTexture : public Texture
   ~ShadowTexture();
   GLuint getTextureId() { return textureId; }
 };
+
+}; // namespace ssg
 
 #endif /* defined(__VertexBlending__Texture__) */

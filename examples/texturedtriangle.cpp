@@ -71,6 +71,7 @@ void init (int argc, char **argv)
     }
   } else {
     prim = Ptr<Primitive> ( new Triangle);
+    //prim = Ptr<Primitive> ( new Quad);
   }
 
   // create a root Instance to contain this primitive

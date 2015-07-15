@@ -49,6 +49,8 @@
 // fbo->unbind();
 // // offscreenTexture now contains the rendering
 // 
+namespace ssg {
+
 class FrameBufferObject {
 public:
     FrameBufferObject(Texture *texture, bool useDepthBuffer = true);
@@ -64,10 +66,11 @@ public:
     }
 private:
     void checkFramebufferStatusOk();
-    Texture *texture;
+    ssg::Texture *texture;
     GLuint framebufferid;
 };
 
 
+}; // namespace
 
 #endif /* defined(__VertexBlending__FrameBufferObject__) */

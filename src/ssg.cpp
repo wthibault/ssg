@@ -548,6 +548,38 @@ ssg::Marker::Marker () {
 }
 
 
+//
+// a Quad primitive
+//
+
+ssg::Quad::Quad() {
+  glm::vec3 v[4];
+  glm::vec2 uv[4];
+  v[0] = glm::vec3 (  -1,  -1, 0 );
+  v[1] = glm::vec3 (  1,  -1, 0 );
+  v[2] = glm::vec3 (  1,  1, 0 );
+  v[3] = glm::vec3 (  -1,  1, 0 );
+
+  uv[0] = glm::vec2 (0,0 );
+  uv[1] = glm::vec2 (1,0 );
+  uv[2] = glm::vec2 (1,1 );
+  uv[3] = glm::vec2 (0,1 );
+
+  for (int i = 0; i < 4; i++) {
+    points_.push_back(v[i]);
+    normals_.push_back ( glm::vec3 (0,0,-1) );
+    texCoords_.push_back( uv[i] );
+  }
+
+  indices_.push_back ( 0 );
+  indices_.push_back ( 1 );
+  indices_.push_back ( 2 );
+  indices_.push_back ( 3 );
+
+  drawingPrimitive_ = GL_TRIANGLE_FAN;
+
+  ssg::Primitive::init();
+}
 
 
 
