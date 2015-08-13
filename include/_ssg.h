@@ -333,6 +333,37 @@ public:
   virtual void update(float dt) {}
 };
 
+//
+//////////////////////////////////////////////////////////////////
+// a Quad primitive class
+//////////////////////////////////////////////////////////////////
+//
+
+class LineSegment : public Primitive 
+{
+public:
+  LineSegment ( glm::vec3 a, glm::vec3 b )
+  {
+    points_.push_back ( a );
+    points_.push_back ( b );
+
+    normals_.push_back ( glm::vec3 ( 0,0,1 ) );
+    normals_.push_back ( glm::vec3 ( 0,0,1 ) );
+
+    indices_.push_back ( 0 );
+    indices_.push_back ( 1 );
+
+    texCoords_.push_back ( glm::vec2 (0.0, 0.0) );
+    texCoords_.push_back ( glm::vec2 (1.0, 0.0) );
+
+    drawingPrimitive_ = GL_LINES;
+
+    ssg::Primitive::init();
+  }
+
+  virtual void update ( float dt ) {}
+};
+
 
 
 //

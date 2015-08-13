@@ -42,7 +42,7 @@ using namespace glm;
 using namespace std;
 using namespace ssg;
 
-const int DEBUG = 1;
+const int DEBUG = 0;
 
 void printDebug(vector<vec3> &positions, vector<int> &indices);
 void printDebug(Material *m);
@@ -561,11 +561,12 @@ ObjFilePrimitive::ObjFilePrimitive ( const char *filename )
   if ( !okay ) {
     std::cout << "load error\n" ;
   } else {
-    std::cout << "loaded " << filename << std::endl
-	      << points_.size() << " points\n"
-	      << normals_.size() << " normals\n"
-	      << texCoords_.size() << " tex coords\n"
-	      << groupIndices_.size() << " groups\n";
+    if (DEBUG)
+      std::cout << "loaded " << filename << std::endl
+		<< points_.size() << " points\n"
+		<< normals_.size() << " normals\n"
+		<< texCoords_.size() << " tex coords\n"
+		<< groupIndices_.size() << " groups\n";
   }
   // // copy to unsigned ints. *sigh*
   // for (int i = 0; i < tmp_indices.size(); i++ )
