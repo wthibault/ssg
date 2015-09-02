@@ -42,7 +42,7 @@ using namespace glm;
 using namespace std;
 using namespace ssg;
 
-const int DEBUG = 1;
+const int DEBUG = 0;
 
 void printDebug(vector<vec3> &positions, vector<int> &indices);
 void printDebug(Material *m);
@@ -189,7 +189,8 @@ bool loadMaterialLibrary ( string mtlfilename,
 	path = makeMtlFilename ( filename, objfilename );
 	mat->diffuseTexture = new Texture ( path.c_str(), false, true, 0 ); // diffuse in unit 0
       }
-      std::cout << "map_Kd from " << filename << std::endl;
+      if (DEBUG)
+	std::cout << "map_Kd from " << filename << std::endl;
     } else if (token.compare("map_Disp") == 0) {
       string filename,path;
       iss >> filename;
@@ -393,12 +394,15 @@ bool loadObjectGroups ( const char * filename,
       }
       iss >> token;
       if (token=="usemtl") {
-	std::cout << "null token" << std::endl;
+	if (DEBUG)
+	  std::cout << "null token" << std::endl;
 	token = "dummy1";
       } 
-      std::cout << "group is " << currentGroupName << std::endl;
-      std::cout << "usemtl " << token << std::endl;
-      std::cout << "materials[token] == " << materials[token] << std::endl;
+      if (DEBUG) {
+	std::cout << "group is " << currentGroupName << std::endl;
+	std::cout << "usemtl " << token << std::endl;
+	std::cout << "materials[token] == " << materials[token] << std::endl;
+      }
       if ( materials[token] == 0 ) {
 	materials[token] = makeDefaultMaterial();
       }
@@ -501,19 +505,22 @@ bool loadObjectGroups ( const char * filename,
 // }
 
 void printDebug(vector<vec3> &positions, vector<int> &indices){
-	for (int i=0;i<indices.size();i++){
-	  //		cout << positions[indices[i]] <<" ";
-		cout << positions[indices[i]].x <<",";
-		cout << positions[indices[i]].y <<",";
-		cout << positions[indices[i]].z <<" ";
-		if ((i+1)%3==0){
-			cout << endl;
-		}
-	}
+  if (!DEBUG) 
+    return;
+  for (int i=0;i<indices.size();i++){
+    //		cout << positions[indices[i]] <<" ";
+    cout << positions[indices[i]].x <<",";
+    cout << positions[indices[i]].y <<",";
+    cout << positions[indices[i]].z <<" ";
+    if ((i+1)%3==0){
+      cout << endl;
+    }
+  }
 }
 
 void printDebug(Texture *t)
 {
+  if (!DEBUG) return;
   cout << "textureId " << t->textureId;
   cout << "width " << t->width;
   cout << "height " << t->height;
@@ -521,6 +528,7 @@ void printDebug(Texture *t)
 }
 
 void printDebug(Material *m){
+  if (!DEBUG) return;
   cout << "ambient " << m->ambient << endl;
   cout << "diffuse " << m->diffuse << endl;
   cout << "specular " << m->specular << endl;
@@ -553,11 +561,12 @@ ObjFilePrimitive::ObjFilePrimitive ( const char *filename )
   if ( !okay ) {
     std::cout << "load error\n" ;
   } else {
-    std::cout << "loaded " << filename << std::endl
-	      << points_.size() << " points\n"
-	      << normals_.size() << " normals\n"
-	      << texCoords_.size() << " tex coords\n"
-	      << groupIndices_.size() << " groups\n";
+    if (DEBUG)
+      std::cout << "loaded " << filename << std::endl
+		<< points_.size() << " points\n"
+		<< normals_.size() << " normals\n"
+		<< texCoords_.size() << " tex coords\n"
+		<< groupIndices_.size() << " groups\n";
   }
   // // copy to unsigned ints. *sigh*
   // for (int i = 0; i < tmp_indices.size(); i++ )
