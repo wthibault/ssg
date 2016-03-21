@@ -42,6 +42,7 @@ public:
     // later, you can call setFov(fovy) to change the "lens"
     fovy = afovy; 
     setupPerspective ( wscreen, hscreen );
+    //    setupPerspective ( wscreen, hscreen, 1.5 ); // XXXX HACK for triplehead+canon setup summer/15
   }
   float getFov () { return fovy; }
 
@@ -55,8 +56,9 @@ public:
     hscreen = h;
     wscreen = w;
     glViewport (0, 0, (GLsizei) w, (GLsizei) h); 
-    if (ratio != 0)
+    if (ratio != 0.0)
       P = glm::perspective ( fovy, ratio, 0.02f, 200.0f );
+    //P = glm::perspectiveFov ( fovy, w, h, 0.02f, 200.0f );
     else
       P = glm::perspective ( fovy, (GLfloat) w / (GLfloat) h, 0.02f, 200.0f );
     float halfw = float(w)/2.0f;
