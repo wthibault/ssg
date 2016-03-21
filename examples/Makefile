@@ -81,7 +81,8 @@ all : 	example0 \
 	shadows \
 	fog \
 	ptrTest \
-	maze
+	maze \
+	skybox
 
 example0 : example0.cpp $(SSG_INCS) $(LIB_DIR)/ssg.a
 	g++ $(OPTS) -o example0 $(INCLUDES) example0.cpp $(LIB_DIR)/ssg.a $(LIBS)
@@ -149,6 +150,9 @@ ptrTest : ptrTest.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(L
 maze : maze.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
 	g++ $(OPTS) -o maze $(INCLUDES) maze.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
+skybox : skybox.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
+	g++ $(OPTS) -o skybox $(INCLUDES) skybox.cpp $(LIB_DIR)/ssg.a $(LIBS)
+
 
 
 clean :
@@ -176,4 +180,5 @@ clean :
 	rm -f fog
 	rm -f ptrTest
 	rm -f maze
+	rm -f skybox
 	rm -rf *.dSYM
