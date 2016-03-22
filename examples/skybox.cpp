@@ -60,7 +60,8 @@ private:
   
 public:
 
-  Skybox( string texturePath="textures/zebra.bmp", string skyboxShaderName="skybox" )
+  Skybox( string texturePath="textures/zebra.bmp",
+	  string skyboxShaderName="skybox" )
   {
     // load texture
     _texture = new Texture( texturePath.c_str(), false, true );
@@ -83,12 +84,15 @@ public:
     // find the direction vectors for the corners of the viewing frustum
     vector<vec3> worldCorners;
     vector<vec4> eyeCorners;
-    eyeCorners.push_back ( vec4 ( -1,-1,0,0 ) );
-    eyeCorners.push_back ( vec4 (  1,-1,0,0 ) );
-    eyeCorners.push_back ( vec4 (  1, 1,0,0 ) );
-    eyeCorners.push_back ( vec4 ( -1, 1,0,0 ) );
+
+    eyeCorners.push_back ( vec4 ( -1,-1, -1, 1 ) );
+    eyeCorners.push_back ( vec4 (  1,-1, -1, 1 ) );
+    eyeCorners.push_back ( vec4 (  1, 1, -1, 1 ) );
+    eyeCorners.push_back ( vec4 ( -1, 1, -1, 1 ) );
+
     mat4 inverseProjection = inverse(camera.getProjectionMatrix());
     mat3 inverseModelview = transpose(mat3(camera.getModelviewMatrix()));
+
     for ( auto c : eyeCorners ) {
       //      vec3 unprojected = (inverseProjection * c).xyz;
       vec4 unproj = inverseProjection * c;
@@ -102,7 +106,8 @@ public:
 
     // pass the directions to the primitive as normals
     _quad->setNormals(worldCorners);
-    // draw a fullscreen quad
+
+    // draw a fullscreen quad with the skybox shader
     mat4 ident(1.0);
     _texture->bind(0);
     _quad->draw(ident, ident, _material);
@@ -121,6 +126,7 @@ private:
 
 string objectShaderName;
 string skyboxShaderName; 
+string skyboxTexturePath; 
 
 Ptr<Instance> root;
 Skybox       *skybox;
@@ -144,12 +150,17 @@ void display ()
 
   root->update(now-lastFrame);
 
-  glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
-  skybox->draw ( camera );
-
+  
+  // need only clear depth since the skybox will fill the screen
   glClear ( GL_DEPTH_BUFFER_BIT );
 
+  // the skybox uses the camera matrices but draw in canonical camera coords
+  skybox->draw ( camera );
+
+  // after drawing the skybox, clear depth so everything else will obscure it
+  glClear ( GL_DEPTH_BUFFER_BIT );
+
+  // draw the scene proper
   camera.draw ( root );
 
   glutSwapBuffers();
@@ -168,7 +179,7 @@ void reshape (int w, int h)
   width = w;
   height = h;
 
-  skybox = new Skybox();
+  skybox = new Skybox(skyboxTexturePath, skyboxShaderName);
   // load in texture image
   //  skyboxTexture = new Texture ( width, height, /*fp*/true, /*mipmaps*/true, 0/* */ );
 
@@ -203,16 +214,18 @@ void init (int argc, char **argv)
 
   //  create a primitive.  if supplied on command line, read a .obj wavefront file
   Ptr<Primitive> prim;
-  if ( argc == 4 ) {
+  if ( argc == 5 ) {
     prim = Ptr<Primitive> (new ObjFilePrimitive ( argv[1] ) );
     objectShaderName = argv[2];
     skyboxShaderName = argv[3];
+    skyboxTexturePath = argv[4];
   } else {
-    cout << "usage: " << argv[0] << " objfilename 3DshaderName skyboxshaderName\n";
+    cout << "usage: " << argv[0] << " objfilename 3DshaderName skyboxshaderName\n skyboxTexturePath";
       //    exit(1);
     prim = Ptr<Primitive> (new ObjFilePrimitive ( "objfiles/cube.obj" ) );
     objectShaderName = "PhongShading";
     skyboxShaderName = "skybox";
+    skyboxTexturePath = "textures/zebra.bmp";
   }
 
   // create a root Instance to contain this primitive

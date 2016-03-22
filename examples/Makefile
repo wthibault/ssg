@@ -1,5 +1,5 @@
-#OPTS = -g
-OPTS = -O3
+OPTS = -g
+#OPTS = -O3
 
 #OPTS += -std=c++0x
 

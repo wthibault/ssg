@@ -34,11 +34,11 @@ vec2 dir2LatLon ( vec3 dir )
   v = (beta/Pi) + 0.5;
   u = wrap ( u );
   v = wrap ( v );
-  return vec2(u,v);
+  return vec2(u,1.0-v);
 }
 
 void main()
 {
   //  gl_FragColor = vec4 (eyeDirection, 1.0);
-  gl_FragColor = vec4 (texture2D(Texture,dir2LatLon(eyeDirection)));
+  gl_FragColor = vec4 (texture2D(Texture,dir2LatLon(normalize(eyeDirection))));
 }
