@@ -53,7 +53,8 @@ public:
 	  unsigned int texUnit = 0);
     Texture(const char* bmpfilename, bool floatingPoint = false,
 	    bool mipmaps = false,
-	    unsigned int texUnit = 0);
+	    unsigned int texUnit = 0,
+	    bool repeat = false);
     ~Texture();
     // Render the texture the the screen
     void renderFullscreenQuad();
@@ -71,7 +72,7 @@ public:
     //private:
     void setupRenderFullscreenQuad(const char* vprog="shaders120/fullscreentexture.vert",
 				   const char* fprog="shaders120/fullscreentexture.frag");
-    void setupTexParams(bool floatingPoint, bool mipmaps);
+    void setupTexParams(bool floatingPoint, bool mipmaps, bool repeat = false);
     GLuint textureId;
     bool floatingPoint;
     GLuint width;

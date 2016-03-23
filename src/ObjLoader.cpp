@@ -44,6 +44,8 @@ using namespace ssg;
 
 const int DEBUG = 0;
 
+const char *DEFAULT_SHADER ="PhongShadingShadowsFog";
+
 void printDebug(vector<vec3> &positions, vector<int> &indices);
 void printDebug(Material *m);
 void printDebug(Texture *m);
@@ -154,7 +156,8 @@ bool loadMaterialLibrary ( string mtlfilename,
     // create a default texture
     Material *m = new Material();
     outMaterials["dummy1"] = m;
-    m->program = m->loadShaders("PhongShading");
+    //    m->program = m->loadShaders("PhongShading");
+    m->program = m->loadShaders(DEFAULT_SHADER);
     return false;
   }
   char buffer[512];
@@ -212,7 +215,7 @@ bool loadMaterialLibrary ( string mtlfilename,
     else if ( i->second->diffuseTexture ==0 && i->second->bumpTexture != 0 )
       i->second->program = i->second->loadShaders ( "BumpMappedPhongShading" );
     else
-      i->second->program = i->second->loadShaders ( "PhongShading" );
+      i->second->program = i->second->loadShaders ( DEFAULT_SHADER );
   }
   return true;
 }
@@ -312,7 +315,8 @@ makeDefaultMaterial()
   m->diffuse = vec4 ( 0.8, 0.8, 0.8, 1.0 );
   m->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );
   m->shininess = 200.0f;
-  m->program = m->loadShaders("PhongShading");
+  //  m->program = m->loadShaders("PhongShading");
+  m->program = m->loadShaders(DEFAULT_SHADER);
   return m;
 }
 

@@ -151,7 +151,7 @@ maze : maze.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR
 	g++ $(OPTS) -o maze $(INCLUDES) maze.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
 skybox : skybox.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
-	g++ $(OPTS) -o skybox $(INCLUDES) skybox.cpp $(LIB_DIR)/ssg.a $(LIBS)
+	g++ $(OPTS) -o skybox -std=c++11 $(INCLUDES) skybox.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
 
 

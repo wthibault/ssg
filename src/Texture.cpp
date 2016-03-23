@@ -68,7 +68,7 @@ ssg::Texture::Texture(GLuint width, GLuint height, bool floatingPoint, bool mipm
 }
 
 
-ssg::Texture::Texture(const char *bmpfilename, bool floatingPoint, bool mipmaps, unsigned int texUnit )
+ssg::Texture::Texture(const char *bmpfilename, bool floatingPoint, bool mipmaps, unsigned int texUnit, bool repeat )
   : floatingPoint(floatingPoint)
 {
 
@@ -99,7 +99,7 @@ ssg::Texture::Texture(const char *bmpfilename, bool floatingPoint, bool mipmaps,
 
   glActiveTexture ( GL_TEXTURE0 + texUnit );
   // setup the texture
-  setupTexParams ( floatingPoint, mipmaps );
+  setupTexParams ( floatingPoint, mipmaps, repeat );
 
   // upload texture data
   glBindTexture ( GL_TEXTURE_2D, textureId );
@@ -128,7 +128,7 @@ ssg::Texture::Texture(const char *bmpfilename, bool floatingPoint, bool mipmaps,
 
 
 void
-ssg::Texture::setupTexParams( bool floatingpoint, bool mipmaps )
+ssg::Texture::setupTexParams( bool floatingpoint, bool mipmaps, bool repeat )
 {
   glGenTextures(1, &textureId);
   glBindTexture(GL_TEXTURE_2D, textureId);
@@ -136,11 +136,14 @@ ssg::Texture::setupTexParams( bool floatingpoint, bool mipmaps )
 		  GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, 
 		  mipmaps?GL_LINEAR_MIPMAP_LINEAR:GL_LINEAR);
-  // XXXXX
-  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // use clamping for fx..., repeat for diffusemap
-  //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP); // use clamping for fx..., repeat for diffusemap
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+  if (repeat) {
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); 
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  } else {
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP); // use clamping for fx..., repeat for diffusemap
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+  }
 
   // allocate the memory for the texels
   //  unsigned char *data = new unsigned char[width * height * 4 * floatingpoint?sizeof(GLfloat):1];

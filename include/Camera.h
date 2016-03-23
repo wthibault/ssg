@@ -55,12 +55,18 @@ public:
   void setupPerspective ( int w, int h, float ratio=0.0 ) {
     hscreen = h;
     wscreen = w;
+
+    // XXX move to members
+    //float near = 0.02f;
+    float near = 0.2f;
+    float far = 200.0f;
+
     glViewport (0, 0, (GLsizei) w, (GLsizei) h); 
     if (ratio != 0.0)
-      P = glm::perspective ( fovy, ratio, 0.02f, 200.0f );
+      P = glm::perspective ( fovy, ratio, near, far );
     //P = glm::perspectiveFov ( fovy, w, h, 0.02f, 200.0f );
     else
-      P = glm::perspective ( fovy, (GLfloat) w / (GLfloat) h, 0.02f, 200.0f );
+      P = glm::perspective ( fovy, (GLfloat) w / (GLfloat) h, near, far );
     float halfw = float(w)/2.0f;
     float halfh = float(h)/2.0f;
     trackball = Trackball ( halfw, halfh, std::min ( halfw, halfw ) );
