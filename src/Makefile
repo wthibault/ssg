@@ -53,6 +53,7 @@ OBJS = InitShader.o \
 
 SSG_INCS = $(INC_DIR)/ssg.h \
 	$(INC_DIR)/_ssg.h \
+	$(INC_DIR)/Ptr.h \
 	$(INC_DIR)/CheckError.h \
 	$(INC_DIR)/InitShader.h \
 	$(INC_DIR)/Texture.h \

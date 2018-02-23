@@ -43,6 +43,7 @@
 #define    glBindVertexArray glBindVertexArrayAPPLE
 #endif
 
+
 namespace ssg {
 
 // Create a texture
@@ -80,6 +81,7 @@ public:
     GLuint drawTextureShader;
     GLuint drawTextureVertexArrayObject;
     GLuint drawTextureUniform;
+    int    count_; // for Ptr<>
 };
 
 

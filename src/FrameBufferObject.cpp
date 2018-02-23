@@ -39,8 +39,8 @@
 
 using namespace std;
 
-ssg::FrameBufferObject::FrameBufferObject(Texture *texture, bool useDepthBuffer)
-:texture(texture){
+ssg::FrameBufferObject::FrameBufferObject(Ptr<Texture> texture, bool useDepthBuffer)
+  :texture(texture), count_(0){
     
     
     // create a renderbuffer object to store depth info
@@ -84,11 +84,11 @@ ssg::FrameBufferObject::FrameBufferObject(Texture *texture, bool useDepthBuffer)
 
 
 // use this constructor if you want to render shadows
-ssg::FrameBufferObject::FrameBufferObject(Texture *texture, ShadowTexture *depthTexture)
-  :texture(texture)
+ssg::FrameBufferObject::FrameBufferObject(Ptr<Texture> texture, ShadowTexture *depthTexture)
+  :texture(texture), count_(0)
 {
     
-  if (texture && !depthTexture || !texture && !depthTexture) {
+  if (texture.get() && !depthTexture || !texture.get() && !depthTexture) {
     std::cout << "FrameBufferObject gets no textures!!!";
     return;
   }
@@ -100,7 +100,7 @@ ssg::FrameBufferObject::FrameBufferObject(Texture *texture, ShadowTexture *depth
 
 
   // attach the texture to FBO color attachment point
-  if ( texture ) {
+  if ( texture.get() ) {
     glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 			   GL_TEXTURE_2D, texture->getTextureId(), 0);
   } else {

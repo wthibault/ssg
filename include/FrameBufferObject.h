@@ -53,8 +53,8 @@ namespace ssg {
 
 class FrameBufferObject {
 public:
-    FrameBufferObject(Texture *texture, bool useDepthBuffer = true);
-    FrameBufferObject(Texture *texture, ShadowTexture *depthTexture);
+    FrameBufferObject(Ptr<Texture> texture, bool useDepthBuffer = true);
+    FrameBufferObject(Ptr<Texture> texture, ShadowTexture *depthTexture);
     ~FrameBufferObject();
     // bind the framebufferobject as current
     void bind();
@@ -64,9 +64,11 @@ public:
       width = texture->getWidth();
       height = texture->getHeight();
     }
+    int    count_; // for Ptr<>
 private:
     void checkFramebufferStatusOk();
-    ssg::Texture *texture;
+    //    ssg::Texture *texture;
+    Ptr<Texture> texture;
     GLuint framebufferid;
 };
 

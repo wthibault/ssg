@@ -55,7 +55,8 @@ ssg::Texture::Texture(GLuint width, GLuint height, bool floatingPoint, bool mipm
     floatingPoint(floatingPoint), 
     drawTextureShader(0),
     drawTextureVertexArrayObject(0),
-    drawTextureUniform(0)
+    drawTextureUniform(0),
+    count_(0)
 {
   glActiveTexture(GL_TEXTURE0 + t);
   setupTexParams( floatingPoint, mipmaps );
@@ -69,7 +70,7 @@ ssg::Texture::Texture(GLuint width, GLuint height, bool floatingPoint, bool mipm
 
 
 ssg::Texture::Texture(const char *bmpfilename, bool floatingPoint, bool mipmaps, unsigned int texUnit, bool repeat )
-  : floatingPoint(floatingPoint)
+  : floatingPoint(floatingPoint), count_(0)
 {
 
   if ( floatingPoint ) {
