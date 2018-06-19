@@ -171,7 +171,9 @@ ssg::Texture::renderFullscreenQuad(){
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, textureId);
   glUniform1i(drawTextureUniform, 0);
+
   glDrawArrays(GL_TRIANGLES, 0, 3);
+
   glBindTexture(GL_TEXTURE_2D, 0);
   glBindVertexArray(0);
   glUseProgram(0);

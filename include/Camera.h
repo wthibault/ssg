@@ -93,7 +93,14 @@ public:
     draw (  scene.get()  );
   }
 
+  void setScreenSize ( int _w, int _h ) {
+    hscreen = _h;
+    wscreen = _w;
+  }
 
+  glm::mat4 getModelview () { return M; }
+  glm::mat4 getProjection () { return P; }
+  
 protected:
   bool      trackballEnabled;
   Trackball trackball;
