@@ -67,8 +67,13 @@ public:
     //P = glm::perspectiveFov ( fovy, w, h, 0.02f, 200.0f );
     else
       P = glm::perspective ( fovy, (GLfloat) w / (GLfloat) h, near, far );
-    float halfw = float(w)/2.0f;
-    float halfh = float(h)/2.0f;
+
+    setupTrackball();
+  }
+
+  void setupTrackball () {
+    float halfw = float(wscreen)/2.0f;
+    float halfh = float(hscreen)/2.0f;
     trackball = Trackball ( halfw, halfh, std::min ( halfw, halfw ) );
   }
 
