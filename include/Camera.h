@@ -37,6 +37,9 @@ public:
   void setLookat   ( glm::vec3 look ) { lookat = look; M = glm::lookAt(position,lookat,up); }
   glm::vec3 getLookat   ( ) { return lookat; }
 
+  void setUp ( glm::vec3 _up ) { up = _up; M = glm::lookAt(position,lookat,up); }
+  glm::vec3 getUp () { return up; }
+
   void setFov ( float afovy ) { 
     // you'd better call setupPerspective from the resize callback else aspect ratio probably wrong.
     // later, you can call setFov(fovy) to change the "lens"

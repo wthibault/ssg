@@ -20,7 +20,7 @@ class Skybox
 
 private:
 
-  // a custom Primitive class to reload norner normals on demand
+  // a custom Primitive class to reload normals on demand
   struct _Quad : Primitive
   {
     virtual void update(float dt) {}
