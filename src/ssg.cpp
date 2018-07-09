@@ -231,6 +231,18 @@ ssg::Primitive::setupShader ( glm::mat4 modelview,
 		  1 );
   }
 
+  if ( material->diffuseIrradianceTexture.get() ) {
+    material->diffuseIrradianceTexture->bind(2);
+    glUniform1i ( glGetUniformLocation ( material->program, "DiffuseIrradiance" ), 
+		  2 );
+  }
+
+  if ( material->specularIrradianceTexture.get() ) {
+    material->specularIrradianceTexture->bind(3);
+    glUniform1i ( glGetUniformLocation ( material->program, "SpecularIrradiance" ), 
+		  3 );
+  }
+
   
 
   // load the light info from the rendering environment (same for all prims)

@@ -54,6 +54,8 @@ Material() :
     program(0),
     diffuseTexture(0),
     bumpTexture(0),
+    diffuseIrradianceTexture(0),
+    specularIrradianceTexture(0),
     shadowEnable(1),
     count_(0)
   {}
@@ -68,6 +70,8 @@ Material() :
   unsigned int program;
   Texture *diffuseTexture; // XXX use Ptr here...
   Texture *bumpTexture;    // XXX use Ptr here...
+  Ptr<Texture> diffuseIrradianceTexture;
+  Ptr<Texture> specularIrradianceTexture;
   int shadowEnable;
   int count_;
 };
