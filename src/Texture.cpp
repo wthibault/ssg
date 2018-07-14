@@ -123,8 +123,8 @@ ssg::Texture::Texture(const char *bmpfilename, bool floatingPoint, bool mipmaps,
   }
 
   unbind(texUnit);
-  delete rgbaData;
-  delete rgbData;
+  delete []rgbaData;
+  delete []rgbData;
 }
 
 

@@ -219,13 +219,13 @@ ssg::Primitive::setupShader ( glm::mat4 modelview,
 		material->shininess );
 
   // textures
-  if ( material->diffuseTexture ) {
+  if ( material->diffuseTexture.get() ) {
     material->diffuseTexture->bind(0);
     glUniform1i ( glGetUniformLocation ( material->program, "Texture" ),
 		  0 );
   }
 
-  if ( material->bumpTexture ) {
+  if ( material->bumpTexture.get() ) {
     material->bumpTexture->bind(1);
     glUniform1i ( glGetUniformLocation ( material->program, "BumpTexture" ), 
 		  1 );

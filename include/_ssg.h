@@ -68,8 +68,12 @@ Material() :
   glm::vec4 specular;
   float shininess;
   unsigned int program;
-  Texture *diffuseTexture; // XXX use Ptr here...
-  Texture *bumpTexture;    // XXX use Ptr here...
+
+  //Texture *diffuseTexture; // XXX use Ptr here...
+  //Texture *bumpTexture;    // XXX use Ptr here...
+  Ptr<Texture> diffuseTexture;
+  Ptr<Texture> bumpTexture;
+  
   Ptr<Texture> diffuseIrradianceTexture;
   Ptr<Texture> specularIrradianceTexture;
   int shadowEnable;

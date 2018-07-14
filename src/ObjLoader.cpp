@@ -208,6 +208,17 @@ bool loadMaterialLibrary ( string mtlfilename,
   for ( map<string,Material*>::iterator i = outMaterials.begin(); 
 	i != outMaterials.end(); 
 	i++) {
+#if 1
+    if ( i->second->diffuseTexture.get() && i->second->bumpTexture.get() )
+      i->second->program = i->second->loadShaders ( "BumpMappedTexturedPhongShading" );
+    else if ( i->second->diffuseTexture.get() && i->second->bumpTexture.get() == 0 )
+      i->second->program = i->second->loadShaders ( "TexturedPhongShading" );
+    else if ( i->second->diffuseTexture.get() ==0 && i->second->bumpTexture.get() != 0 )
+      i->second->program = i->second->loadShaders ( "BumpMappedPhongShading" );
+    else
+      i->second->program = i->second->loadShaders ( DEFAULT_SHADER );
+
+#else
     if ( i->second->diffuseTexture != 0 && i->second->bumpTexture != 0 )
       i->second->program = i->second->loadShaders ( "BumpMappedTexturedPhongShading" );
     else if ( i->second->diffuseTexture != 0 && i->second->bumpTexture == 0 )
@@ -216,6 +227,9 @@ bool loadMaterialLibrary ( string mtlfilename,
       i->second->program = i->second->loadShaders ( "BumpMappedPhongShading" );
     else
       i->second->program = i->second->loadShaders ( DEFAULT_SHADER );
+ 
+#endif
+ 
   }
   return true;
 }
@@ -538,12 +552,12 @@ void printDebug(Material *m){
   cout << "specular " << m->specular << endl;
   cout << "shininess " << m->shininess << endl;
   cout << "program " << m->program << endl;
-  cout << "diffuse texture " << m->diffuseTexture << endl;
-  if ( m->diffuseTexture ) 
-    printDebug ( m->diffuseTexture );
-  cout << "bump texture " << m->bumpTexture << endl;
-  if ( m->bumpTexture ) 
-    printDebug ( m->bumpTexture );
+  cout << "diffuse texture " << m->diffuseTexture.get() << endl;
+  if ( m->diffuseTexture.get() ) 
+    printDebug ( m->diffuseTexture.get() );
+  cout << "bump texture " << m->bumpTexture.get() << endl;
+  if ( m->bumpTexture.get() ) 
+    printDebug ( m->bumpTexture.get() );
   
 }
 
