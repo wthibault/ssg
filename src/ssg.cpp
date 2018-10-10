@@ -193,6 +193,8 @@ ssg::Primitive::setupShader ( glm::mat4 modelview,
 		      1, GL_FALSE, glm::value_ptr(modelview));
   glUniformMatrix4fv( glGetUniformLocation ( material->program, "Projection" ),
 		      1, GL_FALSE, glm::value_ptr(projection));
+  glUniformMatrix4fv ( glGetUniformLocation ( material->program, "LocalToWorld" ),
+		       1, GL_FALSE, glm::value_ptr( localToWorld_ ) );
 
     
   // load the lighting model uniforms
@@ -318,6 +320,20 @@ ssg::Primitive::endShader()
 
 }
 
+void
+ssg::Primitive::update ( float dt )
+{
+  if ( parent_ ) {
+    Instance *parent = dynamic_cast<Instance*>(parent_);
+    if ( parent )
+      localToWorld_ = parent->getLocalToWorldMatrix();
+    else
+      localToWorld_ = glm::mat4();
+  }
+  else
+    localToWorld_ = glm::mat4();
+}
+
 void 
 ssg::Primitive::draw ( glm::mat4 modelview, 
 		       glm::mat4 projection,
@@ -340,7 +356,34 @@ ssg::Primitive::draw ( glm::mat4 modelview,
 
 glm::mat4 
 ssg::Primitive::getWorldToLocalMatrix() {
-  return dynamic_cast<Instance*>(parent_)->getWorldToLocalMatrix();
+
+#if 0
+  if ( parent_ )
+    return dynamic_cast<Instance*>(parent_)->getWorldToLocalMatrix();
+  else
+    return glm::mat4();
+#endif
+
+  return localToWorld_;
+}
+
+glm::mat4
+ssg::Primitive::getLocalToWorldMatrix() {
+  if ( parent_ ) {
+    Instance *parent = dynamic_cast<Instance*>(parent_);
+    if ( parent )
+      return parent->getLocalToWorldMatrix();
+    else
+      return glm::mat4();
+  }
+  else
+    return glm::mat4();
+}
+
+
+std::ostream &operator<< (std::ostream &out, const ssg::Primitive &prim)
+{
+  out << "Primitive\n";
 }
 
 //////////////////////////////////////////////////////////////////
@@ -361,19 +404,17 @@ ssg::Instance::~Instance()
 void 
 ssg::Instance::update ( float dt )  {
 
-  //  std::vector<ModelNode*>::iterator node;
-  std::vector<Ptr<ModelNode> >::iterator node;
   if ( parent_ ) {
-    localToWorld_ = dynamic_cast<Instance*>(parent_)->localToWorld_ * matrix_;
+    localToWorld_ = dynamic_cast<Instance*>(parent_)->getLocalToWorldMatrix() * matrix_;
     worldToLocal_ = glm::inverse(matrix_) * dynamic_cast<Instance*>(parent_)->worldToLocal_;
+  } else {
+    localToWorld_ = matrix_;
+    worldToLocal_ = glm::inverse(matrix_);
   }
 
-    for (int i=0; i < children_.size(); i++ ) {
-      children_[i]->update ( dt );
-    }
-  //  for ( node = children_.begin(); node != children_.end(); node++ ) {
-  //    (*node)->update ( dt );
-  //  }
+  for (int i=0; i < children_.size(); i++ ) {
+    children_[i]->update ( dt );
+  }
 
 }
 
@@ -492,6 +533,19 @@ ssg::Instance::getWorldToLocalMatrix() {
   // return glm::inverse(matrix_) * m;
   return worldToLocal_;
 }
+
+glm::mat4
+ssg::Instance::getLocalToWorldMatrix() {
+  return localToWorld_;
+}
+
+std::ostream &operator<< (std::ostream &out, const ssg::Instance &inst)
+{
+  out << "Instance\n";
+}
+
+
+///////////////////////////////////////////////////////
 
 //
 // a Triangle primitive class

@@ -6,6 +6,7 @@ attribute  vec3 vNormal;
 
 uniform mat4 ModelView;
 uniform mat4 Projection;
+uniform mat4 LocalToWorld;
 uniform vec4 LightPosition;
 uniform mat4 LightMatrix;
 
@@ -24,8 +25,9 @@ void main()
   // Transform vertex normal into eye coordinates
   Normal = normalize( ModelView*vec4(vNormal, 0.0) ).xyz;
 
-  ShadowMapCoord = LightMatrix * vec4(vPosition.xyz,1.0);
-  gl_Position = Projection * ModelView * vec4(vPosition.xyz,1.0);
+  //  ShadowMapCoord = LightMatrix * vec4(vPosition.xyz,1.0);
+  ShadowMapCoord = LightMatrix * LocalToWorld * vec4(vPosition.xyz,1.0);
+  gl_Position = Projection * vec4(pos,1.0);
   
 
 }

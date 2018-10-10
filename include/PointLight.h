@@ -66,7 +66,6 @@ class PointLight
     // Esemann etal. recommends:
     //    glPolygonOffset(2.5f, 10.0f);
     glPolygonOffset(2.5f, 10.0f);
-
     //glPolygonOffset(1.0f, 1.0f);
     glEnable(GL_POLYGON_OFFSET_FILL);
 

@@ -177,6 +177,7 @@ public:
   Ptr<Material>  material_;
   bool      isVisible_;
   virtual glm::mat4 getWorldToLocalMatrix() {return glm::mat4();}  // XXX BORKED
+  virtual glm::mat4 getLocalToWorldMatrix()=0;
   // protected:
   int       count_;  // reference count
 };
@@ -188,17 +189,23 @@ public:
 
 class Primitive : public ModelNode {
  public:
- Primitive() : vao_(0), arrayBuffer_(0), elementBuffer_(0) {};
+ Primitive() : vao_(0),
+    arrayBuffer_(0),
+    elementBuffer_(0),
+    localToWorld_(glm::mat4()),
+    worldToLocal_(glm::mat4())
+    {};
   virtual ~Primitive();
   friend class Ptr<Primitive>;
 
   virtual void init ();
-  virtual void update ( float dt ) = 0;
+  virtual void update ( float dt );
   virtual void draw ( glm::mat4 modelview,
 		      glm::mat4 projection,
 		      Ptr<Material> material );
 
   virtual glm::mat4 getWorldToLocalMatrix();
+  virtual glm::mat4 getLocalToWorldMatrix();
   virtual void      setDrawingPrimitive ( GLuint prim );
 
   virtual void setupShader ( glm::mat4 mv, glm::mat4 proj, Ptr<Material> m );
@@ -216,7 +223,11 @@ protected:
   std::vector<glm::vec2>     texCoords_;
   std::vector<glm::vec3>     colors_;
   void   deleteGLBuffers_();
+  glm::mat4 worldToLocal_;
+  glm::mat4 localToWorld_;
 };
+
+std::ostream &operator<< (std::ostream &out, const Primitive &prim);
 
 //////////////////////////////////////////////////////////////////
 // I n s t a n c e
@@ -253,6 +264,7 @@ public:
   virtual void  setChild ( Ptr<ModelNode> child, int slot );
 
   virtual glm::mat4 getWorldToLocalMatrix();
+  virtual glm::mat4 getLocalToWorldMatrix();
 
 protected:
   std::vector<Ptr<ModelNode> > children_;
@@ -260,6 +272,8 @@ protected:
   glm::mat4 worldToLocal_;
   glm::mat4 localToWorld_;
 };
+
+std::ostream &operator<< (std::ostream &out, const Instance &prim);
 
 //
 //////////////////////////////////////////////////////////////////
