@@ -26,7 +26,8 @@ void main()
   Normal = normalize( ModelView*vec4(vNormal, 0.0) ).xyz;
 
   //  ShadowMapCoord = LightMatrix * vec4(vPosition.xyz,1.0);
-  ShadowMapCoord = LightMatrix * LocalToWorld * vec4(vPosition.xyz,1.0);
+  //  ShadowMapCoord = LightMatrix * LocalToWorld * vec4(vPosition.xyz,1.0);
+    ShadowMapCoord = LightMatrix * LocalToWorld * vec4(pos,1.0);
   gl_Position = Projection * vec4(pos,1.0);
   
 

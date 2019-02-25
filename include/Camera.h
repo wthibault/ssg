@@ -23,7 +23,9 @@ public:
     up ( 0,1,0 ),
     fovy ( 65.0 ),
     wscreen ( 640 ), 
-    hscreen ( 480 )
+    hscreen ( 480 ),
+    near ( 0.2 ),
+    far ( 200.0 )
       { M = glm::translate ( glm::mat4(), glm::vec3(0,0,-distance) );}
 
   void enableTrackball(bool on) { trackballEnabled=on; }
@@ -49,6 +51,9 @@ public:
   }
   float getFov () { return fovy; }
 
+  void setNearFar ( float _near, float _far )  { near = _near; far = _far; }
+  void getNearFar ( float &_near, float _far ) { _near = near; _far = far; }
+  
   void setProjectionMatrix(glm::mat4 m) {P=m;}
   glm::mat4 getProjectionMatrix() {return P;}
 
@@ -59,16 +64,14 @@ public:
     hscreen = h;
     wscreen = w;
 
-    // XXX move to members
-    //float near = 0.02f;
-    float near = 0.2f;
-    float far = 200.0f;
-
     glViewport (0, 0, (GLsizei) w, (GLsizei) h); 
+
     if (ratio != 0.0)
+
       P = glm::perspective ( fovy, ratio, near, far );
-    //P = glm::perspectiveFov ( fovy, w, h, 0.02f, 200.0f );
+
     else
+
       P = glm::perspective ( fovy, (GLfloat) w / (GLfloat) h, near, far );
 
     setupTrackball();
@@ -116,6 +119,7 @@ protected:
   glm::vec3 position, lookat, up;
   float     fovy;
   int       wscreen, hscreen;
+  float     near, far;
   glm::mat4 P;
   glm::mat4 M;
   
