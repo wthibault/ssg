@@ -2,6 +2,12 @@
 //
 // PhongShadingShadowsFog.frag = compute fragment lighting with shadows
 //
+uniform float     Speed; // XX NOT USED!!! wtf?
+uniform float     Amplitude;
+uniform float     Frequency;
+uniform sampler2D Texture;
+uniform float     Time;
+
 uniform vec4 AmbientProduct;
 uniform vec4 DiffuseProduct;
 uniform vec4 SpecularProduct;
@@ -25,6 +31,7 @@ varying vec4 ShadowMapCoord;
 // outward facing (wrt fog)
 uniform vec4  FogBottomPlane;  
 uniform vec4  FogTopPlane;
+varying vec2 uv;
 
 const float EPSILON = 1.0e-6;
 const float BIGNUMBER = 1.0e6;
@@ -66,77 +73,36 @@ float slabFogLength ()
 }
 
 
-float ShadowCalculation(vec4 fragPosLightSpace)
-{
-    // perform perspective divide
-    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
-    // transform to [0,1] range
-    projCoords = projCoords * 0.5 + 0.5;
-    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-    float closestDepth = texture(ShadowMapTexture, projCoords.xy).r; 
-    // get depth of current fragment from light's perspective
-    float currentDepth = projCoords.z;
-    // check whether current frag pos is in shadow
-    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
-
-    return shadow;
-}  
-
 void main() 
 { 
-  vec4 color;
-  vec3 L = normalize(Light);
-  vec3 V = normalize(View);
-  vec3 N = normalize(Normal);
-  vec3 H = normalize ( L + V );
 
-  // Compute terms in the illumination equation
-  vec4 ambient = AmbientProduct;
-  
-  float Kd = max( dot(L, N), 0.0 );
-  vec4  diffuse = Kd * DiffuseProduct;
-  
-  //  float visibility = 1.0;
-
-  //
+  float visibility = 1.0;
   //  vec4 smCoord = ShadowMapCoord / ShadowMapCoord.w;
-  //  if ( ShadowEnable==1 && texture2D( ShadowMapTexture, smCoord.xy ).r < smCoord.z){
+  //  if ( ShadowEnable==1 && texture2D( ShadowMapTexture, smCoord.xy ).z < smCoord.z )    {
   //    visibility = 0.0;
   //  }
 
+  vec2 src;
+  float speed = 0.3;
+  float amp = 0.1;
+  float freq = 0.25;
+  src.x = fract(uv.x - speed * Time);
+  src.y = fract(uv.y + amp * sin ( freq * Time ) + 0.05 * sin ( 3.14159*2.0 * src.x ) );
   
-  float inShadow = 0.0;
-  inShadow = ShadowCalculation ( ShadowMapCoord );
-  
-  float Ks =  pow( max(dot(N, H), 0.0), Shininess );
-
-  vec4  specular = Ks * SpecularProduct;
-  
-  //vec4 surfaceColor = clamp ( ambient + visibility* (diffuse + specular), 0.0, 1.0);
-  vec4 surfaceColor = clamp ( ambient + (1.0-inShadow)* (diffuse + specular), 0.0, 1.0);
-
-  float z;
-
-  if (EnableSlabFog==1)
-    z = slabFogLength();
-  else
-    z = length ( EyeCoords );
-
-
-//   // debug
-//   if (z < 0) {
-//     gl_FragColor = vec4 ( 1.0, 0.0, 0.0, 1.0 );//red
-//   } else if (z == 0.0) {
-//     gl_FragColor = vec4 ( 0.0, 1.0, 0.0, 1.0 );//green
-//   } else if (z > 0.0) {
-//     gl_FragColor = vec4 ( 0.0, 0.0, 1.0, 1.0 );// blue
-//   }
+  //  // hack for border bug?
+  //  src.x = src.x * 0.9 + 0.01;
+  //  src.y = src.y * 0.9 + 0.01;
   
 
+  //  vec4  surfaceColor = clamp ( ambient + visibility* (DiffuseProduct), 0.0, 1.0);
+  vec4  surfaceColor = clamp ( visibility* texture2D(Texture,src), 0.0, 1.0 );
+  surfaceColor.a = 1.0;  
+  float z = length ( EyeCoords );
+  z = z * z;
   float fogDist = max ( 0.0, z - FogStart );
-  fogDist *= fogDist;  // squared dist looks "good". to me. for now.
-
   float fogFactor = exp ( -FogDensity * fogDist );
   gl_FragColor = fogFactor * surfaceColor + (1-fogFactor) * FogColor;
+
+  //  gl_FragColor = texture2D(Texture,src);
 } 
 

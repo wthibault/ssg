@@ -9,11 +9,10 @@
 #include "ssg.h"
 #include <fstream>
 
-//#ifdef __APPLE__
-std::string shaderDir ("shaders120"); // #version 120 (mac)
-//#else
-//std::string shaderDir ("shaders"); // #version 150
-//#endif
+
+// XXX CHANGE THIS PER YOUR opengl's glsl version
+std::string shaderDir ("shaders460"); // #version 120 (mac)
+
 
 #ifdef USE_APPLE_VERTEXARRAYS
 #define   glGenVertexArrays glGenVertexArraysAPPLE
@@ -282,6 +281,12 @@ ssg::Primitive::setupShader ( glm::mat4 modelview,
   glUniform1i ( glGetUniformLocation ( material->program, "ShadowEnable"), 
 		material->shadowEnable );
 
+
+  // if ( material->shadowEnable )
+  //   glEnable ( GL_POLYGON_OFFSET_FILL );
+  // else
+  //   glDisable ( GL_POLYGON_OFFSET_FILL );
+  
   // fog
   if (RenderingEnvironment::getInstance().getFogEnabled()) {
     glUniform1i ( glGetUniformLocation ( material->program, "FogEnable" ), true );

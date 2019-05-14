@@ -237,7 +237,9 @@ std::ostream &operator<< (std::ostream &out, const Primitive &prim);
 class Instance : public ModelNode {
 public:
   Instance () : //material_(0),
-    matrix_(glm::mat4(1.0))
+  matrix_(glm::mat4(1.0)),
+    localToWorld_(glm::mat4()),
+    worldToLocal_(glm::mat4())
     {};
   virtual ~Instance();
   friend class Ptr<Instance>;

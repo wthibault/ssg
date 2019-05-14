@@ -1,4 +1,4 @@
-#version 120
+#version 460
 //
 // PhongShadingShadowsFog.frag = compute fragment lighting with shadows
 //

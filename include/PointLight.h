@@ -63,11 +63,12 @@ class PointLight
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFBO);
     shadowMapFBO->bind(); 
 
-    // Esemann etal. recommends:
-    //    glPolygonOffset(2.5f, 10.0f);
-    glPolygonOffset(2.5f, 10.0f);
-    //glPolygonOffset(1.0f, 1.0f);
     glEnable(GL_POLYGON_OFFSET_FILL);
+
+    // Esemann etal. recommends:
+    glPolygonOffset(2.5f, 10.0f);
+    // the usual:
+    //glPolygonOffset(1.0f, 1.0f);
 
     // Disable writes to the color buffer
     //    glDrawBuffer(GL_NONE);
