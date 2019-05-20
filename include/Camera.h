@@ -16,6 +16,7 @@ namespace ssg {
 class Camera {
 public:
  Camera() : trackballEnabled(false),
+    resetModelviewOnDraw(false),
     trackball(320,240,240) ,
     distance(6),
     position(0,0,distance),
@@ -87,7 +88,8 @@ public:
     if (trackballEnabled) { 
       M = glm::translate(glm::mat4(),glm::vec3(0,0,-distance)) * trackball.getMat4();
     } else {      
-      M = glm::lookAt ( position, lookat, up );
+      if (resetModelviewOnDraw)
+	M = glm::lookAt ( position, lookat, up );
     }
 
     // M = glm::lookAt ( position, lookat, up );
@@ -114,6 +116,7 @@ public:
   
 protected:
   bool      trackballEnabled;
+  bool      resetModelviewOnDraw;
   Trackball trackball;
   float     distance;
   glm::vec3 position, lookat, up;
