@@ -44,7 +44,8 @@ void main()
   gl_Position = Projection * ModelView * vec4(vPosition.xyz,1.0);
   
   color = ambient + diffuse + specular;
-  color.a = 1.0;
+  //color.a = 1.0;
+  color.a = DiffuseProduct.a;
 
 
 }
