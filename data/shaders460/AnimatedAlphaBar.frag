@@ -16,7 +16,7 @@ void main()
   fragColor = color;
 
   //  fragColor.a = max ( 0.0, sin ( TWOPI * freq * Time + uv.s ) );
-  fragColor.a = fract(freq*Time-uv.s) < pw ? 1.0 : 0.4;
+  fragColor.a = fract(freq*Time-uv.s*2.0) < pw ? 1.0 : 0.4;
 
 } 
 
