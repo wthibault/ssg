@@ -1,5 +1,5 @@
 #version 460
-// AnimatedAlphaBar
+// AnimatedRings
 
 attribute  vec3 vPosition;
 attribute  vec3 vNormal;
