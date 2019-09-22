@@ -10,7 +10,7 @@ out vec4 fragColor;
 void main() 
 {
   float freq = 0.5;
-  float pw = 0.2;
+  float pw = 0.5;
   float dist = length ( uv - vec2(0.5,0.5) );
 
   fragColor = color;
