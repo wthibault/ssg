@@ -3,8 +3,6 @@
 
 in  vec2 uv;
 
-uniform float Time;
-
 out vec4 fragColor;
 
 void main() 
@@ -13,7 +11,7 @@ void main()
   if (uv.s < 0.5 - lineWidth)
     fragColor = vec4 ( 1.0, 1.0, 1.0, 1.0 );
   else if (uv.s > 0.5 + lineWidth)
-    fragColor = vec4 ( 0.1, 0.1, 0.1, 1.0 );
+    fragColor = vec4 ( 0.2, 0.2, 0.2, 1.0 );
   else
     fragColor = vec4 ( 1.0, 0.0, 0.0, 1.0 );
 
