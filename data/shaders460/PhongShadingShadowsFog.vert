@@ -26,8 +26,9 @@ void main()
   Normal = normalize( ModelView*vec4(vNormal, 0.0) ).xyz;
 
   // works for groundplane:
-  ShadowMapCoord = LightMatrix * vec4(vPosition.xyz,1.0);
-  //ShadowMapCoord = LightMatrix * LocalToWorld * vec4(vPosition.xyz,1.0);
+  // working a minute ago:  ShadowMapCoord = LightMatrix * vec4(vPosition.xyz,1.0);
+
+  ShadowMapCoord = LightMatrix * LocalToWorld * vec4(vPosition.xyz,1.0);
   // not working!?!?!
   //ShadowMapCoord = LightMatrix * LocalToWorld * vec4(pos,1.0);
 
