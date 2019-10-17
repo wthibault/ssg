@@ -90,7 +90,10 @@ void main()
   vec3 N = normalize(Normal);
   vec3 H = normalize ( L + V );
 
-  // Compute terms in the illumination equation
+  // for two sided lighting
+  //int flipN = dot(N,V) < 0.0;
+  N = dot(N,V)<0.0 ? -N : N;
+  
   vec4 ambient = AmbientProduct;
   
   float Kd = max( dot(L, N), 0.0 );
@@ -106,9 +109,14 @@ void main()
 
   
   float inShadow = 0.0;
-  inShadow = ShadowCalculation ( ShadowMapCoord );
+  //  inShadow = ShadowCalculation ( ShadowMapCoord );
+  inShadow = min(ShadowEnable, ShadowCalculation ( ShadowMapCoord ));
   
-  float Ks =  pow( max(dot(N, H), 0.0), Shininess );
+  //  float Ks = min(1.0,pow( max(dot(N, H), -dot(N,H)), Shininess ));
+  float Ks =  Kd > 0.0 ?
+    clamp ( pow(dot(N, H), Shininess ),
+	    0.0, 1.0 )
+    : 0.0;
 
   vec4  specular = Ks * SpecularProduct;
   
@@ -137,6 +145,8 @@ void main()
   fogDist *= fogDist;  // squared dist looks "good". to me. for now.
 
   float fogFactor = exp ( -FogDensity * fogDist );
+
   gl_FragColor = fogFactor * surfaceColor + (1-fogFactor) * FogColor;
+
 } 
 

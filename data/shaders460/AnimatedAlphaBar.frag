@@ -9,14 +9,16 @@ out vec4 fragColor;
 
 void main() 
 {
-  float freq = 0.5;
-  float pw = 0.05;
+  float freq = 2.0; // temporal freq
+  float pw = 0.5;   // pulsewidth
+  float repeats = 20.0;
   const float TWOPI = 2.0 * 3.15159;
 
   fragColor = color;
 
   //  fragColor.a = max ( 0.0, sin ( TWOPI * freq * Time + uv.s ) );
-  fragColor.a = fract(freq*Time-uv.s*2.0) < pw ? 1.0 : 0.4;
-
+  fragColor.a = fract( freq * Time - uv.s * repeats ) < pw ? 1.0 : 0.4;
+  if (fragColor.a < 0.5)
+    discard;
 } 
 
