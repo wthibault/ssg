@@ -17,4 +17,5 @@ clean:
 	rm -f *~
 	rm -f include/*~
 	rm -f data/shaders120/*~
+	rm -f data/shaders460/*~
 

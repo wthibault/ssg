@@ -1,5 +1,5 @@
 #version 460
-// AnimatedAlphaBar - slides a bar of alpha>0 along texture s with time
+// AnimatedDiscardBar - slides a bar of discarded fragments along texture s with time
 in  vec4 color;
 in  vec2 uv;
 
@@ -16,8 +16,8 @@ void main()
 
   fragColor = color;
 
-  //  fragColor.a = max ( 0.0, sin ( TWOPI * freq * Time + uv.s ) );
   fragColor.a = fract( freq * Time - uv.s * repeats ) < pw ? 1.0 : 0.4;
-
+  if (fragColor.a < 0.5)
+    discard;
 } 
 

@@ -1,8 +1,9 @@
-#version 120
-// GouraudShading.vert = pervertex lighting
+#version 460
+// AnimatedDiscardBar
 
 attribute  vec3 vPosition;
 attribute  vec3 vNormal;
+attribute  vec2 vTexCoord;
 
 uniform mat4 ModelView;
 uniform mat4 Projection;
@@ -13,8 +14,8 @@ uniform vec4 SpecularProduct;
 uniform vec4 LightPosition;
 uniform float Shininess;
 
-varying vec4 color;
-
+out vec4 color;
+out vec2 uv;
 
 void main()
 {
@@ -44,7 +45,9 @@ void main()
   gl_Position = Projection * ModelView * vec4(vPosition.xyz,1.0);
   
   color = ambient + diffuse + specular;
-  color.a = 1.0;
+  //color.a = 1.0;
+  //color.a = DiffuseProduct.a;
 
+  uv = vTexCoord;
 
 }
