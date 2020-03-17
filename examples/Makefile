@@ -82,7 +82,8 @@ all : 	example0 \
 	fog \
 	ptrTest \
 	maze \
-	skybox
+	skybox \
+	BSPexample
 
 example0 : example0.cpp $(SSG_INCS) $(LIB_DIR)/ssg.a
 	g++ $(OPTS) -o example0 $(INCLUDES) example0.cpp $(LIB_DIR)/ssg.a $(LIBS)
@@ -150,8 +151,8 @@ ptrTest : ptrTest.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(L
 maze : maze.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
 	g++ $(OPTS) -o maze $(INCLUDES) maze.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
-skybox : skybox.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
-	g++ $(OPTS) -o skybox -std=c++11 $(INCLUDES) skybox.cpp $(LIB_DIR)/ssg.a $(LIBS)
+BSPexample : BSPexample.cpp $(SSG_INCS) $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
+	g++ $(OPTS) -o BSPexample -std=c++11 $(INCLUDES) BSPexample.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
 
 
@@ -181,4 +182,5 @@ clean :
 	rm -f ptrTest
 	rm -f maze
 	rm -f skybox
+	rm -f BSPexample
 	rm -rf *.dSYM
