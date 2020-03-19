@@ -16,7 +16,8 @@ namespace ssg {
 
     // Each vertex in a Tri is an index into Primitive::points_
     typedef glm::ivec3       Tri;
-    
+
+    // Tris for lists of tris.  int index refers to points_
     typedef std::vector<Tri> Tris;
 
     // for the BSP tree proper
@@ -29,12 +30,20 @@ namespace ssg {
     
     BSPPrimitive();
 
-    void buildBSP ( const Tris &tris );
+    // Build a BSP tree from a list of triangles.
+    // Uses args to init points_ et alia.
+    // Triangles split during process will generate add'l vertices.
+    void buildBSP ( const std::vector<vec3> &positions,
+		    const std::vector<vec3> &normals,
+		    const std::vector<vec2> &texCoords,
+		    const Tris &tris );
 
-    // Extract (possibly transformed) copy of triangles from the given scene graph,
-    // and set as starting points_ for the BSP tree.
+    // Build a BSP tree by traversing a scene graph,
+    // creating copies of all (possibly transformed)
+    // triangles, 
+    // and set these as starting points_, et al. for the BSP tree.
     // More points are added if any splitting occurs.
-    
+    // XXX monitor the graph for changes and rebuild tree in update()? 
     void buildBSP ( Ptr<ModelNode> );   
 
     virtual ~BSPPrimitive();
@@ -45,9 +54,11 @@ namespace ssg {
 			glm::mat4 proj,
 			Ptr<ssg::Material> mat);
 
-    BSP *bspTree;
-
+    BSP *getBSPTree ();
+    
   protected:
+
+    BSP *bspTree;
 
     glm::vec4 chooseHp ( const Tris &tris );
 
