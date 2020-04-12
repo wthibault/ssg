@@ -62,12 +62,14 @@ void init (int argc, char **argv)
 
   // create the root node
   root = Ptr<Instance> ( new Instance() );
+  root->name_ = "root";
 
   // set the root's matrix to the identity matrix
   root->setMatrix ( mat4() );
 
   // add the primitive as a child of the root
   root->addChild ( new Triangle() );
+  root->getChild(0)->name_ = "triangle";
 
   // the lights are global for all objects in the scene
   RenderingEnvironment::getInstance().lightPosition = vec4 ( 0,0,10,1 );
@@ -89,6 +91,8 @@ void init (int argc, char **argv)
   // misc OpenGL state
   glClearColor (0.0, 0.0, 0.0, 1.0);
   glEnable(GL_DEPTH_TEST);
+
+  root->print(0);
 
 }
 

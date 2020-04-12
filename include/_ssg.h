@@ -163,7 +163,10 @@ class RenderingEnvironment
 class ModelNode {
 public:
 
- ModelNode() : parent_(), material_(), isVisible_(true), count_(0) {}
+ ModelNode() :  parent_(), material_(),
+    isVisible_(true),
+    name_("noname"),
+    count_(0) {}
   virtual ~ModelNode() {// std::cout << "~ModelNode\n"; 
   }
   virtual void init() {}
@@ -172,14 +175,15 @@ public:
 		      glm::mat4 projection,
 		      Ptr<Material> material ) {}
   virtual void setMaterial ( Ptr<Material> m );
+  virtual glm::mat4 getWorldToLocalMatrix() {return glm::mat4();}  // XXX BORKED
+  virtual glm::mat4 getLocalToWorldMatrix()=0;
+  virtual void print ( int indent )=0;
 
   ModelNode*     parent_;
   Ptr<Material>  material_;
-  bool      isVisible_;
-  virtual glm::mat4 getWorldToLocalMatrix() {return glm::mat4();}  // XXX BORKED
-  virtual glm::mat4 getLocalToWorldMatrix()=0;
-  // protected:
-  int       count_;  // reference count
+  bool           isVisible_;
+  std::string    name_;
+  int            count_;  // reference count
 };
 
 //////////////////////////////////////////////////////////////////
@@ -206,8 +210,9 @@ class Primitive : public ModelNode {
 
   virtual glm::mat4 getWorldToLocalMatrix();
   virtual glm::mat4 getLocalToWorldMatrix();
-  virtual void      setDrawingPrimitive ( GLuint prim );
+  virtual void print ( int indent );    
 
+  virtual void setDrawingPrimitive ( GLuint prim );
   virtual void setupShader ( glm::mat4 mv, glm::mat4 proj, Ptr<Material> m );
   virtual void endShader ();
   virtual void generateAndLoadArrayBuffer();
@@ -267,6 +272,7 @@ public:
 
   virtual glm::mat4 getWorldToLocalMatrix();
   virtual glm::mat4 getLocalToWorldMatrix();
+  virtual void print ( int indent );
 
 protected:
   std::vector<Ptr<ModelNode> > children_;

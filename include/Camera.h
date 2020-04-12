@@ -32,8 +32,10 @@ public:
   void enableTrackball(bool on) { trackballEnabled=on; }
   void startMouse ( float x, float y ) { trackball.startMouse(x,y); }
   void dragMouse ( float x, float y )  { trackball.dragMouse(x,y); };
+  
   void setDistance ( float d ) { distance = d; }
-
+  float getDistance ( ) { return distance; }
+  
   void setPosition ( glm::vec3 pos ) { position = pos; M = glm::lookAt(position,lookat,up); }
   glm::vec3 getPosition ( ) { return position; }
 

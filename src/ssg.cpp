@@ -50,6 +50,14 @@ ssg::Primitive::~Primitive()
 }
 
 void
+ssg::Primitive::print ( int indent )
+{
+  for (int i=0;i<indent;i++)
+    std::cout << "| ";
+  std::cout << name_ << " Primitive " << std::endl;
+}
+
+void
 ssg::Primitive::deleteGLBuffers_()
 {
   if ( arrayBuffer_ ) glDeleteBuffers ( 1, &arrayBuffer_);
@@ -403,6 +411,15 @@ ssg::Instance::~Instance()
   // }
   //  std::cout << "~Instance\n";
   children_.clear();
+}
+
+void
+ssg::Instance::print ( int indent ) {
+  for (int i=0;i<indent;i++)
+    std::cout << "| ";
+  std::cout << name_ << " Instance " << std::endl;
+  for (int i = 0; i < numChildren(); i++) 
+    children_[i]->print ( indent + 1 );
 }
 
 

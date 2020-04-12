@@ -92,6 +92,7 @@ void keyboard (unsigned char key, int x, int y)
   switch (key) {
   case 'a':
     root->addChild ( createRandomInstance ( prim ) );
+    root->print(0);
     break;
 
   case 27: /* ESC */
