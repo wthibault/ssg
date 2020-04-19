@@ -151,6 +151,9 @@ ptrTest : ptrTest.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(L
 maze : maze.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
 	g++ $(OPTS) -o maze $(INCLUDES) maze.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
+skybox : skybox.cpp $(SSG_INCS) $(INC_DIR)/Trackball.h $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
+	g++ $(OPTS) -o skybox $(INCLUDES) skybox.cpp $(LIB_DIR)/ssg.a $(LIBS)
+
 BSPexample : BSPexample.cpp $(SSG_INCS) $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a 
 	g++ $(OPTS) -o BSPexample -std=c++11 $(INCLUDES) BSPexample.cpp $(LIB_DIR)/ssg.a $(LIBS)
 

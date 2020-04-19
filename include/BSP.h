@@ -33,9 +33,9 @@ namespace ssg {
     // Build a BSP tree from a list of triangles.
     // Uses args to init points_ et alia.
     // Triangles split during process will generate add'l vertices.
-    void buildBSP ( const std::vector<vec3> &positions,
-		    const std::vector<vec3> &normals,
-		    const std::vector<vec2> &texCoords,
+    void buildBSP ( const std::vector<glm::vec3> &positions,
+		    const std::vector<glm::vec3> &normals,
+		    const std::vector<glm::vec2> &texCoords,
 		    const Tris &tris );
 
     // Build a BSP tree by traversing a scene graph,
