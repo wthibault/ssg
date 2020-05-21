@@ -426,6 +426,8 @@ ssg::Instance::print ( int indent ) {
 void 
 ssg::Instance::update ( float dt )  {
 
+  #if 0
+  #else
   if ( parent_ ) {
     localToWorld_ = dynamic_cast<Instance*>(parent_)->getLocalToWorldMatrix() * matrix_;
     worldToLocal_ = glm::inverse(matrix_) * dynamic_cast<Instance*>(parent_)->worldToLocal_;
@@ -433,6 +435,7 @@ ssg::Instance::update ( float dt )  {
     localToWorld_ = matrix_;
     worldToLocal_ = glm::inverse(matrix_);
   }
+  #endif
 
   for (int i=0; i < children_.size(); i++ ) {
     children_[i]->update ( dt );
@@ -522,7 +525,7 @@ ssg::Instance::setChild ( ModelNode* child, int slot ) {
 
 void 
 ssg::Instance::setChild ( Ptr<ModelNode> child, int slot ) {
-  if (slot>0 && slot<children_.size()) {
+  if (slot>=0 && slot<children_.size()) {
     children_[slot] = child;
     child->parent_ = this;
   }
