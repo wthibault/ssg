@@ -28,6 +28,12 @@ INCLUDES = -I../include -I.
 LIBS = -lGL -lGLU -lglut -lGLEW 
 endif
 
+ifeq "$(HOST_PLATFORM)" "aarch64-linux-gnu"
+# for Jetson Nano 2GB
+INCLUDES = -I../include -I.
+LIBS = -lGL -lGLU -lglut -lGLEW
+endif
+
 # for macosx
 # NOTE for mac you have to use the GLSL 1.2 shaders....
 #ifeq   "$(HOST_PLATFORM)" "x86_64-apple-darwin11.4.2"
