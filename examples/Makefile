@@ -90,7 +90,8 @@ all : 	example0 \
 	ptrTest \
 	maze \
 	skybox \
-	BSPexample
+	BSPexample \
+	glfw-example1
 
 example0 : example0.cpp $(SSG_INCS) $(LIB_DIR)/ssg.a
 	g++ $(OPTS) -o example0 $(INCLUDES) example0.cpp $(LIB_DIR)/ssg.a $(LIBS)
@@ -165,6 +166,11 @@ BSPexample : BSPexample.cpp $(SSG_INCS) $(INC_DIR)/Camera.h $(LIB_DIR)/ssg.a
 	g++ $(OPTS) -o BSPexample -std=c++11 $(INCLUDES) BSPexample.cpp $(LIB_DIR)/ssg.a $(LIBS)
 
 
+glfw-example1 : glfw-example1.cpp $(SSG_INCS) $(LIB_DIR)/ssg.a
+	g++ $(OPTS) -o glfw-example1 $(INCLUDES) glfw-example1.cpp $(LIB_DIR)/ssg.a $(LIBS) -lglfw
+
+
+
 
 clean :
 	rm -f *.o
@@ -193,4 +199,5 @@ clean :
 	rm -f maze
 	rm -f skybox
 	rm -f BSPexample
+	rm -f glfw-example1
 	rm -rf *.dSYM

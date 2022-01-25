@@ -144,3 +144,6 @@ This shows how an effect chain can be built from a cascade of FrameBuffer object
 
 ## primitives.cpp
 This shows how to subclass ssg::Primitive to create your own primitives.  Examples for a Cone, a tetrahedron, and a function plot for a function z=f(x,y).
+
+## glfw-example1.cpp
+This uses GLFW instead of GLUT to do what example1.cpp does.

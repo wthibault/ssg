@@ -21,7 +21,7 @@ Camera camera;
 int width, height;
 int drawMode = 0;
 ShadowTexture *shadowTexture;
-Material *mat = 0;
+Material *material = 0;
 
 
 
@@ -109,7 +109,7 @@ void keyboard (unsigned char key, int x, int y)
 {
   switch (key) {
   case 's':
-    mat->shadowEnable ^= 1;
+    material->shadowEnable ^= 1;
     break;
   case ' ':
     drawMode = (drawMode + 1) % 3;
@@ -154,15 +154,15 @@ void init (int argc, char **argv)
 
 
   // create a material to use
-  mat = new Material;
-  mat->ambient = vec4 ( 0.1, 0.1, 0.1, 1.0 );
-  mat->diffuse = vec4 ( 0.9, 0.9, 0.0, 1.0 );
-  mat->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );
-  mat->shininess = 133.0;
-  mat->program = mat->loadShaders ( "PhongShadingShadows" );
+  material = new Material;
+  material->ambient = vec4 ( 0.1, 0.1, 0.1, 1.0 );
+  material->diffuse = vec4 ( 0.9, 0.9, 0.0, 1.0 );
+  material->specular = vec4 ( 1.0, 1.0, 1.0, 1.0 );
+  material->shininess = 133.0;
+  material->program = material->loadShaders ( "PhongShadingShadows" );
 
   // attach the material to the instance
-  instance->setMaterial ( mat );
+  instance->setMaterial ( material );
 
   // PointLights do shadows...
   // XXX must call this AFTER compiling the shader!!! certain things in the shadow code glsl won't compile until the shader is built.

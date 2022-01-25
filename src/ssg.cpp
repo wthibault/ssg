@@ -127,7 +127,7 @@ ssg::Primitive::init () {
 glm::vec4 transformPlane ( glm::vec4 &plane, glm::mat4 &M )
 {
   // based on http://stackoverflow.com/questions/7685495/transforming-a-3d-plane-by-4x4-matrix
-  // needs "#define GLM_SWIZZLE" before including glm.hpp
+  // needs "#define GLM_FORCE_SWIZZLE" before including glm.hpp
   glm::vec3 pn (plane.xyz);
   glm::vec4 P = glm::vec4 ( pn * plane.w, 1.0 );
   glm::vec4 N = glm::vec4 ( pn, 0.0 );
@@ -136,6 +136,7 @@ glm::vec4 transformPlane ( glm::vec4 &plane, glm::mat4 &M )
   float d = glm::dot ( glm::vec3(P.xyz), glm::vec3(N.xyz) );
   return glm::vec4 ( N.xyz, d );
 }
+
 
 void
 ssg::Primitive::setDrawingPrimitive ( GLuint prim )
@@ -397,6 +398,7 @@ ssg::Primitive::getLocalToWorldMatrix() {
 std::ostream &operator<< (std::ostream &out, const ssg::Primitive &prim)
 {
   out << "Primitive\n";
+  return out;
 }
 
 //////////////////////////////////////////////////////////////////
@@ -567,6 +569,7 @@ ssg::Instance::getLocalToWorldMatrix() {
 std::ostream &operator<< (std::ostream &out, const ssg::Instance &inst)
 {
   out << "Instance\n";
+  return out;
 }
 
 
