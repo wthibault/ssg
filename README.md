@@ -14,6 +14,10 @@ Uses OpenGL, GLEW, GLUT (freeglut), GLFW
 ## on Linux
 sudo apt install build-essential libglew-dev freeglut3-dev libglfw3-dev
 
+# Building
+## on Linux
+make -j
+
 # Environment
 The SSG_DATA environment variable must be set to the location of ssg's "data" directory.
 Filenames of obj files and shaders should be there. If not, the current directory is tried.
