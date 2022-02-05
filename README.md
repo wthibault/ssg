@@ -1,6 +1,6 @@
 # ssg
 
-A simple scene graph for OpenGL 3.  Uses glm 0.9.5.1 for vector and matrix support.
+A simple scene graph for OpenGL 3.  Uses glm for vector and matrix support.
 
 The file include/_ssg.h has the main class definitions.
 ModelNodes are grouped into a DAG with a single root.
@@ -8,6 +8,11 @@ There must be at least one Primitive if anything is to actually get drawn. They 
 Instances group and transform their children ModelNodes.
 
 
+# Prerequisites
+Uses OpenGL, GLEW, GLUT (freeglut), GLFW
+
+## on Linux
+sudo apt install build-essential libglew-dev freeglut3-dev libglfw3-dev
 
 # Environment
 The SSG_DATA environment variable must be set to the location of ssg's "data" directory.
